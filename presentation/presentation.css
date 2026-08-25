@@ -411,3 +411,66 @@
 .reveal section.appendix-figure {
   text-align: center;
 }
+
+.reveal .latex-table-wrap {
+  margin-top: 0.55rem;
+}
+
+.reveal .latex-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.72em;
+  line-height: 1.25;
+  text-align: right;
+  margin: 0 auto;
+}
+
+.reveal .latex-table thead th {
+  padding: 0.35rem 0.55rem;
+  color: var(--brand-navy);
+  background: rgba(47, 95, 138, 0.04);
+  border-top: 2px solid var(--brand-blue);
+  border-bottom: 1px solid var(--brand-line);
+  font-weight: 700;
+}
+
+.reveal .latex-table thead th:first-child,
+.reveal .latex-table tbody td:first-child {
+  text-align: left;
+}
+
+.reveal .latex-table tbody td {
+  padding: 0.26rem 0.55rem;
+  border-bottom: 1px solid var(--brand-line);
+  color: var(--brand-ink);
+}
+
+.reveal .latex-table .latex-subhead th {
+  background: #f7fafc;
+  font-weight: 600;
+  border-top: none;
+}
+
+.reveal .latex-table .latex-row-spacer td {
+  height: 0.25rem;
+  padding: 0;
+  border: none;
+}
+
+.reveal .latex-table .latex-bottom-row td {
+  border-bottom: 2px solid var(--brand-blue);
+}
+
+.reveal .latex-table-note {
+  margin-top: 0.55rem;
+  font-size: 0.55em;
+  line-height: 1.45;
+  color: var(--brand-muted);
+  text-align: left;
+}
+
+.reveal .latex-table-note em {
+  font-style: italic;
+  color: var(--brand-navy);
+}

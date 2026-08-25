@@ -4,31 +4,32 @@
 \contentsline {subsection}{\numberline {3.1}The Colombia--Venezuela border}{4}{}%
 \contentsline {subsection}{\numberline {3.2}Border restrictions and the 2019 disruption}{6}{}%
 \contentsline {subsection}{\numberline {3.3}Reopening and the restoration of formal connectivity}{7}{}%
-\contentsline {section}{\numberline {4}Conceptual framework}{8}{}%
-\contentsline {subsection}{\numberline {4.1}Border accessibility and local economic activity}{8}{}%
+\contentsline {subsection}{\numberline {3.4}Relation to the existing literature}{8}{}%
+\contentsline {section}{\numberline {4}Conceptual framework}{9}{}%
+\contentsline {subsection}{\numberline {4.1}Border accessibility and local economic activity}{9}{}%
 \contentsline {subsection}{\numberline {4.2}Implementation of the Behrens framework}{9}{}%
 \contentsline {subsection}{\numberline {4.3}Empirical hypotheses}{10}{}%
 \contentsline {subsection}{\numberline {4.4}Identification considerations}{11}{}%
-\contentsline {section}{\numberline {5}Empirical methodology}{11}{}%
-\contentsline {subsection}{\numberline {5.1}Measuring changes in border accessibility}{11}{}%
-\contentsline {subsection}{\numberline {5.2}Baseline empirical specification}{12}{}%
+\contentsline {section}{\numberline {5}Empirical methodology}{12}{}%
+\contentsline {subsection}{\numberline {5.1}Measuring changes in border accessibility}{12}{}%
+\contentsline {subsection}{\numberline {5.2}Baseline empirical specification}{13}{}%
 \contentsline {subsection}{\numberline {5.3}Spatially heterogeneous time shocks}{13}{}%
 \contentsline {subsection}{\numberline {5.4}Country-specific effects}{14}{}%
 \contentsline {subsection}{\numberline {5.5}Dynamic effects and pre-treatment trends}{14}{}%
 \contentsline {subsection}{\numberline {5.6}Reopening and complementary evidence}{15}{}%
 \contentsline {subsection}{\numberline {5.7}Identification and interpretation}{15}{}%
-\contentsline {section}{\numberline {6}Data}{15}{}%
+\contentsline {section}{\numberline {6}Data}{16}{}%
 \contentsline {subsection}{\numberline {6.1}Administrative boundaries and study area}{16}{}%
-\contentsline {subsection}{\numberline {6.2}Road network and international crossings}{16}{}%
+\contentsline {subsection}{\numberline {6.2}Road network and international crossings}{17}{}%
 \contentsline {subsection}{\numberline {6.3}Treatment intensity}{17}{}%
-\contentsline {subsection}{\numberline {6.4}Nighttime luminosity}{17}{}%
+\contentsline {subsection}{\numberline {6.4}Nighttime luminosity}{18}{}%
 \contentsline {subsection}{\numberline {6.5}Estimation sample}{18}{}%
 \contentsline {section}{\numberline {7}Results}{19}{}%
 \contentsline {subsection}{\numberline {7.1}Baseline relationship between border access and economic activity}{19}{}%
 \contentsline {subsection}{\numberline {7.2}Accounting for spatially heterogeneous shocks}{20}{}%
-\contentsline {subsection}{\numberline {7.3}Heterogeneity across the border}{21}{}%
+\contentsline {subsection}{\numberline {7.3}Heterogeneity across the border}{22}{}%
 \contentsline {subsection}{\numberline {7.4}Dynamic effects and pre-treatment trends}{22}{}%
-\contentsline {section}{\numberline {8}Discussion and Limitations}{23}{}%
+\contentsline {section}{\numberline {8}Discussion and Limitations}{24}{}%
 \contentsline {section}{\numberline {9}Conclusion}{25}{}%
 \contentsline {section}{Appendix}{30}{}%
 \setcounter {tocdepth}{-1}

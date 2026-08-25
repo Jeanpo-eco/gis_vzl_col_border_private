@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex build/main"] 1787657469.75533 "build/main.aux" "build/main.bbl" "build/main" 1787662329.2526 0
+["bibtex build/main"] 1787674276.2165 "build/main.aux" "build/main.bbl" "build/main" 1787674406.77007 0
   "./ref.bib" 1787606834 12182 e4aef18bcefafe6206ecc350b95fd3e1 ""
   "C:/Users/jeanp/AppData/Local/Programs/MiKTeX/bibtex/bst/bibtex/apalike.bst" 1291972791 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "build/main.aux" 1787662327 13372 19930eb71d0b79815456b626fa476dce "pdflatex"
+  "build/main.aux" 1787674404 13663 a495f76019327c64f2301a11e189bf10 "pdflatex"
   (generated)
   "build/main.bbl"
   "build/main.blg"
   (rewritten before read)
-["pdflatex"] 1787662321.25056 "c:/Users/jeanp/OneDrive/Desktop/Oldenburg/Second_Semester/GIS/seminar/Docs/main.tex" "build/main.pdf" "main" 1787662329.25535 0
+["pdflatex"] 1787674398.09888 "c:/Users/jeanp/OneDrive/Desktop/Oldenburg/Second_Semester/GIS/seminar/Docs/main.tex" "build/main.pdf" "main" 1787674406.77251 0
   "../Output/Figures/final/figure_border_crossings.pdf" 1787657339 21409225 f3cfaacad9f45802bb310b6dac7e7b39 ""
   "../Output/Figures/final/figure_country_event_studies.pdf" 1787657371 25383 00f9599733189eeaa106da1c7edb73f2 ""
   "../Output/Figures/final/figure_event_study_region_fe.pdf" 1787657238 22481 f6e954d9a065ce59f667802042fbc8cf ""
@@ -313,13 +313,13 @@
   "C:/Users/jeanp/AppData/Local/Programs/MiKTeX/tex/latex/xstring/xstring.sty" 1693735632 123 a302f2c651a95033260db60e51527ae8 ""
   "C:/Users/jeanp/AppData/Local/Programs/MiKTeX/tex/latex/zref/zref-abspage.sty" 1750428951 2269 2de6c7a5fd634dfef00a960544463a38 ""
   "C:/Users/jeanp/AppData/Local/Programs/MiKTeX/tex/latex/zref/zref-base.sty" 1750428951 20785 198a9cb2e04238d92c320d0d9edbd76a ""
-  "build/main.aux" 1787662327 13372 19930eb71d0b79815456b626fa476dce "pdflatex"
-  "build/main.bbl" 1787657470 9271 74bd4a3e6a65452c104b6a107b8a139f "bibtex build/main"
-  "build/main.toc" 1787662327 3329 f1520b6e6f010a60c72e9d77c423b01f "pdflatex"
+  "build/main.aux" 1787674404 13663 a495f76019327c64f2301a11e189bf10 "pdflatex"
+  "build/main.bbl" 1787674276 9271 74bd4a3e6a65452c104b6a107b8a139f "bibtex build/main"
+  "build/main.toc" 1787674404 3416 07704c348f9953831bdc0ef4ea473f6b "pdflatex"
   "c:/Users/jeanp/OneDrive/Desktop/Oldenburg/Second_Semester/GIS/seminar/Docs/main.tex" 1787606223 5296 0eb08d443a6af4e5006d16752f9d231d ""
   "main.tex" 1787606223 5296 0eb08d443a6af4e5006d16752f9d231d ""
   "sections/appendix.tex" 1787607323 10553 3ff6192acd6f75e916052ccd55118b1b ""
-  "sections/background.tex" 1787607956 12749 619a6fc75bdd6c33a9d8c6217d4482e9 ""
+  "sections/background.tex" 1787674396 15345 3c5d9a82156f750f7ebc417c1aaacbb3 ""
   "sections/conceptual.tex" 1787608252 10307 33c7d525755d104f7cefab5e08467104 ""
   "sections/conclusion.tex" 1787604411 6798 036f7eabd4151d969d5bfdc7df704c01 ""
   "sections/data.tex" 1787608441 12634 038b245ba38a8ead2ab7e7ce7efdc43c ""
