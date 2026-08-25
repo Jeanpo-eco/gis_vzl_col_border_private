@@ -29,7 +29,7 @@ execute:
 ---
 
 
-# Motivation {.content-slide}
+## Motivation {.content-slide}
 
 ::: {.columns}
 :::: {.column width="53%"}
@@ -44,6 +44,8 @@ The talk asks whether municipalities with larger access losses experienced weake
 ::::
 :::: {.column width="47%"}
 ![Border crossings and road network](../Output/Figures/final/figure_border_crossings.png){width=100%}
+
+*Al Jazeera, 9 Sep 2022*
 ::::
 :::
 
@@ -98,10 +100,8 @@ Lower accessibility should show up as weaker nighttime-light activity.
 Expected sign: more access loss, lower activity. But the dynamic checks matter for interpretation.
 :::
 
-# Methodology {.content-slide}
-
-## Empirical pipeline {.content-slide}
-
+## Methodology {.content-slide}
+### Empirical pipeline
 ::: {.columns}
 :::: {.column width="58%"}
 ::: {.pipeline}
@@ -134,8 +134,8 @@ The exposure measure is built from travel costs, not just straight-line distance
 :::
 ::::
 :::
-
-## Baseline model and specifications {.content-slide}
+## Methodology {.content-slide}
+### Baseline model and specifications 
 
 ::: {.columns}
 :::: {.column width="52%"}
@@ -151,11 +151,6 @@ where:
 - $Exposure_{it}$ = treatment intensity, defined as the change in road-network access to the nearest operational crossing
 - $\beta$ = effect of a one-unit increase in exposure on local economic activity
 
-Then I add more demanding spatial-time controls:
-
-- country x quarter fixed effects
-- crossing corridor x quarter fixed effects
-- state/department x quarter fixed effects
 ::::
 :::: {.column width="48%"}
 ::: {.callout-important}
@@ -201,8 +196,8 @@ Quarterly VIIRS nightlights provide the outcome measure and let the audience see
 ::::
 :::
 
-
-## Results: Main estimates {.content-slide}
+## Results {.content-slide}
+### Main estimates
 
 ::: {.columns}
 :::: {.column width="54%"}
@@ -222,7 +217,8 @@ The negative coefficient shrinks quickly once tighter local controls are added.
 ::::
 :::
 
-## Results: Dynamic check {.content-slide}
+## Results {.content-slide}
+### Dynamic check
 
 ::: {.columns}
 :::: {.column width="52%"}
@@ -241,7 +237,8 @@ This is the main reason I avoid over-claiming a clean causal effect.
 ::::
 :::
 
-## Results: Reopening and heterogeneity {.content-slide}
+## Results {.content-slide}
+### Reopening and heterogeneity {.content-slide}
 
 ::: {.columns}
 :::: {.column width="50%"}
@@ -287,16 +284,20 @@ jean.oliveros@uni-oldenburg.de
 
 If you want, I can also show the appendix diagnostics or discuss the measurement choices in detail.
 
-## Appendix {.content-slide}
-## Appendix: buffer robustness {.appendix-figure}
+# Appendix {.content-slide}
+
+## Appendix
+### Buffer robustness {.appendix-figure}
 
 ![Buffer robustness](../Output/Figures/final/figure_buffer_robustness.png){width=84%}
 
-## Appendix: country event studies {.appendix-figure}
+## Appendix
+### Country event studies {.appendix-figure}
 
 ![Country event studies](../Output/Figures/final/figure_country_event_studies.png){width=84%}
 
-## Appendix: summary table
+## Appendix
+### Summary table {.appendix-figure}
 
 | Item | Value |
 |---|---|
@@ -307,11 +308,12 @@ If you want, I can also show the appendix diagnostics or discuss the measurement
 | Outcome frequency | Quarterly |
 | Main outcome | Log(1 + nighttime lights) |
 
-## Appendix: headline estimates
+## Appendix
+### Headline estimates {.appendix-figure}
 
-| Specification | Estimate | p-value |
-|---|---:|---:|
-| TWFE | -0.0168 | 0.033 |
-| Country x quarter FE | -0.0104 | 0.146 |
-| State/department x quarter FE | -0.0057 | 0.616 |
-| Municipality-specific trends | -0.00043 | 0.977 |
+| Specification | Estimate | p-value | Observations | Within R² |
+|---|---:|---:|---:|---:|
+| TWFE | -0.0168 | 0.033 | 4,032 | 0.0115 |
+| Country x quarter FE | -0.0104 | 0.146 | 4,032 | 0.0047 |
+| State/department x quarter FE | -0.0057 | 0.616 | 4,032 | 0.0005 |
+| Municipality-specific trends | -0.00043 | 0.977 | 4,032 | 0.0000 |
