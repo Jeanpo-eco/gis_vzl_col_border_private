@@ -1,0 +1,10 @@
+*.csv
+*tif
+*.csv
+*.rds
+*.gpkg
+*.pbf
+*.docx
+*.tex
+*.html
+!presentation/progress-banner.html
