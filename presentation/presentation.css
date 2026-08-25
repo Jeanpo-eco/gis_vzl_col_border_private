@@ -29,14 +29,14 @@
   background: rgba(248, 250, 252, 0.98);
   border-bottom: 1px solid var(--brand-line);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset;
-  padding: 0.4rem 1rem 0.3rem;
+  padding: 0.55rem 1rem 0.4rem;
   box-sizing: border-box;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 #qpi-banner .qpi-track {
   position: relative;
-  height: 4px;
+  height: 5px;
   background: #dfe5ec;
   border-radius: 999px;
   overflow: hidden;
@@ -55,8 +55,8 @@
   display: flex;
   justify-content: space-between;
   gap: 0.35rem;
-  margin-top: 0.28rem;
-  font-size: 0.42em;
+  margin-top: 0.32rem;
+  font-size: 0.52em;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--brand-muted);
@@ -69,6 +69,14 @@
   opacity: 0.62;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+  transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+#qpi-banner .qpi-label:hover,
+#qpi-banner .qpi-label:focus-visible {
+  opacity: 1;
+  color: var(--brand-blue);
 }
 
 #qpi-banner .qpi-label.active {
@@ -156,6 +164,8 @@
   padding: 0.65rem 0.65rem 0.45rem;
   box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
   text-align: center;
+  cursor: pointer;
+  user-select: none;
 }
 
 .reveal .ntl-label {
@@ -164,6 +174,7 @@
   color: var(--brand-blue);
   margin-bottom: 0.5rem;
   letter-spacing: 0.04em;
+  min-height: 1.4em;
 }
 
 .reveal .ntl-rotation img {
@@ -172,6 +183,7 @@
   height: auto;
   border-radius: 0.55rem;
   filter: grayscale(100%) contrast(1.25) brightness(1.15);
+  transition: opacity 0.25s ease;
 }
 
 .reveal table {
@@ -214,6 +226,40 @@
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 1rem;
   box-shadow: 0 18px 42px rgba(19, 34, 56, 0.18);
+}
+
+.reveal .title-slide .title-meta {
+  margin-top: 0.4rem;
+  margin-bottom: 1.1rem;
+  text-align: center;
+}
+
+.reveal .title-slide p.institute {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  color: var(--brand-ink);
+  font-size: 0.86em;
+  line-height: 1.35;
+}
+
+.reveal .title-slide p.institute .title-meta-line,
+.reveal .title-slide p.institute span {
+  display: block;
+}
+
+.reveal .title-slide .title-meta-line strong {
+  font-weight: 700;
+}
+
+.reveal .title-slide .title-meta-line.title-italic {
+  font-style: italic;
+}
+
+.reveal .title-slide .title-meta-line.title-small {
+  font-size: 0.82em;
+  color: var(--brand-muted);
 }
 
 .reveal .title-slide h1.title {

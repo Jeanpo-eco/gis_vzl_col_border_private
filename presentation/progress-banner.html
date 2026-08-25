@@ -17,58 +17,121 @@
 
   ready(function () {
     var banner = document.getElementById('qpi-banner');
-    if (!banner || !window.Reveal) return;
+    if (banner) {
+      var labelsHost = banner.querySelector('.qpi-labels');
+      var fill = banner.querySelector('.qpi-fill');
+      var slides = Array.prototype.slice.call(document.querySelectorAll('.reveal .slides > section'));
+      var labels = [];
 
-    var labelsHost = banner.querySelector('.qpi-labels');
-    var fill = banner.querySelector('.qpi-fill');
-    var slides = Array.prototype.slice.call(document.querySelectorAll('.reveal .slides > section'));
-    var labels = [];
+      function normalize(title) {
+        if (!title) return '';
+        if (title.indexOf('Results:') === 0) return 'Results';
+        if (title.indexOf('Appendix:') === 0) return 'Appendix';
+        if (title === 'Landing slide') return 'Landing';
+        return title;
+      }
 
-    function normalize(title) {
-      if (!title) return '';
-      if (title.indexOf('Results:') === 0) return 'Results';
-      if (title.indexOf('Appendix:') === 0) return 'Appendix';
-      if (title === 'Landing slide') return 'Landing';
-      return title;
-    }
+      function slideTitle(slide) {
+        var h2 = slide.querySelector('h2');
+        if (h2) return h2.textContent.trim();
+        return '';
+      }
 
-    function slideTitle(slide) {
-      var h2 = slide.querySelector('h2');
-      if (h2) return h2.textContent.trim();
-      return '';
-    }
-
-    slides.forEach(function (slide) {
-      var label = normalize(slideTitle(slide));
-      if (!label) label = 'Main';
-      labels.push(label);
-    });
-
-    labelsHost.innerHTML = '';
-    labels.forEach(function (label) {
-      var span = document.createElement('span');
-      span.className = 'qpi-label';
-      span.textContent = label;
-      span.dataset.name = label;
-      labelsHost.appendChild(span);
-    });
-
-    function update() {
-      var current = Reveal.getCurrentSlide();
-      var currentIndex = slides.indexOf(current);
-      var pct = slides.length > 1 ? (currentIndex / (slides.length - 1)) * 100 : 0;
-      fill.style.width = Math.max(0, pct) + '%';
-
-      var activeLabel = normalize(slideTitle(current));
-      if (!activeLabel) activeLabel = 'Main';
-      Array.prototype.slice.call(labelsHost.children).forEach(function (node) {
-        node.classList.toggle('active', node.dataset.name === activeLabel);
+      slides.forEach(function (slide) {
+        var label = normalize(slideTitle(slide));
+        if (!label) label = 'Main';
+        labels.push(label);
       });
+
+      labelsHost.innerHTML = '';
+      labels.forEach(function (label, idx) {
+        var span = document.createElement('span');
+        span.className = 'qpi-label';
+        span.textContent = label;
+        span.dataset.name = label;
+        span.setAttribute('tabindex', '0');
+        span.addEventListener('click', function () {
+          if (window.Reveal) {
+            window.Reveal.slide(idx, 0, 0);
+          }
+        });
+        span.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            if (window.Reveal) {
+              window.Reveal.slide(idx, 0, 0);
+            }
+          }
+        });
+        labelsHost.appendChild(span);
+      });
+
+      function update() {
+        if (!window.Reveal) return;
+        var current = Reveal.getCurrentSlide();
+        var currentIndex = slides.indexOf(current);
+        var pct = slides.length > 1 ? (currentIndex / (slides.length - 1)) * 100 : 0;
+        fill.style.width = Math.max(0, pct) + '%';
+
+        var activeLabel = normalize(slideTitle(current));
+        if (!activeLabel) activeLabel = 'Main';
+        Array.prototype.slice.call(labelsHost.children).forEach(function (node) {
+          node.classList.toggle('active', node.dataset.name === activeLabel);
+        });
+      }
+
+      if (window.Reveal) {
+        Reveal.on('ready', update);
+        Reveal.on('slidechanged', update);
+      }
+      update();
     }
 
-    Reveal.on('ready', update);
-    Reveal.on('slidechanged', update);
-    update();
+    var rotators = document.querySelectorAll('.ntl-rotation');
+    rotators.forEach(function (rotator) {
+      var frames = (rotator.getAttribute('data-frames') || '').split('|').map(function (s) {
+        return s.trim();
+      }).filter(Boolean);
+      var labels = (rotator.getAttribute('data-labels') || '').split('|').map(function (s) {
+        return s.trim();
+      }).filter(Boolean);
+      var img = rotator.querySelector('img');
+      var labelBox = rotator.querySelector('.ntl-label');
+      if (!img || !frames.length) return;
+
+      var index = 0;
+      var timer = null;
+
+      function setFrame(nextIndex) {
+        index = nextIndex;
+        if (img) img.src = frames[index];
+        if (labelBox) labelBox.textContent = labels[index] || '';
+      }
+
+      function start() {
+        stop();
+        timer = window.setInterval(function () {
+          setFrame((index + 1) % frames.length);
+        }, 1600);
+      }
+
+      function stop() {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      setFrame(0);
+      start();
+      rotator.addEventListener('click', function () {
+        setFrame((index + 1) % frames.length);
+      });
+      rotator.addEventListener('mouseenter', stop);
+      rotator.addEventListener('mouseleave', start);
+      rotator.addEventListener('focusin', stop);
+      rotator.addEventListener('focusout', start);
+    });
   });
 })();
 </script>

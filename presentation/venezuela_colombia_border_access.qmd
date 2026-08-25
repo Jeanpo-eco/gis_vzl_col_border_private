@@ -3,11 +3,10 @@ title: "When Borders Become Distant"
 subtitle: "Accessibility and Economic Activity along the Colombia-Venezuela Border"
 author: "Jean Pierre Oliveros"
 institute: |
-  Carl von Ossietzky University of Oldenburg
-  Applied Econometrics Using GIS Techniques
-  Prof. Dr. Erkan Goeren
-  Quantitative Methods in Economics
-  Summer 2026
+  <span class="title-meta-line"><strong>Quantitative Methods in Economics Seminar</strong><br>Summer 2026</span>
+  <span class="title-meta-line title-italic">Applied Econometrics Using GIS Techniques</span><br>
+  <span class="title-meta-line title-italic">Supervised by Prof. Dr. Erkan Goeren</span><br>
+  <span class="title-meta-line title-small">Carl von Ossietzky University of Oldenburg</span>
 date: today
 format:
   revealjs:
@@ -23,7 +22,6 @@ format:
       data-background-size: cover
       data-background-opacity: "0.10"
     css: presentation.css
-    include-after-body: progress-banner.html
 execute:
   echo: false
 ---
@@ -115,6 +113,14 @@ $$
 Y_{it} = \alpha_i + \gamma_t + \beta \, Exposure_{it} + \varepsilon_{it}
 $$
 
+where:
+
+- $Y_{it}$ = log(1 + nighttime lights) in municipality $i$ at time $t$
+- $\alpha_i$ = municipality fixed effects, absorbing time-invariant local characteristics
+- $\gamma_t$ = quarter fixed effects, absorbing common shocks across all municipalities
+- $Exposure_{it}$ = treatment intensity, defined as the change in road-network access to the nearest operational crossing
+- $\beta$ = effect of a one-unit increase in exposure on local economic activity
+
 Then I add more demanding spatial-time controls:
 
 - country x quarter fixed effects
@@ -196,7 +202,6 @@ The negative coefficient shrinks quickly once tighter local controls are added.
 ### Dynamic check
 
 - Event-study estimates show differential pre-trends.
-- Joint pre-trend tests reject a flat pre-period in every specification (all p-values < 0.03).
 - The dynamic pattern weakens with more localized controls, but it does not disappear completely.
 - So the baseline TWFE estimate should be read cautiously.
 
@@ -228,7 +233,7 @@ This is the main reason I avoid over-claiming a clean causal effect.
 ### Heterogeneity
 
 - Colombia: positive and borderline significant
-- Venezuela: negative and significant in the joint model, but less precise in robustness-only estimates
+- Venezuela: negative but imprecise
 ::::
 :::
 
@@ -259,7 +264,7 @@ If you want, I can also show the appendix diagnostics or discuss the measurement
 
 ## Appendix: country event studies {.appendix-figure}
 
-![Country event studies](../Output/Figures/final/figure_country_event_studies.png){width=95%}
+![Country event studies](../Output/Figures/final/figure_country_event_studies.png){width=84%}
 
 ## Appendix: summary table
 
