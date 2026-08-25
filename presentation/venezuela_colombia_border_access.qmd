@@ -22,11 +22,14 @@ format:
       data-background-size: cover
       data-background-opacity: "0.10"
     css: presentation.css
+filters:
+  - ofurkancoban/progress-indicator
 execute:
   echo: false
 ---
 
-## Motivation
+
+# Motivation {.content-slide}
 
 ::: {.columns}
 :::: {.column width="53%"}
@@ -43,6 +46,8 @@ The talk asks whether municipalities with larger access losses experienced weake
 ![Border crossings and road network](../Output/Figures/final/figure_border_crossings.png){width=100%}
 ::::
 :::
+
+# Introduction {.section-slide visibility="uncounted"}
 
 ## Introduction
 
@@ -72,7 +77,7 @@ Two municipalities can sit equally close to the border and still face very diffe
 :::
 ::::
 :::
-
+# Conceptual framework {.section-slide visibility="uncounted"}
 ## Conceptual framework
 
 ::: {.concept-grid}
@@ -96,6 +101,7 @@ Lower accessibility should show up as weaker nighttime-light activity.
 Expected sign: more access loss, lower activity. But the dynamic checks matter for interpretation.
 :::
 
+# Methodology {.section-slide visibility="uncounted"}
 ## Methodology
 
 ::: {.columns}
@@ -144,6 +150,7 @@ If the estimated effect survives tighter local time controls, it is more likely 
 ::::
 :::
 
+# Data {.section-slide visibility="uncounted"}
 ## Data
 
 ::: {.columns}
@@ -172,6 +179,8 @@ Quarterly VIIRS nightlights provide the outcome measure and let the audience see
 ::::
 :::
 
+
+# Results {.section-slide visibility="uncounted"}
 ## Results: Main estimates
 
 ::: {.columns}
@@ -237,6 +246,7 @@ This is the main reason I avoid over-claiming a clean causal effect.
 ::::
 :::
 
+# Conclusion {.section-slide visibility="uncounted"}
 ## Conclusion
 
 ::: {.callout-important}
@@ -249,15 +259,15 @@ Border accessibility appears to matter, but the strongest evidence is supportive
 - The main effect is sensitive to tighter local time controls.
 - The reopening pattern is the clearest mechanism-consistent evidence.
 
-## Landing slide
-
-### Thank you
+# Finish {.section-slide visibility="uncounted"}
+## Thank you
 
 Jean Pierre Oliveros  
 jean.oliveros@uni-oldenburg.de
 
 If you want, I can also show the appendix diagnostics or discuss the measurement choices in detail.
 
+# Appendix {.section-slide visibility="uncounted"}
 ## Appendix: buffer robustness {.appendix-figure}
 
 ![Buffer robustness](../Output/Figures/final/figure_buffer_robustness.png){width=84%}
