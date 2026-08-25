@@ -1,0 +1,43 @@
+Title slide (1 min)
+- Open with the core idea: border access is not just distance; it is road-network access to an operational crossing.
+- Say this talk studies the Colombia-Venezuela border because the 2019 restrictions created a sharp access shock.
+
+Motivation (2 min)
+- Explain why border closures matter for markets, suppliers, commuting, and informal exchange.
+- Point out that two places equally close to the border can face different detours once roads and crossings are considered.
+
+Introduction (2 min)
+- State the research question clearly: how did changes in access to the border affect local economic activity?
+- Emphasize the contribution: a continuous exposure measure and quarterly satellite data.
+
+Conceptual framework (1.5 min)
+- Walk through the mechanism: policy shock -> higher travel cost -> weaker local activity.
+- Mention that the hypothesis is a negative relationship, but it must be interpreted carefully because pre-trends can exist.
+
+Methodology (2 min)
+- Describe the network-distance measure and how treatment intensity is built from pre/post access.
+- Explain the fixed-effects ladder: baseline TWFE, then country-quarter, corridor-quarter, and state-quarter controls.
+
+Data (2 min)
+- Introduce the four data layers: municipalities, roads, crossings, and VIIRS nighttime lights.
+- Use the nightlights rotation to show that the outcome is quarterly and spatially detailed.
+
+Results: main estimates (2 min)
+- Say the baseline effect is negative, but it shrinks as the controls become more localized.
+- Stress that the tighter specifications make the estimate much less robust.
+
+Results: dynamic evidence (2 min)
+- Explain that the event study shows differential pre-trends.
+- Say this is why the clean causal story is weaker than the raw TWFE estimate suggests.
+
+Results: reopening and heterogeneity (2 min)
+- Use the reopening figure as the strongest mechanism-consistent validation.
+- Mention the country-specific differences, but avoid over-interpreting them.
+
+Conclusion (1 min)
+- End with the cautious takeaway: border access likely matters, but the evidence is strongest as supportive rather than definitive causal proof.
+- If asked, mention the appendix has buffer robustness and extra event-study panels.
+
+Landing slide
+- Thank the audience and invite questions.
+
