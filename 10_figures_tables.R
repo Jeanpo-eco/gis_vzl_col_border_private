@@ -115,9 +115,22 @@ baseline_df <- readRDS(
 # 3. SMALL HELPERS
 # ==============================================================================
 
-extract_term <- function(model, term_name) {
+
+# ------------------------------------------------------------------------------
+# Extract one regression coefficient
+# ------------------------------------------------------------------------------
+
+extract_term <- function(
+  model,
+  term_name
+) {
+
   broom::tidy(model) %>%
-    filter(term == term_name) %>%
+
+    filter(
+      term == term_name
+    ) %>%
+
     transmute(
       estimate,
       std_error = std.error,
@@ -126,38 +139,186 @@ extract_term <- function(model, term_name) {
     )
 }
 
+
+# ------------------------------------------------------------------------------
+# Extract model fit statistics
+# ------------------------------------------------------------------------------
+
+extract_model_stats <- function(model) {
+
+  r2_values <- fixest::r2(
+    model,
+    type = c(
+      "r2",
+      "ar2",
+      "wr2",
+      "war2"
+    )
+  )
+
+  tibble(
+    nobs =
+      stats::nobs(model),
+
+    r2 =
+      unname(
+        r2_values["r2"]
+      ),
+
+    adj_r2 =
+      unname(
+        r2_values["ar2"]
+      ),
+
+    within_r2 =
+      unname(
+        r2_values["wr2"]
+      ),
+
+    within_adj_r2 =
+      unname(
+        r2_values["war2"]
+      )
+  )
+}
+
+
+# ------------------------------------------------------------------------------
+# Extract coefficient + model fit statistics
+# ------------------------------------------------------------------------------
+
+extract_model_result <- function(
+  model,
+  term_name
+) {
+
+  bind_cols(
+
+    extract_term(
+      model,
+      term_name
+    ),
+
+    extract_model_stats(
+      model
+    ) %>%
+      select(
+        -nobs
+      )
+  )
+}
+
+
+# ------------------------------------------------------------------------------
+# Significance stars
+# ------------------------------------------------------------------------------
+
 stars_from_p <- function(p) {
+
   case_when(
+
+    is.na(p) ~ "",
+
     p < 0.01 ~ "***",
+
     p < 0.05 ~ "**",
+
     p < 0.10 ~ "*",
+
     TRUE ~ ""
   )
 }
 
-fmt_est <- function(estimate, p_value, digits = 3) {
+
+# ------------------------------------------------------------------------------
+# Formatting helpers
+# ------------------------------------------------------------------------------
+
+fmt_est <- function(
+  estimate,
+  p_value,
+  digits = 3
+) {
+
   paste0(
     "$",
-    sprintf(paste0("%.", digits, "f"), estimate),
+    sprintf(
+      paste0(
+        "%.",
+        digits,
+        "f"
+      ),
+      estimate
+    ),
     "^{",
-    stars_from_p(p_value),
+    stars_from_p(
+      p_value
+    ),
     "}$"
   )
 }
 
-fmt_se <- function(x, digits = 3) {
-  paste0("(", sprintf(paste0("%.", digits, "f"), x), ")")
+
+fmt_se <- function(
+  x,
+  digits = 3
+) {
+
+  paste0(
+    "(",
+    sprintf(
+      paste0(
+        "%.",
+        digits,
+        "f"
+      ),
+      x
+    ),
+    ")"
+  )
 }
+
 
 fmt_n <- function(x) {
-  format(x, big.mark = ",", scientific = FALSE, trim = TRUE)
+
+  format(
+    x,
+    big.mark = ",",
+    scientific = FALSE,
+    trim = TRUE
+  )
 }
 
+
 fmt_p <- function(x) {
+
   ifelse(
     x < 0.0001,
     "$<0.0001$",
-    sprintf("%.4f", x)
+    sprintf(
+      "%.4f",
+      x
+    )
+  )
+}
+
+
+fmt_r2 <- function(
+  x,
+  digits = 3
+) {
+
+  ifelse(
+    is.na(x),
+    "--",
+    sprintf(
+      paste0(
+        "%.",
+        digits,
+        "f"
+      ),
+      x
+    )
   )
 }
 
@@ -265,30 +426,126 @@ plot_event_study <- function(data, y_label) {
 # 4. MAIN-TEXT TABLE: MAIN REGRESSION RESULTS
 # ==============================================================================
 
+
+# ------------------------------------------------------------------------------
+# Models included in main table
+# ------------------------------------------------------------------------------
+
+main_models <- list(
+
+  m1_original,
+
+  m2_country_time,
+
+  m5_corridor_time,
+
+  m6_region_time
+)
+
+
+# ------------------------------------------------------------------------------
+# Extract coefficient and model-fit information
+# ------------------------------------------------------------------------------
+
 results_main <- bind_rows(
-  extract_term(m1_original, "exposure_post"),
-  extract_term(m2_country_time, "exposure_post"),
-  extract_term(m5_corridor_time, "exposure_post"),
-  extract_term(m6_region_time, "exposure_post")
-) %>%
-  mutate(
-    estimate_tex = map2_chr(estimate, p_value, fmt_est),
-    se_tex = map_chr(std_error, fmt_se),
-    n_tex = map_chr(nobs, fmt_n)
+
+  lapply(
+    main_models,
+    function(model) {
+
+      extract_model_result(
+        model,
+        "exposure_post"
+      )
+    }
   )
 
+) %>%
+
+  mutate(
+
+    estimate_tex =
+      map2_chr(
+        estimate,
+        p_value,
+        fmt_est
+      ),
+
+    se_tex =
+      map_chr(
+        std_error,
+        fmt_se
+      ),
+
+    n_tex =
+      map_chr(
+        nobs,
+        fmt_n
+      ),
+
+    r2_tex =
+      map_chr(
+        r2,
+        fmt_r2
+      ),
+
+    adj_r2_tex =
+      map_chr(
+        adj_r2,
+        fmt_r2
+      ),
+
+    within_r2_tex =
+      map_chr(
+        within_r2,
+        fmt_r2
+      ),
+
+    within_adj_r2_tex =
+      map_chr(
+        within_adj_r2,
+        fmt_r2
+      )
+  )
+
+
+# ------------------------------------------------------------------------------
+# Build publication-ready LaTeX table
+# ------------------------------------------------------------------------------
+
 main_table_tex <- c(
+
   "\\begin{table}[htbp]",
+
   "\\centering",
+
   "\\caption{Border Accessibility and Nighttime Luminosity}",
+
   "\\label{tab:main_results}",
+
   "\\small",
+
   "\\setlength{\\tabcolsep}{4pt}",
+
   "\\begin{tabular}{lcccc}",
+
   "\\toprule",
+
   " & (1) & (2) & (3) & (4) \\\\",
-  " & TWFE & Country $\\times$ Quarter & Crossing $\\times$ Quarter & State/Dept. $\\times$ Quarter \\\\",
+
+  paste0(
+    " & TWFE",
+    " & Country $\\times$ Quarter",
+    " & Crossing $\\times$ Quarter",
+    " & State/Dept. $\\times$ Quarter",
+    " \\\\"
+  ),
+
   "\\midrule",
+
+
+  # Treatment coefficient ------------------------------------------------------
+
   paste0(
     "Treatment intensity $\\times$ Post",
     " & ", results_main$estimate_tex[1],
@@ -297,6 +554,7 @@ main_table_tex <- c(
     " & ", results_main$estimate_tex[4],
     " \\\\"
   ),
+
   paste0(
     " ",
     " & ", results_main$se_tex[1],
@@ -305,13 +563,29 @@ main_table_tex <- c(
     " & ", results_main$se_tex[4],
     " \\\\"
   ),
+
+
   "\\addlinespace",
+
+
+  # Fixed effects --------------------------------------------------------------
+
   "Municipality FE & Yes & Yes & Yes & Yes \\\\",
+
   "Quarter FE & Yes & No & No & No \\\\",
+
   "Country $\\times$ Quarter FE & No & Yes & Yes & No \\\\",
+
   "Crossing corridor $\\times$ Quarter FE & No & No & Yes & No \\\\",
+
   "State/Department $\\times$ Quarter FE & No & No & No & Yes \\\\",
+
+
   "\\midrule",
+
+
+  # Model statistics -----------------------------------------------------------
+
   paste0(
     "Observations",
     " & ", results_main$n_tex[1],
@@ -320,25 +594,76 @@ main_table_tex <- c(
     " & ", results_main$n_tex[4],
     " \\\\"
   ),
+
+  paste0(
+    "$R^2$",
+    " & ", results_main$r2_tex[1],
+    " & ", results_main$r2_tex[2],
+    " & ", results_main$r2_tex[3],
+    " & ", results_main$r2_tex[4],
+    " \\\\"
+  ),
+
+  paste0(
+    "Adjusted $R^2$",
+    " & ", results_main$adj_r2_tex[1],
+    " & ", results_main$adj_r2_tex[2],
+    " & ", results_main$adj_r2_tex[3],
+    " & ", results_main$adj_r2_tex[4],
+    " \\\\"
+  ),
+
+  paste0(
+    "Within $R^2$",
+    " & ", results_main$within_r2_tex[1],
+    " & ", results_main$within_r2_tex[2],
+    " & ", results_main$within_r2_tex[3],
+    " & ", results_main$within_r2_tex[4],
+    " \\\\"
+  ),
+
+  paste0(
+    "Adjusted within $R^2$",
+    " & ", results_main$within_adj_r2_tex[1],
+    " & ", results_main$within_adj_r2_tex[2],
+    " & ", results_main$within_adj_r2_tex[3],
+    " & ", results_main$within_adj_r2_tex[4],
+    " \\\\"
+  ),
+
+
   "\\bottomrule",
+
   "\\end{tabular}",
+
   "\\vspace{0.2cm}",
+
   "\\begin{minipage}{0.95\\textwidth}",
+
   "\\footnotesize",
+
   paste0(
     "\\textit{Notes:} The dependent variable is ",
     "$\\log(1+\\text{nighttime lights})$. ",
-    "Treatment intensity is the logarithmic change in road-network distance ",
-    "to the nearest operational international crossing between the ",
-    "pre-treatment and closure regimes. Post equals one from 2019Q1 onward. ",
+    "Treatment intensity is defined as ",
+    "$\\log(d_i^{post})-\\log(d_i^{pre})$, where distance is the ",
+    "shortest road-network distance to the nearest operational international ",
+    "crossing. Post equals one during the clean closure period from ",
+    "2019Q2 to 2022Q2; 2019Q1 is excluded as a transition quarter. ",
     "Standard errors in parentheses are clustered at the municipality level. ",
     "$^{*}p<0.10$, $^{**}p<0.05$, $^{***}p<0.01$."
   ),
+
   "\\end{minipage}",
+
   "\\end{table}"
 )
 
-write_tex(main_table_tex, "table_main_results.tex")
+
+write_tex(
+  main_table_tex,
+  "table_main_results.tex"
+)
 
 # ==============================================================================
 # 5. MAIN-TEXT TABLE: DESCRIPTIVE STATISTICS
@@ -874,136 +1199,509 @@ save_figure_outputs(
 # 11. APPENDIX TABLE: ALTERNATIVE SPECIFICATIONS
 # ==============================================================================
 
-robustness_specs <- bind_rows(
-  extract_term(r0_reference, "exposure_post") %>%
-    mutate(
-      Specification = "Reference",
-      Outcome = "Log nighttime lights",
-      Treatment = "Log distance shock"
-    ),
-  extract_term(r1_absolute_distance, "distance_change_post") %>%
-    mutate(
-      Specification = "Absolute distance",
-      Outcome = "Log nighttime lights",
-      Treatment = "Distance increase (100 km)"
-    ),
-  extract_term(r2_levels, "exposure_post") %>%
-    mutate(
-      Specification = "NTL levels",
-      Outcome = "Nighttime-light levels",
-      Treatment = "Log distance shock"
-    ),
-  extract_term(r3_municipality_trends, "exposure_post") %>%
-    mutate(
-      Specification = "Municipality trends",
-      Outcome = "Log nighttime lights",
-      Treatment = "Log distance shock"
-    )
-) %>%
-  mutate(
-    Estimate = map2_chr(estimate, p_value, fmt_est),
-    SE = map_chr(std_error, fmt_se),
-    N = map_chr(nobs, fmt_n)
-  )
 
-robustness_rows <- robustness_specs %>%
-  mutate(
-    row = paste0(
-      Specification,
-      " & ", Outcome,
-      " & ", Treatment,
-      " & ", Estimate,
-      " & ", SE,
-      " & ", N,
-      " \\\\"
-    )
-  ) %>%
-  pull(row)
+# ------------------------------------------------------------------------------
+# Extract model information
+# ------------------------------------------------------------------------------
+
+rob_reference <- extract_model_result(
+  r0_reference,
+  "exposure_post"
+)
+
+
+rob_absolute <- extract_model_result(
+  r1_absolute_distance,
+  "distance_change_post"
+)
+
+
+rob_levels <- extract_model_result(
+  r2_levels,
+  "exposure_post"
+)
+
+
+rob_trends <- extract_model_result(
+  r3_municipality_trends,
+  "exposure_post"
+)
+
+
+# ------------------------------------------------------------------------------
+# Format cells
+# ------------------------------------------------------------------------------
+
+rob_coef_reference <- fmt_est(
+  rob_reference$estimate,
+  rob_reference$p_value
+)
+
+rob_se_reference <- fmt_se(
+  rob_reference$std_error
+)
+
+
+rob_coef_absolute <- fmt_est(
+  rob_absolute$estimate,
+  rob_absolute$p_value
+)
+
+rob_se_absolute <- fmt_se(
+  rob_absolute$std_error
+)
+
+
+rob_coef_levels <- fmt_est(
+  rob_levels$estimate,
+  rob_levels$p_value
+)
+
+rob_se_levels <- fmt_se(
+  rob_levels$std_error
+)
+
+
+rob_coef_trends <- fmt_est(
+  rob_trends$estimate,
+  rob_trends$p_value
+)
+
+rob_se_trends <- fmt_se(
+  rob_trends$std_error
+)
+
+
+# ------------------------------------------------------------------------------
+# Build LaTeX table
+# ------------------------------------------------------------------------------
 
 robustness_tex <- c(
+
   "\\begin{table}[htbp]",
+
   "\\centering",
+
   "\\caption{Alternative Specifications}",
+
   "\\label{tab:robustness_specs}",
-  "\\scriptsize",
-  "\\setlength{\\tabcolsep}{3pt}",
-  "\\begin{tabular}{lllccc}",
+
+  "\\small",
+
+  "\\setlength{\\tabcolsep}{4pt}",
+
+  "\\begin{tabular}{lcccc}",
+
   "\\toprule",
-  "Specification & Outcome & Treatment & Estimate & Std. Error & Observations \\\\",
-  "\\midrule",
-  robustness_rows,
-  "\\bottomrule",
-  "\\end{tabular}",
-  "\\vspace{0.2cm}",
-  "\\begin{minipage}{0.95\\textwidth}",
-  "\\footnotesize",
+
+  " & (1) & (2) & (3) & (4) \\\\",
+
   paste0(
-    "\\textit{Notes:} The reference, absolute-distance, and nighttime-light-level ",
-    "specifications include municipality and state/department-by-quarter fixed ",
-    "effects. The municipality-trend specification additionally allows a separate ",
-    "linear time trend for each municipality. Standard errors are clustered at the ",
-    "municipality level. $^{*}p<0.10$, $^{**}p<0.05$, $^{***}p<0.01$."
+    " & Reference",
+    " & Absolute distance",
+    " & NTL levels",
+    " & Municipality trends",
+    " \\\\"
   ),
+
+  "\\midrule",
+
+
+  # Main log-distance treatment ------------------------------------------------
+
+  paste0(
+    "Treatment intensity $\\times$ Post",
+    " & ", rob_coef_reference,
+    " & ",
+    " & ", rob_coef_levels,
+    " & ", rob_coef_trends,
+    " \\\\"
+  ),
+
+  paste0(
+    " ",
+    " & ", rob_se_reference,
+    " & ",
+    " & ", rob_se_levels,
+    " & ", rob_se_trends,
+    " \\\\"
+  ),
+
+
+  # Absolute-distance treatment ------------------------------------------------
+
+  paste0(
+    "Distance increase (100 km) $\\times$ Post",
+    " & ",
+    " & ", rob_coef_absolute,
+    " & ",
+    " & ",
+    " \\\\"
+  ),
+
+  paste0(
+    " ",
+    " & ",
+    " & ", rob_se_absolute,
+    " & ",
+    " & ",
+    " \\\\"
+  ),
+
+
+  "\\addlinespace",
+
+
+  # Outcomes -------------------------------------------------------------------
+
+  paste0(
+    "Outcome",
+    " & Log NTL",
+    " & Log NTL",
+    " & NTL levels",
+    " & Log NTL",
+    " \\\\"
+  ),
+
+
+  # Fixed effects and trends ---------------------------------------------------
+
+  "Municipality FE & Yes & Yes & Yes & Yes \\\\",
+
+  "State/Department $\\times$ Quarter FE & Yes & Yes & Yes & Yes \\\\",
+
+  "Municipality-specific linear trends & No & No & No & Yes \\\\",
+
+
+  "\\midrule",
+
+
+  # Fit statistics -------------------------------------------------------------
+
+  paste0(
+    "Observations",
+    " & ", fmt_n(rob_reference$nobs),
+    " & ", fmt_n(rob_absolute$nobs),
+    " & ", fmt_n(rob_levels$nobs),
+    " & ", fmt_n(rob_trends$nobs),
+    " \\\\"
+  ),
+
+  paste0(
+    "$R^2$",
+    " & ", fmt_r2(rob_reference$r2),
+    " & ", fmt_r2(rob_absolute$r2),
+    " & ", fmt_r2(rob_levels$r2),
+    " & ", fmt_r2(rob_trends$r2),
+    " \\\\"
+  ),
+
+  paste0(
+    "Adjusted $R^2$",
+    " & ", fmt_r2(rob_reference$adj_r2),
+    " & ", fmt_r2(rob_absolute$adj_r2),
+    " & ", fmt_r2(rob_levels$adj_r2),
+    " & ", fmt_r2(rob_trends$adj_r2),
+    " \\\\"
+  ),
+
+  paste0(
+    "Within $R^2$",
+    " & ", fmt_r2(rob_reference$within_r2),
+    " & ", fmt_r2(rob_absolute$within_r2),
+    " & ", fmt_r2(rob_levels$within_r2),
+    " & ", fmt_r2(rob_trends$within_r2),
+    " \\\\"
+  ),
+
+  paste0(
+    "Adjusted within $R^2$",
+    " & ", fmt_r2(rob_reference$within_adj_r2),
+    " & ", fmt_r2(rob_absolute$within_adj_r2),
+    " & ", fmt_r2(rob_levels$within_adj_r2),
+    " & ", fmt_r2(rob_trends$within_adj_r2),
+    " \\\\"
+  ),
+
+
+  "\\bottomrule",
+
+  "\\end{tabular}",
+
+  "\\vspace{0.2cm}",
+
+  "\\begin{minipage}{0.95\\textwidth}",
+
+  "\\footnotesize",
+
+  paste0(
+    "\\textit{Notes:} Columns (1), (3), and (4) use treatment intensity ",
+    "$\\log(d_i^{post})-\\log(d_i^{pre})$. Column (2) instead uses the ",
+    "absolute increase in road-network distance measured in 100-km units. ",
+    "The dependent variable is $\\log(1+\\text{nighttime lights})$ except ",
+    "in Column (3), which uses nighttime-light levels. All specifications ",
+    "include municipality and state/department-by-quarter fixed effects. ",
+    "Column (4) additionally allows each municipality to follow a separate ",
+    "linear time trend. Standard errors are clustered at the municipality ",
+    "level. $^{*}p<0.10$, $^{**}p<0.05$, $^{***}p<0.01$."
+  ),
+
   "\\end{minipage}",
+
   "\\end{table}"
 )
 
-write_tex(robustness_tex, "table_robustness_specs.tex")
+
+write_tex(
+  robustness_tex,
+  "table_robustness_specs.tex"
+)
 
 # ==============================================================================
 # 12. APPENDIX TABLE: COUNTRY-SPECIFIC RESULTS
 # ==============================================================================
 
-main_col <- extract_term(m3_country_effects, "exposure_post_colombia")
-main_ven <- extract_term(m3_country_effects, "exposure_post_venezuela")
-rob_col <- extract_term(r4_colombia, "exposure_post")
-rob_ven <- extract_term(r5_venezuela, "exposure_post")
 
-country_cell <- function(x) {
-  paste0(
-    fmt_est(x$estimate, x$p_value),
-    " ",
-    fmt_se(x$std_error)
-  )
-}
+# ------------------------------------------------------------------------------
+# Joint country-specific model
+# ------------------------------------------------------------------------------
+
+main_col <- extract_term(
+  m3_country_effects,
+  "exposure_post_colombia"
+)
+
+main_ven <- extract_term(
+  m3_country_effects,
+  "exposure_post_venezuela"
+)
+
+main_country_stats <- extract_model_stats(
+  m3_country_effects
+)
+
+
+# ------------------------------------------------------------------------------
+# Separate country robustness models
+# ------------------------------------------------------------------------------
+
+rob_col <- extract_model_result(
+  r4_colombia,
+  "exposure_post"
+)
+
+rob_ven <- extract_model_result(
+  r5_venezuela,
+  "exposure_post"
+)
+
+
+# ------------------------------------------------------------------------------
+# Format coefficients
+# ------------------------------------------------------------------------------
+
+main_col_coef <- fmt_est(
+  main_col$estimate,
+  main_col$p_value
+)
+
+main_col_se <- fmt_se(
+  main_col$std_error
+)
+
+
+main_ven_coef <- fmt_est(
+  main_ven$estimate,
+  main_ven$p_value
+)
+
+main_ven_se <- fmt_se(
+  main_ven$std_error
+)
+
+
+rob_col_coef <- fmt_est(
+  rob_col$estimate,
+  rob_col$p_value
+)
+
+rob_col_se <- fmt_se(
+  rob_col$std_error
+)
+
+
+rob_ven_coef <- fmt_est(
+  rob_ven$estimate,
+  rob_ven$p_value
+)
+
+rob_ven_se <- fmt_se(
+  rob_ven$std_error
+)
+
+
+# ------------------------------------------------------------------------------
+# Build LaTeX table
+# ------------------------------------------------------------------------------
 
 country_tex <- c(
+
   "\\begin{table}[htbp]",
+
   "\\centering",
+
   "\\caption{Country-Specific Estimates}",
+
   "\\label{tab:country_heterogeneity}",
+
   "\\small",
-  "\\begin{tabular}{lcc}",
+
+  "\\setlength{\\tabcolsep}{5pt}",
+
+  "\\begin{tabular}{lccc}",
+
   "\\toprule",
-  " & Main country-specific model & State/Department robustness \\\\",
+
+  " & (1) & (2) & (3) \\\\",
+
+  paste0(
+    " & Joint model",
+    " & Colombia",
+    " & Venezuela",
+    " \\\\"
+  ),
+
   "\\midrule",
+
+
+  # Colombia coefficient -------------------------------------------------------
+
   paste0(
-    "Colombia & ", country_cell(main_col),
-    " & ", country_cell(rob_col),
+    "Colombia treatment intensity $\\times$ Post",
+    " & ", main_col_coef,
+    " & ", rob_col_coef,
+    " & ",
     " \\\\"
   ),
+
   paste0(
-    "Venezuela & ", country_cell(main_ven),
-    " & ", country_cell(rob_ven),
+    " ",
+    " & ", main_col_se,
+    " & ", rob_col_se,
+    " & ",
     " \\\\"
   ),
+
+
+  # Venezuela coefficient ------------------------------------------------------
+
+  paste0(
+    "Venezuela treatment intensity $\\times$ Post",
+    " & ", main_ven_coef,
+    " & ",
+    " & ", rob_ven_coef,
+    " \\\\"
+  ),
+
+  paste0(
+    " ",
+    " & ", main_ven_se,
+    " & ",
+    " & ", rob_ven_se,
+    " \\\\"
+  ),
+
+
+  "\\addlinespace",
+
+
+  # Fixed effects --------------------------------------------------------------
+
+  "Municipality FE & Yes & Yes & Yes \\\\",
+
+  "Country $\\times$ Quarter FE & Yes & No & No \\\\",
+
+  "State/Department $\\times$ Quarter FE & No & Yes & Yes \\\\",
+
+
+  "\\midrule",
+
+
+  # Fit statistics -------------------------------------------------------------
+
+  paste0(
+    "Observations",
+    " & ", fmt_n(main_country_stats$nobs),
+    " & ", fmt_n(rob_col$nobs),
+    " & ", fmt_n(rob_ven$nobs),
+    " \\\\"
+  ),
+
+  paste0(
+    "$R^2$",
+    " & ", fmt_r2(main_country_stats$r2),
+    " & ", fmt_r2(rob_col$r2),
+    " & ", fmt_r2(rob_ven$r2),
+    " \\\\"
+  ),
+
+  paste0(
+    "Adjusted $R^2$",
+    " & ", fmt_r2(main_country_stats$adj_r2),
+    " & ", fmt_r2(rob_col$adj_r2),
+    " & ", fmt_r2(rob_ven$adj_r2),
+    " \\\\"
+  ),
+
+  paste0(
+    "Within $R^2$",
+    " & ", fmt_r2(main_country_stats$within_r2),
+    " & ", fmt_r2(rob_col$within_r2),
+    " & ", fmt_r2(rob_ven$within_r2),
+    " \\\\"
+  ),
+
+  paste0(
+    "Adjusted within $R^2$",
+    " & ", fmt_r2(main_country_stats$within_adj_r2),
+    " & ", fmt_r2(rob_col$within_adj_r2),
+    " & ", fmt_r2(rob_ven$within_adj_r2),
+    " \\\\"
+  ),
+
+
   "\\bottomrule",
+
   "\\end{tabular}",
+
   "\\vspace{0.2cm}",
-  "\\begin{minipage}{0.92\\textwidth}",
+
+  "\\begin{minipage}{0.94\\textwidth}",
+
   "\\footnotesize",
+
   paste0(
-    "\\textit{Notes:} Entries report coefficients with clustered standard errors ",
-    "in parentheses. The main country-specific model is estimated jointly with ",
-    "municipality and country-by-quarter fixed effects. The robustness columns ",
-    "estimate each country separately using municipality and state/department-by-quarter ",
-    "fixed effects. $^{*}p<0.10$, $^{**}p<0.05$, $^{***}p<0.01$."
+    "\\textit{Notes:} Column (1) estimates Colombia- and Venezuela-specific ",
+    "treatment coefficients jointly using municipality and country-by-quarter ",
+    "fixed effects. Columns (2) and (3) estimate the model separately for ",
+    "Colombian and Venezuelan municipalities using municipality and ",
+    "state/department-by-quarter fixed effects. Treatment intensity is ",
+    "$\\log(d_i^{post})-\\log(d_i^{pre})$. The dependent variable is ",
+    "$\\log(1+\\text{nighttime lights})$. Standard errors are clustered at ",
+    "the municipality level. $^{*}p<0.10$, $^{**}p<0.05$, ",
+    "$^{***}p<0.01$."
   ),
+
   "\\end{minipage}",
+
   "\\end{table}"
 )
 
-write_tex(country_tex, "table_country_heterogeneity.tex")
+
+write_tex(
+  country_tex,
+  "table_country_heterogeneity.tex"
+)
 
 # Appendix figure for presentation use ------------------------------------------
 
@@ -1114,52 +1812,153 @@ save_figure_outputs(
 # 14. APPENDIX TABLE AND FIGURE: BORDER REOPENING
 # ==============================================================================
 
-reopening_result <- extract_term(
+
+# ------------------------------------------------------------------------------
+# Reopening average-effect regression
+# ------------------------------------------------------------------------------
+
+reopening_result <- extract_model_result(
   r8_reopening,
   "reopening_exposure"
 )
 
+
+reopening_coef <- fmt_est(
+  reopening_result$estimate,
+  reopening_result$p_value
+)
+
+
+reopening_se <- fmt_se(
+  reopening_result$std_error
+)
+
+
+# ------------------------------------------------------------------------------
+# Build reopening LaTeX table
+# ------------------------------------------------------------------------------
+
 reopening_tex <- c(
+
   "\\begin{table}[htbp]",
+
   "\\centering",
+
   "\\caption{Border-Reopening Diagnostic}",
+
   "\\label{tab:reopening_result}",
+
   "\\small",
-  "\\begin{tabular}{lrrrr}",
+
+  "\\begin{tabular}{lc}",
+
   "\\toprule",
-  "Variable & Estimate & Std. Error & $p$-value & Observations \\\\",
+
+  " & (1) \\\\",
+
+  " & Reopening diagnostic \\\\",
+
   "\\midrule",
+
+
   paste0(
     "Prior exposure $\\times$ Reopening",
-    " & ", sprintf("%.4f", reopening_result$estimate),
-    " & ", sprintf("%.4f", reopening_result$std_error),
-    " & ", fmt_p(reopening_result$p_value),
+    " & ", reopening_coef,
+    " \\\\"
+  ),
+
+  paste0(
+    " ",
+    " & ", reopening_se,
+    " \\\\"
+  ),
+
+
+  "\\addlinespace",
+
+
+  "Municipality FE & Yes \\\\",
+
+  "State/Department $\\times$ Quarter FE & Yes \\\\",
+
+
+  "\\midrule",
+
+
+  paste0(
+    "Observations",
     " & ", fmt_n(reopening_result$nobs),
     " \\\\"
   ),
-  "\\bottomrule",
-  "\\end{tabular}",
-  "\\vspace{0.2cm}",
-  "\\begin{minipage}{0.90\\textwidth}",
-  "\\footnotesize",
+
   paste0(
-    "\\textit{Notes:} The dependent variable is log nighttime luminosity. ",
-    "The specification includes municipality and state/department-by-quarter ",
-    "fixed effects, with standard errors clustered at the municipality level. ",
-    "The reopening exercise is interpreted as a descriptive reverse-shock ",
-    "diagnostic rather than an independent causal estimate."
+    "$R^2$",
+    " & ", fmt_r2(reopening_result$r2),
+    " \\\\"
   ),
+
+  paste0(
+    "Adjusted $R^2$",
+    " & ", fmt_r2(reopening_result$adj_r2),
+    " \\\\"
+  ),
+
+  paste0(
+    "Within $R^2$",
+    " & ", fmt_r2(reopening_result$within_r2),
+    " \\\\"
+  ),
+
+  paste0(
+    "Adjusted within $R^2$",
+    " & ", fmt_r2(reopening_result$within_adj_r2),
+    " \\\\"
+  ),
+
+
+  "\\bottomrule",
+
+  "\\end{tabular}",
+
+  "\\vspace{0.2cm}",
+
+  "\\begin{minipage}{0.90\\textwidth}",
+
+  "\\footnotesize",
+
+  paste0(
+    "\\textit{Notes:} The dependent variable is ",
+    "$\\log(1+\\text{nighttime lights})$. Prior exposure corresponds to ",
+    "the treatment intensity generated by the 2019 closure regime. ",
+    "The specification includes municipality and state/department-by-quarter ",
+    "fixed effects. Standard errors are clustered at the municipality level. ",
+    "The reopening exercise is interpreted as a descriptive reverse-shock ",
+    "diagnostic rather than as an independent causal estimate. ",
+    "$^{*}p<0.10$, $^{**}p<0.05$, $^{***}p<0.01$."
+  ),
+
   "\\end{minipage}",
+
   "\\end{table}"
 )
 
-write_tex(reopening_tex, "table_reopening_result.tex")
+
+write_tex(
+  reopening_tex,
+  "table_reopening_result.tex"
+)
+
+
+# ------------------------------------------------------------------------------
+# Reopening event study
+# ------------------------------------------------------------------------------
 
 event_reopening_df <- extract_event_data(
   e_reopening,
   event_var = "reopening_event_time",
   reference_period = -1L
 )
+
 
 p_reopening <- plot_event_study(
   event_reopening_df,
@@ -1168,6 +1967,7 @@ p_reopening <- plot_event_study(
   labs(
     x = "Quarters relative to the 2022 border reopening"
   )
+
 
 save_figure_outputs(
   plot = p_reopening,

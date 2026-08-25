@@ -27,17 +27,17 @@
 \contentsline {section}{\numberline {7}Results}{19}{}%
 \contentsline {subsection}{\numberline {7.1}Baseline relationship between border access and economic activity}{19}{}%
 \contentsline {subsection}{\numberline {7.2}Accounting for spatially heterogeneous shocks}{20}{}%
-\contentsline {subsection}{\numberline {7.3}Heterogeneity across the border}{22}{}%
+\contentsline {subsection}{\numberline {7.3}Heterogeneity across the border}{21}{}%
 \contentsline {subsection}{\numberline {7.4}Dynamic effects and pre-treatment trends}{22}{}%
 \contentsline {section}{\numberline {8}Discussion and Limitations}{24}{}%
-\contentsline {section}{\numberline {9}Conclusion}{25}{}%
-\contentsline {section}{Appendix}{30}{}%
+\contentsline {section}{\numberline {9}Conclusion}{26}{}%
+\contentsline {section}{Appendix}{31}{}%
 \setcounter {tocdepth}{-1}
-\contentsline {section}{\numberline {A}International crossing regimes}{30}{}%
-\contentsline {section}{\numberline {B}Additional identification diagnostics}{30}{}%
-\contentsline {subsection}{\numberline {B.1}Joint pre-treatment tests}{30}{}%
-\contentsline {section}{\numberline {C}Robustness to alternative samples and specifications}{30}{}%
-\contentsline {subsection}{\numberline {C.1}Alternative border buffers}{30}{}%
-\contentsline {subsection}{\numberline {C.2}Alternative treatment, outcome, and trend specifications}{30}{}%
-\contentsline {section}{\numberline {D}Country-specific evidence}{33}{}%
-\contentsline {section}{\numberline {E}Border reopening}{33}{}%
+\contentsline {section}{\numberline {A}International crossing regimes}{31}{}%
+\contentsline {section}{\numberline {B}Additional identification diagnostics}{31}{}%
+\contentsline {subsection}{\numberline {B.1}Joint pre-treatment tests}{31}{}%
+\contentsline {section}{\numberline {C}Robustness to alternative samples and specifications}{31}{}%
+\contentsline {subsection}{\numberline {C.1}Alternative border buffers}{31}{}%
+\contentsline {subsection}{\numberline {C.2}Alternative treatment, outcome, and trend specifications}{31}{}%
+\contentsline {section}{\numberline {D}Country-specific evidence}{34}{}%
+\contentsline {section}{\numberline {E}Border reopening}{34}{}%
