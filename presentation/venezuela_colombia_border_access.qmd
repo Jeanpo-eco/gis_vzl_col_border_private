@@ -98,19 +98,47 @@ Lower accessibility should show up as weaker nighttime-light activity.
 Expected sign: more access loss, lower activity. But the dynamic checks matter for interpretation.
 :::
 
-## Methodology {.content-slide}
+# Methodology {.content-slide}
+
+## Empirical pipeline {.content-slide}
 
 ::: {.columns}
-:::: {.column width="48%"}
-### Empirical pipeline
+:::: {.column width="58%"}
+::: {.pipeline}
+::: {.pipeline-step}
+<div class="step-number">1</div>
+<div class="step-text"><strong>Build the road network</strong><br>Use the motorcar network to connect municipalities to the border system.</div>
+:::
 
-1. Build a motorcar road network.
-2. Compute shortest-path distances to operational crossings.
-3. Convert the distance change into treatment intensity.
-4. Estimate fixed-effects models and dynamic checks.
+::: {.pipeline-step}
+<div class="step-number">2</div>
+<div class="step-text"><strong>Measure access</strong><br>Compute shortest-path travel times to operational crossings.</div>
+:::
 
-### Baseline model
+::: {.pipeline-step}
+<div class="step-number">3</div>
+<div class="step-text"><strong>Construct exposure</strong><br>Convert the change in access into a municipality-quarter treatment intensity.</div>
+:::
 
+::: {.pipeline-step}
+<div class="step-number">4</div>
+<div class="step-text"><strong>Estimate effects</strong><br>Run fixed-effects models and dynamic event-study checks.</div>
+:::
+:::
+::::
+:::: {.column width="42%"}
+![Road-network access map](../Output/Figures/final/figure_border_crossings.png){width=100%}
+
+::: {.callout-note}
+The exposure measure is built from travel costs, not just straight-line distance.
+:::
+::::
+:::
+
+## Baseline model and specifications {.content-slide}
+
+::: {.columns}
+:::: {.column width="52%"}
 $$
 Y_{it} = \alpha_i + \gamma_t + \beta \, Exposure_{it} + \varepsilon_{it}
 $$
@@ -129,7 +157,7 @@ Then I add more demanding spatial-time controls:
 - crossing corridor x quarter fixed effects
 - state/department x quarter fixed effects
 ::::
-:::: {.column width="52%"}
+:::: {.column width="48%"}
 ::: {.callout-important}
 ### Identification logic
 
@@ -142,7 +170,6 @@ If the estimated effect survives tighter local time controls, it is more likely 
 | Country x quarter FE | Absorb national shocks |
 | Corridor x quarter FE | Absorb border-system shocks |
 | State/department x quarter FE | Absorb local regional shocks |
-:::
 ::::
 :::
 

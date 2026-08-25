@@ -730,33 +730,76 @@ local js = [====[
             
             let sections = [];
             let currentSection = null;
+            let activeH1SectionTitle = null;
 
             slides.forEach((slide, index) => {
                 const h1 = slide.querySelector('h1');
                 const h2 = slide.querySelector('h2');
-                const slideTitle = h1 ? h1.innerText : (h2 ? h2.innerText : "");
+                const h3 = slide.querySelector('h3');
                 
-                if (h1 || currentSection === null) {
-                    const sectionTitle = h1 ? h1.innerText : (currentSection ? currentSection.title : "Introduction");
-                    currentSection = {
-                        title: sectionTitle,
-                        dots: []
-                    };
-                    sections.push(currentSection);
-                }
+                const isTitleH1 = h1 && (h1.classList.contains('title') || h1.closest('.quarto-title-block'));
+                const isSectionH1 = h1 && !isTitleH1;
 
                 const isCoverSlide = (index === 0) && (
                     slide.classList.contains('title-slide') || 
                     slide.id === 'title-slide' ||
-                    (slide.querySelector('.quarto-title-block') || slide.querySelector('h1.title'))
+                    isTitleH1
                 );
+
+                const isSectionSlide = (index > 0) && (
+                    slide.classList.contains('section-slide') || 
+                    slide.classList.contains('level1') || 
+                    (slide.classList.contains('title-slide') && !isCoverSlide) ||
+                    isSectionH1
+                );
+
+                const textOfHeading = (el) => el ? (el.textContent || el.innerText || "").trim() : "";
                 
+                if (isSectionH1) {
+                    activeH1SectionTitle = textOfHeading(h1);
+                }
+
+                let sectionTitle = "";
+                if (isSectionH1) {
+                    sectionTitle = textOfHeading(h1);
+                } else if (activeH1SectionTitle) {
+                    sectionTitle = activeH1SectionTitle;
+                } else if (h2) {
+                    sectionTitle = textOfHeading(h2);
+                } else if (h3) {
+                    sectionTitle = textOfHeading(h3);
+                } else if (h1 && !isCoverSlide) {
+                    sectionTitle = textOfHeading(h1);
+                } else if (slide.getAttribute('data-menu-title')) {
+                    sectionTitle = slide.getAttribute('data-menu-title').trim();
+                } else {
+                    sectionTitle = currentSection ? currentSection.title : "";
+                }
+
+                const slideTitle = (h1 && !isCoverSlide && !isTitleH1) ? textOfHeading(h1) : (h2 ? textOfHeading(h2) : (h3 ? textOfHeading(h3) : ""));
+
+                const isSameAsCurrent = currentSection && 
+                    sectionTitle && 
+                    (currentSection.title.toLowerCase().trim() === sectionTitle.toLowerCase().trim());
+
+                if (isSectionH1 || currentSection === null || !isSameAsCurrent) {
+                    if (!isSameAsCurrent) {
+                        currentSection = {
+                            title: sectionTitle,
+                            startIndex: index,
+                            endIndex: index,
+                            dots: []
+                        };
+                        sections.push(currentSection);
+                    }
+                }
+
                 if (hideOnTitle && isCoverSlide) return;
 
                 if (currentSection.startIndex === undefined || index < currentSection.startIndex) currentSection.startIndex = index;
                 if (currentSection.endIndex === undefined || index > currentSection.endIndex) currentSection.endIndex = index;
 
-                if (slide.classList.contains('section-slide') || slide.classList.contains('skip-progress')) return;
+                if (isSectionSlide || slide.classList.contains('skip-progress')) return;
                 
                 if (omittedSlides.has(index)) return;
 
@@ -770,6 +813,20 @@ local js = [====[
                 });
             });
 
+            // Ensure standalone section header slides with no sub-slides still get a dot if non-empty title
+            sections.forEach(sec => {
+                if (sec.dots.length === 0 && sec.title && sec.title.trim() !== "" && sec.startIndex !== undefined) {
+                    const slide = slides[sec.startIndex];
+                    const indices = slide ? reveal.getIndices(slide) : { h: 0, v: 0 };
+                    sec.dots.push({
+                        index: sec.startIndex,
+                        h: indices.h,
+                        v: indices.v,
+                        title: sec.title
+                    });
+                }
+            });
+
             let renderedSectionCount = 0;
             sections.forEach(section => {
                 if (section.dots.length === 0) return;
@@ -777,30 +834,35 @@ local js = [====[
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'indicator-section';
                 sectionDiv.setAttribute('data-section-index', renderedSectionCount++);
-                sectionDiv.setAttribute('data-start-index', section.startIndex);
-                sectionDiv.setAttribute('data-end-index', section.endIndex);
+                sectionDiv.setAttribute('data-start-index', section.startIndex !== undefined ? section.startIndex : 0);
+                sectionDiv.setAttribute('data-end-index', section.endIndex !== undefined ? section.endIndex : 0);
 
-                const label = document.createElement('div');
-                label.className = 'section-label';
-                label.innerText = section.title;
-                
-                if (isClickable) {
-                    label.style.cursor = 'pointer';
-                    label.style.pointerEvents = 'auto'; 
-                    label.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        e.stopImmediatePropagation();
-                        const target = section.dots[0];
-                        if (target.h !== undefined && target.v !== undefined) {
-                            reveal.slide(target.h, target.v);
-                        } else {
-                            reveal.slide(target.index);
-                        }
-                    }, true);
+                if (section.title && section.title.trim() !== '') {
+                    const label = document.createElement('div');
+                    label.className = 'section-label';
+                    label.textContent = section.title;
+                    label.innerText = section.title;
+                    
+                    if (isClickable) {
+                        label.style.cursor = 'pointer';
+                        label.style.pointerEvents = 'auto'; 
+                        label.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                            const target = section.dots && section.dots[0];
+                            if (target) {
+                                if (target.h !== undefined && target.v !== undefined) {
+                                    reveal.slide(target.h, target.v);
+                                } else {
+                                    reveal.slide(target.index);
+                                }
+                            }
+                        }, true);
+                    }
+                    
+                    sectionDiv.appendChild(label);
                 }
-                
-                sectionDiv.appendChild(label);
 
                 const dotsContainer = document.createElement('div');
                 dotsContainer.className = 'dots-container';
@@ -1074,13 +1136,27 @@ local js = [====[
                 }
             });
 
-            // 2. Identify Active Section using Range Logic (Robust)
+            // 2. Identify Active Section using Range Logic + Dot Ownership
             document.querySelectorAll('.indicator-section').forEach((sectionDiv, idx) => {
                 const start = parseInt(sectionDiv.getAttribute('data-start-index'));
                 const end = parseInt(sectionDiv.getAttribute('data-end-index'));
                 
-                // If current index is within this section's range
-                if (currentIndex >= start && currentIndex <= end) {
+                let isActive = false;
+                // Check if current slide index matches any dot inside this section
+                const dots = sectionDiv.querySelectorAll('.indicator-dot');
+                dots.forEach(dot => {
+                    const dotIdx = parseInt(dot.getAttribute('data-slide-index'));
+                    if (dotIdx === currentIndex) {
+                        isActive = true;
+                    }
+                });
+
+                // Also active if currentIndex falls within start-end range (e.g. on a section header slide)
+                if (!isNaN(start) && !isNaN(end) && currentIndex >= start && currentIndex <= end) {
+                    isActive = true;
+                }
+
+                if (isActive) {
                     sectionDiv.classList.add('active');
                 } else {
                     sectionDiv.classList.remove('active');
@@ -1100,6 +1176,7 @@ local js = [====[
             // This is usually the 'Tools' or 'Custom' panel
             const panels = document.querySelectorAll('.slide-menu-panel');
             let targetPanel = null;
+            let li = null;
             
             panels.forEach(p => {
                 if (p.getAttribute('data-panel') !== 'Slides') {
@@ -1139,7 +1216,7 @@ local js = [====[
                 
                 if (targetPanel.querySelector('.progress-settings-item')) return;
 
-                const li = document.createElement('li');
+                li = document.createElement('li');
                 li.className = 'slide-tool-item progress-settings-item'; // Match 'slide-tool-item' class
                 li.setAttribute('data-item', 'custom');
                 
@@ -1645,8 +1722,9 @@ local js = [====[
                 const h1 = slide.querySelector('h1');
                 const h2 = slide.querySelector('h2');
                 const h3 = slide.querySelector('h3');
-                const title = slide.getAttribute('data-menu-title') || 
-                              (h1 ? h1.innerText : (h2 ? h2.innerText : (h3 ? h3.innerText : `Slide ${idx + 1}`)));
+                const rawTitle = slide.getAttribute('data-menu-title') || 
+                              (h1 ? (h1.innerText || h1.textContent) : (h2 ? (h2.innerText || h2.textContent) : (h3 ? (h3.innerText || h3.textContent) : `Slide ${idx + 1}`)));
+                const title = (rawTitle || `Slide ${idx + 1}`).trim();
                 
                 const item = document.createElement('div');
                 item.style.display = 'flex';
