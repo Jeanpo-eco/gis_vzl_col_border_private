@@ -143,6 +143,32 @@
   line-height: 1.35;
 }
 
+.reveal .appendix-figure table {
+  width: 100%;
+  font-size: 0.7em;
+  border-collapse: collapse;
+  margin: 0.3rem auto 0.75rem;
+}
+
+.reveal .appendix-figure th,
+.reveal .appendix-figure td {
+  padding: 0.3rem 0.55rem;
+  border-bottom: 1px solid var(--brand-line);
+  text-align: center;
+}
+
+.reveal .appendix-figure th:first-child,
+.reveal .appendix-figure td:first-child {
+  text-align: left;
+}
+
+.reveal .appendix-figure thead th {
+  font-weight: 700;
+  color: var(--brand-navy);
+  background: rgba(47, 95, 138, 0.04);
+  border-bottom: 1px solid var(--brand-line);
+}
+
 .reveal ul li {
   margin-bottom: 0.3em;
 }

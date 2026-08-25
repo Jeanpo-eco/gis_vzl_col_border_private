@@ -43,7 +43,7 @@ The talk asks whether municipalities with larger access losses experienced weake
 :::
 ::::
 :::: {.column width="47%"}
-![Border crossings and road network](../Output/Figures/final/figure_border_crossings.png){width=100%}
+![Border crossings and road network](../Output/Figures/final/aljazeera.png){width=100%}
 
 *Al Jazeera, 9 Sep 2022*
 ::::
@@ -311,9 +311,16 @@ If you want, I can also show the appendix diagnostics or discuss the measurement
 ## Appendix
 ### Headline estimates {.appendix-figure}
 
-| Specification | Estimate | p-value | Observations | Within R² |
+|  | (1) | (2) | (3) | (4) |
 |---|---:|---:|---:|---:|
-| TWFE | -0.0168 | 0.033 | 4,032 | 0.0115 |
-| Country x quarter FE | -0.0104 | 0.146 | 4,032 | 0.0047 |
-| State/department x quarter FE | -0.0057 | 0.616 | 4,032 | 0.0005 |
-| Municipality-specific trends | -0.00043 | 0.977 | 4,032 | 0.0000 |
+|  | TWFE | Country × Quarter | Crossing × Quarter | State/Dept. × Quarter |
+| Treatment intensity × Post | -0.017** | -0.010 | -0.006 | -0.006 |
+|  | (0.008) | (0.007) | (0.010) | (0.011) |
+| Municipality FE | Yes | Yes | Yes | Yes |
+| Quarter FE | Yes | No | No | No |
+| Country × Quarter FE | No | Yes | Yes | No |
+| Crossing corridor × Quarter FE | No | No | Yes | No |
+| State/Department × Quarter FE | No | No | No | Yes |
+| Observations | 4,032 | 4,032 | 4,032 | 4,032 |
+
+*Notes:* The dependent variable is log(1 + nighttime lights). Treatment intensity is the logarithmic change in road-network distance to the nearest operational international crossing between the pre-treatment and closure regimes. Post equals one from 2019Q1 onward. Standard errors in parentheses are clustered at the municipality level.*
