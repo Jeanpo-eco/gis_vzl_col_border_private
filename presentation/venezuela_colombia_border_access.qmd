@@ -47,9 +47,7 @@ The talk asks whether municipalities with larger access losses experienced weake
 ::::
 :::
 
-# Introduction {.section-slide visibility="uncounted"}
-
-## Introduction
+## Introduction {.content-slide}
 
 ::: {.columns}
 :::: {.column width="52%"}
@@ -77,8 +75,7 @@ Two municipalities can sit equally close to the border and still face very diffe
 :::
 ::::
 :::
-# Conceptual framework {.section-slide visibility="uncounted"}
-## Conceptual framework
+## Conceptual framework {.content-slide}
 
 ::: {.concept-grid}
 ::: {.concept-card}
@@ -101,8 +98,7 @@ Lower accessibility should show up as weaker nighttime-light activity.
 Expected sign: more access loss, lower activity. But the dynamic checks matter for interpretation.
 :::
 
-# Methodology {.section-slide visibility="uncounted"}
-## Methodology
+## Methodology {.content-slide}
 
 ::: {.columns}
 :::: {.column width="48%"}
@@ -150,8 +146,7 @@ If the estimated effect survives tighter local time controls, it is more likely 
 ::::
 :::
 
-# Data {.section-slide visibility="uncounted"}
-## Data
+## Data {.content-slide}
 
 ::: {.columns}
 :::: {.column width="52%"}
@@ -180,8 +175,7 @@ Quarterly VIIRS nightlights provide the outcome measure and let the audience see
 :::
 
 
-# Results {.section-slide visibility="uncounted"}
-## Results: Main estimates
+## Results: Main estimates {.content-slide}
 
 ::: {.columns}
 :::: {.column width="54%"}
@@ -201,7 +195,7 @@ The negative coefficient shrinks quickly once tighter local controls are added.
 ::::
 :::
 
-## Results: Dynamic check
+## Results: Dynamic check {.content-slide}
 
 ::: {.columns}
 :::: {.column width="52%"}
@@ -220,7 +214,7 @@ This is the main reason I avoid over-claiming a clean causal effect.
 ::::
 :::
 
-## Results: Reopening and heterogeneity
+## Results: Reopening and heterogeneity {.content-slide}
 
 ::: {.columns}
 :::: {.column width="50%"}
@@ -246,8 +240,7 @@ This is the main reason I avoid over-claiming a clean causal effect.
 ::::
 :::
 
-# Conclusion {.section-slide visibility="uncounted"}
-## Conclusion
+## Conclusion {.content-slide}
 
 ::: {.callout-important}
 ### Bottom line
@@ -259,15 +252,15 @@ Border accessibility appears to matter, but the strongest evidence is supportive
 - The main effect is sensitive to tighter local time controls.
 - The reopening pattern is the clearest mechanism-consistent evidence.
 
-# Finish {.section-slide visibility="uncounted"}
-## Thank you
+## Finish {.content-slide}
+### Thank you
 
 Jean Pierre Oliveros  
 jean.oliveros@uni-oldenburg.de
 
 If you want, I can also show the appendix diagnostics or discuss the measurement choices in detail.
 
-# Appendix {.section-slide visibility="uncounted"}
+## Appendix {.content-slide}
 ## Appendix: buffer robustness {.appendix-figure}
 
 ![Buffer robustness](../Output/Figures/final/figure_buffer_robustness.png){width=84%}
