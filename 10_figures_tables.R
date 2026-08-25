@@ -168,14 +168,53 @@ write_tex <- function(x, filename) {
   )
 }
 
-extract_event_data <- function(model, reference_period = -1L) {
-  out <- broom::tidy(model, conf.int = TRUE) %>%
-    filter(grepl("^event_time::", term)) %>%
+save_figure_outputs <- function(plot, stem, width, height, dpi = 320) {
+  ggsave(
+    filename = file.path(figure_dir, paste0(stem, ".pdf")),
+    plot = plot,
+    width = width,
+    height = height,
+    device = cairo_pdf,
+    bg = "white"
+  )
+
+  ggsave(
+    filename = file.path(figure_dir, paste0(stem, ".png")),
+    plot = plot,
+    width = width,
+    height = height,
+    dpi = dpi,
+    bg = "white"
+  )
+}
+
+extract_event_data <- function(
+  model,
+  event_var = "event_time",
+  reference_period = -1L
+) {
+
+  pattern <- paste0("^", event_var, "::")
+
+  out <- broom::tidy(
+    model,
+    conf.int = TRUE
+  ) %>%
+    filter(grepl(pattern, term)) %>%
     mutate(
-      event_time = stringr::str_extract(term, "-?\\d+") %>%
+      event_time = stringr::str_match(
+        term,
+        paste0("^", event_var, "::(-?\\d+)")
+      )[, 2] %>%
         as.integer()
     ) %>%
-    select(event_time, estimate, conf.low, conf.high, p.value)
+    select(
+      event_time,
+      estimate,
+      conf.low,
+      conf.high,
+      p.value
+    )
 
   bind_rows(
     out,
@@ -438,16 +477,11 @@ p_main_coef <- ggplot(
   ) +
   theme_minimal(base_size = 12)
 
-ggsave(
-  filename = file.path(
-    figure_dir,
-    "figure_main_coefficient_sensitivity.pdf"
-  ),
+save_figure_outputs(
   plot = p_main_coef,
+  stem = "figure_main_coefficient_sensitivity",
   width = 8,
-  height = 4.5,
-  device = cairo_pdf,
-  bg = "white"
+  height = 4.5
 )
 
 # ==============================================================================
@@ -464,16 +498,11 @@ p_event_region <- plot_event_study(
     x = "Quarters relative to the 2019 border disruption"
   )
 
-ggsave(
-  filename = file.path(
-    figure_dir,
-    "figure_event_study_region_fe.pdf"
-  ),
+save_figure_outputs(
   plot = p_event_region,
+  stem = "figure_event_study_region_fe",
   width = 8,
-  height = 5,
-  device = cairo_pdf,
-  bg = "white"
+  height = 5
 )
 
 # ==============================================================================
@@ -508,7 +537,7 @@ crossings_map <- readRDS(
 countries_map <- study_area_map %>%
   group_by(COUNTRY) %>%
   summarise(
-    geometry = st_union(geometry),
+    geometry = st_union(geom),
     .groups = "drop"
   ) %>%
   st_make_valid()
@@ -666,16 +695,11 @@ p_border_crossings <- p_main_map +
     align_to = "full"
   )
 
-ggsave(
-  filename = file.path(
-    figure_dir,
-    "figure_border_crossings.pdf"
-  ),
+save_figure_outputs(
   plot = p_border_crossings,
+  stem = "figure_border_crossings",
   width = 8,
-  height = 8,
-  device = cairo_pdf,
-  bg = "white"
+  height = 8
 )
 
 # ==============================================================================
@@ -807,6 +831,44 @@ buffer_tex <- c(
 )
 
 write_tex(buffer_tex, "table_buffer_robustness.tex")
+
+# Appendix figure for presentation use ------------------------------------------
+
+buffer_plot_df <- buffer_summary %>%
+  mutate(
+    #buffer_km = as.numeric(stringr::str_extract(buffer_label, "\\d+")),
+    conf_low = estimate - 1.96 * std_error,
+    conf_high = estimate + 1.96 * std_error
+  ) %>%
+  arrange(buffer_km)
+
+p_buffer_robustness <- ggplot(
+  buffer_plot_df,
+  aes(x = buffer_km, y = estimate)
+) +
+  geom_hline(
+    yintercept = 0,
+    linetype = "dashed"
+  ) +
+  geom_errorbar(
+    aes(ymin = conf_low, ymax = conf_high),
+    width = 7
+  ) +
+  geom_line(linewidth = 0.5) +
+  geom_point(size = 2.2) +
+  scale_x_continuous(breaks = buffer_plot_df$buffer_km) +
+  labs(
+    x = "Border buffer (km)",
+    y = "Coefficient on treatment intensity × post"
+  ) +
+  theme_minimal(base_size = 12)
+
+save_figure_outputs(
+  plot = p_buffer_robustness,
+  stem = "figure_buffer_robustness",
+  width = 8,
+  height = 4.5
+)
 
 # ==============================================================================
 # 11. APPENDIX TABLE: ALTERNATIVE SPECIFICATIONS
@@ -943,6 +1005,67 @@ country_tex <- c(
 
 write_tex(country_tex, "table_country_heterogeneity.tex")
 
+# Appendix figure for presentation use ------------------------------------------
+
+country_plot_df <- bind_rows(
+  main_col %>%
+    mutate(
+      country = "Colombia",
+      specification = "Main country-specific model"
+    ),
+  main_ven %>%
+    mutate(
+      country = "Venezuela",
+      specification = "Main country-specific model"
+    ),
+  rob_col %>%
+    mutate(
+      country = "Colombia",
+      specification = "State/Department robustness"
+    ),
+  rob_ven %>%
+    mutate(
+      country = "Venezuela",
+      specification = "State/Department robustness"
+    )
+) %>%
+  mutate(
+    conf_low = estimate - 1.96 * std_error,
+    conf_high = estimate + 1.96 * std_error
+  )
+
+p_country_heterogeneity <- ggplot(
+  country_plot_df,
+  aes(x = country, y = estimate, color = specification)
+) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_errorbar(
+    aes(ymin = conf_low, ymax = conf_high),
+    position = position_dodge(width = 0.5),
+    width = 0.2
+  ) +
+  geom_point(
+    size = 2.5,
+    position = position_dodge(width = 0.5)
+  ) +
+  labs(
+    x = NULL,
+    y = "Coefficient on treatment intensity × post",
+    color = NULL
+  ) +
+  theme_minimal(base_size = 12) +
+  coord_flip() +
+  theme(
+    legend.position = "bottom"
+  )
+
+save_figure_outputs(
+  plot = p_country_heterogeneity,
+  stem = "figure_country_heterogeneity",
+  width = 8,
+  height = 4.5
+)
+
 # ==============================================================================
 # 13. APPENDIX FIGURE: COUNTRY-SPECIFIC EVENT STUDIES
 # ==============================================================================
@@ -966,16 +1089,25 @@ p_country_events <- p_event_colombia +
   p_event_venezuela +
   patchwork::plot_layout(ncol = 2)
 
-ggsave(
-  filename = file.path(
-    figure_dir,
-    "figure_country_event_studies.pdf"
-  ),
+save_figure_outputs(
   plot = p_country_events,
+  stem = "figure_country_event_studies",
   width = 11,
-  height = 5,
-  device = cairo_pdf,
-  bg = "white"
+  height = 5
+)
+
+save_figure_outputs(
+  plot = p_event_colombia,
+  stem = "figure_event_study_colombia",
+  width = 8,
+  height = 5
+)
+
+save_figure_outputs(
+  plot = p_event_venezuela,
+  stem = "figure_event_study_venezuela",
+  width = 8,
+  height = 5
 )
 
 # ==============================================================================
@@ -1023,26 +1155,25 @@ reopening_tex <- c(
 
 write_tex(reopening_tex, "table_reopening_result.tex")
 
-event_reopening_df <- extract_event_data(e_reopening)
+event_reopening_df <- extract_event_data(
+  e_reopening,
+  event_var = "reopening_event_time",
+  reference_period = -1L
+)
 
 p_reopening <- plot_event_study(
   event_reopening_df,
   "Coefficient on prior treatment intensity"
 ) +
   labs(
-    x = "Quarters relative to the 2022 reopening"
+    x = "Quarters relative to the 2022 border reopening"
   )
 
-ggsave(
-  filename = file.path(
-    figure_dir,
-    "figure_reopening_event_study.pdf"
-  ),
+save_figure_outputs(
   plot = p_reopening,
+  stem = "figure_reopening_event_study",
   width = 8,
-  height = 5,
-  device = cairo_pdf,
-  bg = "white"
+  height = 5
 )
 
 # ==============================================================================

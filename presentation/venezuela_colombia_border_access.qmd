@@ -196,6 +196,7 @@ The negative coefficient shrinks quickly once tighter local controls are added.
 ### Dynamic check
 
 - Event-study estimates show differential pre-trends.
+- Joint pre-trend tests reject a flat pre-period in every specification (all p-values < 0.03).
 - The dynamic pattern weakens with more localized controls, but it does not disappear completely.
 - So the baseline TWFE estimate should be read cautiously.
 
@@ -227,7 +228,7 @@ This is the main reason I avoid over-claiming a clean causal effect.
 ### Heterogeneity
 
 - Colombia: positive and borderline significant
-- Venezuela: negative but imprecise
+- Venezuela: negative and significant in the joint model, but less precise in robustness-only estimates
 ::::
 :::
 
@@ -258,7 +259,7 @@ If you want, I can also show the appendix diagnostics or discuss the measurement
 
 ## Appendix: country event studies {.appendix-figure}
 
-![Country event studies](../Output/Figures/final/figure_event_study_colombia.png){width=84%}
+![Country event studies](../Output/Figures/final/figure_country_event_studies.png){width=95%}
 
 ## Appendix: summary table
 
