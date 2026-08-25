@@ -43,9 +43,8 @@ The talk asks whether municipalities with larger access losses experienced weake
 :::
 ::::
 :::: {.column width="47%"}
-![Border crossings and road network](../Output/Figures/final/aljazeera.png){width=100%}
+![Al Jazeera, 9 Sep 2022](../presentation/assets/aljazeera.png){width=100%}
 
-*Al Jazeera, 9 Sep 2022*
 ::::
 :::
 
@@ -112,7 +111,7 @@ Expected sign: more access loss, lower activity. But the dynamic checks matter f
 
 ::: {.pipeline-step}
 <div class="step-number">2</div>
-<div class="step-text"><strong>Measure access</strong><br>Compute shortest-path travel times to operational crossings.</div>
+<div class="step-text"><strong>Measure access</strong><br>Compute shortest-path (travel costs) travel times to operational crossings.</div>
 :::
 
 ::: {.pipeline-step}
@@ -129,9 +128,6 @@ Expected sign: more access loss, lower activity. But the dynamic checks matter f
 :::: {.column width="42%"}
 ![Road-network access map](../Output/Figures/final/figure_border_crossings.png){width=100%}
 
-::: {.callout-note}
-The exposure measure is built from travel costs, not just straight-line distance.
-:::
 ::::
 :::
 ## Methodology {.content-slide}
@@ -313,14 +309,14 @@ If you want, I can also show the appendix diagnostics or discuss the measurement
 
 |  | (1) | (2) | (3) | (4) |
 |---|---:|---:|---:|---:|
-|  | TWFE | Country × Quarter | Crossing × Quarter | State/Dept. × Quarter |
-| Treatment intensity × Post | -0.017** | -0.010 | -0.006 | -0.006 |
+|  | TWFE | Country $\times$ Quarter | Crossing $\times$ Quarter | State/Dept. $\times$ Quarter |
+| Treatment intensity $\times$ Post | $-0.017^{**}$ | $-0.010^{}$ | $-0.006^{}$ | $-0.006^{}$ |
 |  | (0.008) | (0.007) | (0.010) | (0.011) |
 | Municipality FE | Yes | Yes | Yes | Yes |
 | Quarter FE | Yes | No | No | No |
-| Country × Quarter FE | No | Yes | Yes | No |
-| Crossing corridor × Quarter FE | No | No | Yes | No |
-| State/Department × Quarter FE | No | No | No | Yes |
+| Country $\times$ Quarter FE | No | Yes | Yes | No |
+| Crossing corridor $\times$ Quarter FE | No | No | Yes | No |
+| State/Department $\times$ Quarter FE | No | No | No | Yes |
 | Observations | 4,032 | 4,032 | 4,032 | 4,032 |
 
-*Notes:* The dependent variable is log(1 + nighttime lights). Treatment intensity is the logarithmic change in road-network distance to the nearest operational international crossing between the pre-treatment and closure regimes. Post equals one from 2019Q1 onward. Standard errors in parentheses are clustered at the municipality level.*
+*Notes:* The dependent variable is $\log(1+\text{nighttime lights})$. Treatment intensity is the logarithmic change in road-network distance to the nearest operational international crossing between the pre-treatment and closure regimes. Post equals one from 2019Q1 onward. Standard errors in parentheses are clustered at the municipality level. $^{*}p<0.10$, $^{**}p<0.05$, $^{***}p<0.01$.
