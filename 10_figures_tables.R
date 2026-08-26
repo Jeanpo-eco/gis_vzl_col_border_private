@@ -1989,3 +1989,117 @@ message(
     "output and should remain maintained separately from Script 10."
   )
 )
+
+# ==============================================================================
+# 16. PRESENTATION: NIGHTTIME LIGHT ANIMATION FRAMES
+# ==============================================================================
+# Exports one PNG per year (one selected quarter each) to
+# presentation/assets/ntl_frames/ for the rotating-image widget on the
+# thank-you slide. Quarters are staggered (Q3/Q1/Q4/Q2/…) so no two
+# consecutive frames share the same season.
+
+ntl_tif_dir <- here("Output/nightlights/quarterly")
+ntl_png_dir <- here("presentation/assets/ntl_frames")
+fs::dir_create(ntl_png_dir, recurse = TRUE)
+
+ntl_selected <- tibble::tribble(
+  ~year, ~quarter,
+  2012,  3,
+  2013,  1,
+  2014,  4,
+  2015,  2,
+  2016,  3,
+  2017,  1,
+  2018,  4,
+  2019,  2,
+  2020,  3,
+  2021,  1,
+  2022,  4,
+  2023,  2,
+  2024,  3,
+  2025,  4
+)
+
+ntl_tif_files <- purrr::pmap_chr(ntl_selected, function(year, quarter) {
+  here(
+    "Output/nightlights/quarterly",
+    sprintf("VIIRS_%d_Q%d_crop.tif", year, quarter)
+  )
+})
+
+missing_tifs <- ntl_tif_files[!fs::file_exists(ntl_tif_files)]
+if (length(missing_tifs) > 0) {
+  warning(
+    "The following NTL TIF files were not found and will be skipped:\n",
+    paste(basename(missing_tifs), collapse = "\n")
+  )
+  ntl_tif_files <- ntl_tif_files[fs::file_exists(ntl_tif_files)]
+}
+
+# Shared colour scale: cap at 99th percentile across selected frames so
+# brightness is visually comparable across time.
+all_vals <- unlist(lapply(ntl_tif_files, function(f) {
+  r <- terra::rast(f)
+  v <- terra::values(r, na.rm = TRUE)
+  v[v >= 0]
+}))
+vmax <- quantile(all_vals, 0.99, na.rm = TRUE)
+i = 0
+for (tif_path in ntl_tif_files) {
+  i = i + 1
+  stem    <- fs::path_ext_remove(fs::path_file(tif_path))
+  out_png <- fs::path(ntl_png_dir, paste0(stem, ".png"))
+
+  # Skip if already up-to-date
+  if (
+    fs::file_exists(out_png) &&
+    fs::file_info(out_png)$modification_time >=
+      fs::file_info(tif_path)$modification_time
+  ) next
+
+  r <- terra::rast(tif_path)
+
+  year_q <- stringr::str_extract(stem, "\\d{4}_Q[1-4]")
+  label  <- stringr::str_replace(year_q, "_", " ")
+
+  df_r <- terra::as.data.frame(r, xy = TRUE, na.rm = FALSE)
+  colnames(df_r)[3] <- "radiance"
+  df_r$radiance <- pmin(pmax(df_r$radiance, 0), vmax)
+
+  p_ntl <- ggplot(df_r, aes(x = x, y = y, fill = radiance)) +
+    geom_raster() +
+    scale_fill_gradient(
+      low  = "#0d0d0d",
+      high = "#ffe97f",
+      limits = c(0, vmax),
+      na.value = "#0d0d0d"
+    ) +
+    annotate(
+      "text",
+      x = Inf, y = Inf,
+      label = label,
+      hjust = 1.1, vjust = 1.5,
+      size = 5, colour = "white", fontface = "bold"
+    ) +
+    coord_equal(expand = FALSE) +
+    theme_void() +
+    theme(
+      legend.position = "none",
+      plot.background = element_rect(fill = "#0d0d0d", colour = NA),
+      plot.margin = margin(0, 0, 0, 0)
+    )
+  if (i == 1) { print(p_ntl) }  # Show first frame in RStudio viewer
+  ggsave(
+    filename = out_png,
+    plot     = p_ntl,
+    width    = 5,
+    height   = 5,
+    dpi      = 150,
+    bg       = "#0d0d0d"
+  )
+}
+
+message(
+  "NTL animation frames saved to: ", ntl_png_dir,
+  " (", length(ntl_tif_files), " frames)"
+)

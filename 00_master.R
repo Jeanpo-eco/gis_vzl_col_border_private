@@ -30,7 +30,8 @@ gis <- c(
   "exactextractr",
   "sfnetworks",
   "cppRouting",
-  "dodgr"
+  "dodgr",
+  "blackmarbler"
 )
 
   # Useful

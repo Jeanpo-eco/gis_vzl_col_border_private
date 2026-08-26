@@ -139,7 +139,7 @@
 .reveal p,
 .reveal li,
 .reveal table {
-  font-size: 0.88em;
+  font-size: 0.78em;
   line-height: 1.35;
 }
 
@@ -287,6 +287,20 @@
   border-radius: 0.55rem;
   filter: grayscale(100%) contrast(1.25) brightness(1.15);
   transition: opacity 0.25s ease;
+}
+
+.reveal #finish .ntl-rotation {
+  width: min(58%, 560px);
+  margin: 0.8rem auto 0;
+}
+
+.reveal #finish .ntl-label {
+  display: none;
+}
+
+.reveal #finish .ntl-rotation img {
+  max-height: 42vh;
+  object-fit: contain;
 }
 
 .reveal table {

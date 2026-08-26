@@ -131,6 +131,33 @@
       rotator.addEventListener('mouseleave', start);
       rotator.addEventListener('focusin', stop);
       rotator.addEventListener('focusout', start);
+
+      // Restart when the containing slide becomes visible
+      if (window.Reveal) {
+        Reveal.on('slidechanged', function (event) {
+          var slide = event.currentSlide;
+          if (slide && slide.contains(rotator)) {
+            setFrame(0);
+            start();
+          } else {
+            stop();
+          }
+        });
+      } else {
+        document.addEventListener('DOMContentLoaded', function () {
+          if (window.Reveal) {
+            Reveal.on('slidechanged', function (event) {
+              var slide = event.currentSlide;
+              if (slide && slide.contains(rotator)) {
+                setFrame(0);
+                start();
+              } else {
+                stop();
+              }
+            });
+          }
+        });
+      }
     });
   });
 })();

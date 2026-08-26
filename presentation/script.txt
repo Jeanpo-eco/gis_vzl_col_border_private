@@ -1,43 +1,127 @@
-Title slide (1 min)
-- Open with the core idea: border access is not just distance; it is road-network access to an operational crossing.
-- Say this talk studies the Colombia-Venezuela border because the 2019 restrictions created a sharp access shock.
+Title slide (about 1 min)
+- Good afternoon, and thank you for being here.
+- This presentation asks a simple but important question: when a border is still geographically close, but crossings become unavailable, what happens to local economic activity?
+- The key idea I want you to keep in mind is that access is not straight-line distance; it is road-network access to a crossing that is actually open.
+- I focus on the Colombia-Venezuela border because restrictions after 2019 created a clear change in effective accessibility.
 
-Motivation (2 min)
-- Explain why border closures matter for markets, suppliers, commuting, and informal exchange.
-- Point out that two places equally close to the border can face different detours once roads and crossings are considered.
+Motivation (about 2 min)
+- Border closures can affect daily economic life through trade, commuting, services, and local business linkages.
+- In many border studies, treatment is often binary (near/far from border), but that misses the fact that road detours can vary a lot even within the same border region.
+- Here the motivation is to capture that variation directly: not everyone near the border faces the same shock.
+- Nighttime lights are useful because they provide consistent quarterly coverage where conventional local output data are limited.
+- The takeaway from this slide is: the relevant shock is a change in usable connectivity, not only administrative border status.
 
-Introduction (2 min)
-- State the research question clearly: how did changes in access to the border affect local economic activity?
-- Emphasize the contribution: a continuous exposure measure and quarterly satellite data.
+Introduction (about 2 min)
+- Research question: how did changes in road-network access to the Colombia-Venezuela border affect local economic activity?
+- Contribution 1: a continuous exposure measure based on shortest-path access to operational crossings.
+- Contribution 2: a municipality-quarter panel combining GIS infrastructure and VIIRS nighttime lights.
+- Contribution 3: a border-specific empirical setting where access changed sharply, allowing stronger within-area comparisons.
+- I also want to emphasize why this matters: two municipalities with similar geography can face different economic pressure once actual routes and crossing availability are considered.
 
-Conceptual framework (1.5 min)
-- Walk through the mechanism: policy shock -> higher travel cost -> weaker local activity.
-- Mention that the hypothesis is a negative relationship, but it must be interpreted carefully because pre-trends can exist.
+Conceptual framework (about 2 min)
+- The mechanism has three linked pieces.
+- First, policy shock: closures and reopenings change which crossings can be used.
+- Second, transmission: routes become longer or more costly, weakening cross-border interactions.
+- Third, outcome: weaker accessibility should appear as lower local nighttime-light activity.
+- Expected sign: larger access losses should be associated with weaker activity.
+- Literature comparision:
+  - Border and trade costs: Anderson & van Wincoop (2003), Brulhart et al. (2012), Heiland et al. (2019).
+  - Transport infrastructure and access: Redding & Turner (2015), Donaldson (2018), Banerjee et al. (2020).
+  - Remote sensing and nighttime lights: Henderson et al. (2012), Pinkovskiy & Sala-i-Martin (2016), Beyer et al. (2022).
+- Framing sentence to close this slide: this project sits at the intersection of these three strands by linking policy-driven access shocks to satellite-observed local outcomes.
 
-Methodology (2 min)
-- Describe the network-distance measure and how treatment intensity is built from pre/post access.
-- Explain the fixed-effects ladder: baseline TWFE, then country-quarter, corridor-quarter, and state-quarter controls.
+Methodology: empirical pipeline (about 2 min)
+- Step 1: build the motorcar road network and connect municipalities to the border-crossing system.
+- Step 2: compute shortest-path travel costs/times to the nearest operational crossing.
+- Step 3: convert pre/post access differences into municipality-quarter treatment intensity.
+- Step 4: estimate panel models with fixed effects and dynamic checks.
+- Important emphasis: treatment intensity is continuous, which helps avoid forcing very different municipalities into the same treated/control bucket.
 
-Data (2 min)
-- Introduce the four data layers: municipalities, roads, crossings, and VIIRS nighttime lights.
-- Use the nightlights rotation to show that the outcome is quarterly and spatially detailed.
+Methodology: baseline model and specifications (about 2 min)
+- The dependent variable is log(1 + nighttime lights) at municipality-quarter level.
+- Municipality fixed effects absorb time-invariant local differences.
+- Time fixed effects absorb common quarter shocks.
+- The coefficient of interest captures how increases in access loss relate to nighttime-light changes.
+- Then I move through a specification ladder:
+  - TWFE baseline,
+  - Country x quarter fixed effects,
+  - Crossing corridor x quarter fixed effects,
+  - State/department x quarter fixed effects.
+- Identification logic: if estimates persist under tighter localized controls, they are less likely to reflect confounding regional shocks.
 
-Results: main estimates (2 min)
-- Say the baseline effect is negative, but it shrinks as the controls become more localized.
-- Stress that the tighter specifications make the estimate much less robust.
+Data (about 2 min)
+- Five layers are combined:
+  - Municipality boundaries (units of analysis),
+  - OpenStreetMap motorcar roads (network structure),
+  - Georeferenced crossings and their status timeline,
+  - VIIRS nighttime lights (quarterly outcome),
+  - Final sample size: 192 municipalities and 4,032 municipality-quarter observations.
+- Coverage runs from 2012Q2 to 2025Q4.
+- Use the map to remind the audience this is a network-measured accessibility design, not a simple border strip comparison.
 
-Results: dynamic evidence (2 min)
-- Explain that the event study shows differential pre-trends.
-- Say this is why the clean causal story is weaker than the raw TWFE estimate suggests.
+Results: main estimates (about 2 min)
+- Baseline TWFE estimate is negative and statistically significant: -0.0168 (p = 0.033).
+- With country x quarter controls, magnitude shrinks and significance weakens: -0.0104 (p = 0.146).
+- With tighter local controls (state/department x quarter), estimate is small and imprecise: -0.0057 (p = 0.616).
+- With municipality trends, effect is near zero.
+- Main interpretation: the initial negative relationship is present, but not robust to stricter control structures.
 
-Results: reopening and heterogeneity (2 min)
-- Use the reopening figure as the strongest mechanism-consistent validation.
-- Mention the country-specific differences, but avoid over-interpreting them.
+Results: dynamic check (about 2 min)
+- Event-study profiles show differential pre-trends.
+- This means treated and less-treated areas were not moving in fully parallel ways before the major disruption.
+- With more localized controls, dynamic effects weaken further, though patterns do not fully vanish.
+- Core message: dynamic evidence supports caution and prevents over-claiming a clean causal estimate.
 
-Conclusion (1 min)
-- End with the cautious takeaway: border access likely matters, but the evidence is strongest as supportive rather than definitive causal proof.
-- If asked, mention the appendix has buffer robustness and extra event-study panels.
+Results: reopening and heterogeneity (about 2 min)
+- Reopening evidence is the strongest mechanism-consistent result.
+- Municipalities that had larger earlier access losses tend to recover more when access improves.
+- Heterogeneity:
+  - Colombia coefficient appears positive and borderline significant.
+  - Venezuela coefficient appears negative but statistically imprecise.
+- So heterogeneity is suggestive, not definitive; I present it as descriptive support rather than a final causal split.
 
-Landing slide
-- Thank the audience and invite questions.
+Conclusion (about 1.5 min)
+- Bottom line: border accessibility appears to matter, but the strongest claim is supportive evidence, not definitive causal proof.
+- Larger access losses are associated with weaker nighttime-light activity in border municipalities.
+- The effect is sensitive to tighter local time controls, so causal language should remain cautious.
+- The reopening pattern is the most compelling mechanism-consistent piece of evidence.
+- Close with: this design is still useful because it quantifies access shocks in a way binary border treatments cannot.
 
+Finish / Q&A transition (about 30 sec)
+- Thank the audience.
+- Invite questions and mention the appendix contains additional robustness and table detail.
+
+Appendix talking points (use if asked)
+- Buffer robustness: signs remain broadly consistent across buffer choices, but precision varies.
+- Country event studies: useful for pattern comparison, not for strong country-level causal claims.
+- Summary table: confirms sample structure and variable definitions.
+- Headline estimates table:
+  - M1 TWFE, M2 Country x Quarter FE, M3 Crossing Corridor x Quarter FE, M4 State/Department x Quarter FE.
+  - Observations remain 4,032 in all models.
+  - Within R2 and adjusted within R2 are low, which is expected in high-frequency panel outcome variation with strict fixed effects.
+
+Things I should be careful to clarify
+- Clarify that exposure is a continuous road-network accessibility change, not a binary treated indicator.
+- Clarify that nighttime lights are a proxy for local activity, not a direct measure of GDP.
+- Clarify that differential pre-trends limit strong causal interpretation of TWFE estimates.
+- Clarify why progressively tighter fixed effects are necessary in this setting.
+- Clarify that reopening evidence supports the mechanism but does not eliminate all confounding concerns.
+- Clarify that heterogeneity results are imprecise and should not be over-interpreted.
+
+Things that might ask and their answer
+- Q: Why use nighttime lights instead of conventional economic indicators?
+  A: Municipal-quarter conventional indicators are sparse/inconsistent here; VIIRS provides harmonized, high-frequency spatial coverage for the full panel period.
+- Q: Why not use a simple treated vs. untreated border dummy?
+  A: A dummy masks large variation in actual detours; two nearby municipalities can face very different route shocks after closures.
+- Q: How do you address national shocks like inflation or macro instability?
+  A: By adding country x quarter fixed effects, then corridor x quarter and state/department x quarter fixed effects to absorb progressively more localized time-varying shocks.
+- Q: What is the strongest evidence in your results?
+  A: The reopening pattern, where larger prior access losses are associated with stronger recovery when access improves.
+- Q: Are your estimates causal?
+  A: I present them as cautious, supportive evidence. Differential pre-trends in event studies mean causal claims should be restrained.
+- Q: Why do coefficients shrink in stricter specifications?
+  A: Tighter controls absorb more confounding local dynamics; that is exactly why the specification ladder is informative about robustness.
+- Q: Do low within R2 values invalidate the findings?
+  A: No. With fixed effects and quarterly local variation, low within R2 is common; interpretation relies on coefficient stability/significance across specifications.
+- Q: What is the main policy insight?
+  A: Border policy affects local economies through network accessibility. Maintaining or restoring usable crossings can matter for local recovery.

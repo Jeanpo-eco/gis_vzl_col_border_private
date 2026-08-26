@@ -22,36 +22,32 @@ format:
       data-background-size: cover
       data-background-opacity: "0.10"
     css: presentation.css
+    include-after-body: ntl-rotator.html
 filters:
   - ofurkancoban/progress-indicator
 execute:
   echo: false
 ---
 
-
 ## Motivation {.content-slide}
 
-::: {.columns}
-:::: {.column width="53%"}
+::::: columns
+::: {.column width="53%"}
 - Border closures can reshape access to markets, suppliers, and jobs.
 - In border regions, the relevant shock is often not geography alone, but road-network access to an open crossing.
 - The Colombia-Venezuela border is a strong case because formal access changed sharply after 2019.
 - Nighttime lights give a quarterly proxy for local economic activity when standard statistics are sparse.
-
-::: {.callout-note}
-The talk asks whether municipalities with larger access losses experienced weaker local activity.
 :::
-::::
-:::: {.column width="47%"}
-![Al Jazeera, 9 Sep 2022](../presentation/assets/aljazeera.png){width=100%}
 
-::::
+::: {.column width="47%"}
+![Al Jazeera, 9 Sep 2022](../presentation/assets/aljazeera.png){width="100%"}
 :::
+:::::
 
 ## Introduction {.content-slide}
 
-::: {.columns}
-:::: {.column width="52%"}
+::::::: columns
+::: {.column width="52%"}
 ### Research question
 
 How did changes in road-network access to the Colombia-Venezuela border affect local economic activity?
@@ -61,101 +57,119 @@ How did changes in road-network access to the Colombia-Venezuela border affect l
 - Continuous exposure measure based on network distance
 - Quarterly municipality panel built from GIS and satellite data
 - Border-specific evidence on how access shocks map into local outcomes
-::::
-:::: {.column width="48%"}
-::: {.callout-tip}
+:::
+
+::::: {.column width="48%"}
+::: callout-tip
 ### What is new here?
 
 I do not treat the border as a simple dummy. I measure how much the nearest usable crossing effectively moved after restrictions.
 :::
 
-::: {.callout-note}
+::: callout-note
 ### Why that matters
 
 Two municipalities can sit equally close to the border and still face very different access shocks once roads and crossings are taken seriously.
 :::
-::::
-:::
+:::::
+:::::::
+
 ## Conceptual framework {.content-slide}
 
-::: {.concept-grid}
-::: {.concept-card}
-**Policy shock**  
-Border closures and reopenings change which crossings are usable.
+:::::: concept-grid
+::: concept-card
+**Policy shock** Border closures and reopenings change which crossings are usable.
 :::
 
-::: {.concept-card}
-**Transmission channel**  
-Road-network detours raise travel cost and weaken cross-border interaction.
+::: concept-card
+**Transmission channel** Road-network detours raise travel cost and weaken cross-border interaction.
 :::
 
-::: {.concept-card}
-**Outcome**  
-Lower accessibility should show up as weaker nighttime-light activity.
+::: concept-card
+**Outcome** Lower accessibility should show up as weaker nighttime-light activity.
 :::
-:::
+::::::
 
-::: {.columns}
-:::: {.column width="33%"}
-### 1. Border and trade costs
-
-- Border economics literature studies how policy barriers and trade frictions affect local activity.
-- The key mechanism is the increase in effective transaction and travel costs at the border.
-::::
-:::: {.column width="33%"}
-### 2. Transport infrastructure and access
-
-- Accessibility studies show that road-network quality and connectivity shape economic opportunity.
-- Infrastructure changes matter when they alter the ease of reaching markets and crossing points.
-::::
-:::: {.column width="33%"}
-### 3. Remote sensing and nighttime lights
-
-- Satellite nightlights are widely used as a proxy for local economic activity when conventional statistics are sparse.
-- This literature is especially useful for measuring spatial and temporal changes in activity.
-::::
+::: callout-note
+Expected sign: more access loss, lower activity.
 :::
 
-::: {.callout-note}
-Expected sign: more access loss, lower activity. But the dynamic checks matter for interpretation.
+#### Existing literature
+
+:::::: concept-grid
+::: concept-card
+**1. Border and trade costs** Anderson & van Wincoop (2003); Brülhart et al. (2012); Heiland et al. (2019)
 :::
+
+::: concept-card
+**2. Transport infrastructure and access** Redding & Turner (2015); Donaldson (2018); Banerjee et al. (2020)
+:::
+
+::: concept-card
+**3. Remote sensing and nighttime lights** Henderson et al. (2012); Pinkovskiy & Sala-i-Martin (2016); Beyer et al. (2022)
+:::
+::::::
 
 ## Methodology {.content-slide}
+
 ### Empirical pipeline
-::: {.columns}
-:::: {.column width="58%"}
-::: {.pipeline}
-::: {.pipeline-step}
-<div class="step-number">1</div>
-<div class="step-text"><strong>Build the road network</strong><br>Use the motorcar network to connect municipalities to the border system.</div>
+
+:::::::::::::::::: columns
+:::::::::::::::: {.column width="100%"}
+::::::::::::::: pipeline
+::::: pipeline-step
+::: step-number
+1
 :::
 
-::: {.pipeline-step}
-<div class="step-number">2</div>
-<div class="step-text"><strong>Measure access</strong><br>Compute shortest-path (travel costs) travel times to operational crossings.</div>
+::: step-text
+<strong>Build the road network</strong><br>Use the motorcar network to connect municipalities to the border system.
+:::
+:::::
+
+::::: pipeline-step
+::: step-number
+2
 :::
 
-::: {.pipeline-step}
-<div class="step-number">3</div>
-<div class="step-text"><strong>Construct exposure</strong><br>Convert the change in access into a municipality-quarter treatment intensity.</div>
+::: step-text
+<strong>Measure access</strong><br>Compute shortest-path (travel costs) travel times to operational crossings.
+:::
+:::::
+
+::::: pipeline-step
+::: step-number
+3
 :::
 
-::: {.pipeline-step}
-<div class="step-number">4</div>
-<div class="step-text"><strong>Estimate effects</strong><br>Run fixed-effects models and dynamic event-study checks.</div>
+::: step-text
+<strong>Construct exposure</strong><br>Convert the change in access into a municipality-quarter treatment intensity.
 :::
-:::
-::::
-:::: {.column width="42%"}
-![Road-network access map](../Output/Figures/final/figure_border_crossings.png){width=100%}
+:::::
 
-::::
+::::: pipeline-step
+::: step-number
+4
 :::
+
+::: step-text
+<strong>Estimate effects</strong><br>Run fixed-effects models and dynamic event-study checks.
+:::
+:::::
+:::::::::::::::
+::::::::::::::::
+
+<!-- ::: {.column width="42%"}
+![Road-network access map](../Output/Figures/final/figure_border_crossings.png){width="100%"}
+::: -->
+::::::::::::::::::
+
 ## Methodology {.content-slide}
-### Baseline model and specifications 
 
-::: {.columns}
-:::: {.column width="52%"}
+### Baseline model and specifications
+
+:::::: columns
+::: {.column width="52%"}
 $$
 Y_{it} = \alpha_i + \gamma_t + \beta \, Exposure_{it} + \varepsilon_{it}
 $$
@@ -167,60 +181,57 @@ where:
 - $\gamma_t$ = quarter fixed effects, absorbing common shocks across all municipalities
 - $Exposure_{it}$ = treatment intensity, defined as the change in road-network access to the nearest operational crossing
 - $\beta$ = effect of a one-unit increase in exposure on local economic activity
+:::
 
-::::
 :::: {.column width="48%"}
-::: {.callout-important}
+
+| Specification                 | Purpose                      |
+|-------------------------------|------------------------------|
+| TWFE                          | Baseline comparison          |
+| Country x quarter FE          | Absorb national shocks       |
+| Corridor x quarter FE         | Absorb border-system shocks  |
+| State/department x quarter FE | Absorb local regional shocks |
+
+::: callout-important
 ### Identification logic
 
 If the estimated effect survives tighter local time controls, it is more likely to reflect access rather than broader regional shocks.
 :::
-
-| Specification | Purpose |
-|---|---|
-| TWFE | Baseline comparison |
-| Country x quarter FE | Absorb national shocks |
-| Corridor x quarter FE | Absorb border-system shocks |
-| State/department x quarter FE | Absorb local regional shocks |
 ::::
-:::
+::::::
 
 ## Data {.content-slide}
 
-::: {.columns}
-:::: {.column width="56%"}
-::: {.callout-tip}
-### Data overview
-:::
-
+:::::::: columns
+::::: {.column width="56%"}
 | Layer | Source | Role |
-|---|---|---|
+|------------------------|------------------------|------------------------|
 | Municipalities | Administrative boundaries | Panel units |
 | Roads | OpenStreetMap motorcar network | Shortest-path access measures |
 | Crossings | Georeferenced border crossings | Access regime and closure dates |
 | Outcome | VIIRS nighttime lights | Quarterly economic activity |
 | Sample | 192 municipalities, 4,032 obs | Estimation sample |
 
-::: {.callout-note}
+::: callout-note
 Quarterly coverage runs from 2012Q2 to 2025Q4.
 :::
-::::
-:::: {.column width="44%"}
-![Border crossing access map](../Output/Figures/final/figure_border_crossings.png){width=100%}
+:::::
 
-::: {.callout-tip}
-The access measure is built from travel costs to the nearest operational crossing, not just straight-line distance to the border.
-:::
+:::: {.column width="44%"}
+![ ](../Output/Figures/final/figure_border_crossings.png){width="100%"}
+
 ::::
-:::
+::::::::
 
 ## Results {.content-slide}
+
 ### Main estimates
 
-::: {.columns}
-:::: {.column width="54%"}
-![Coefficient sensitivity](../Output/Figures/final/figure_main_coefficient_sensitivity.png){width=100%}
-::::
+:::::: columns
+::: {.column width="54%"}
+![Coefficient sensitivity](../Output/Figures/final/figure_main_coefficient_sensitivity.png){width="100%"}
+:::
+
 :::: {.column width="46%"}
 ### Main estimates
 
@@ -229,19 +240,21 @@ The access measure is built from travel costs to the nearest operational crossin
 - State/department x quarter FE: -0.0057 (p = 0.616)
 - Municipality-specific trends: -0.00043 (p = 0.977)
 
-::: {.callout-note}
+::: callout-note
 The negative coefficient shrinks quickly once tighter local controls are added.
 :::
 ::::
-:::
+::::::
 
 ## Results {.content-slide}
+
 ### Dynamic check
 
-::: {.columns}
-:::: {.column width="52%"}
-![Event-study around the border disruption](../Output/Figures/final/figure_event_study_region_fe.png){width=100%}
-::::
+:::::: columns
+::: {.column width="52%"}
+![Event-study around the border disruption](../Output/Figures/final/figure_event_study_region_fe.png){width="100%"}
+:::
+
 :::: {.column width="48%"}
 ### Dynamic check
 
@@ -249,42 +262,45 @@ The negative coefficient shrinks quickly once tighter local controls are added.
 - The dynamic pattern weakens with more localized controls, but it does not disappear completely.
 - So the baseline TWFE estimate should be read cautiously.
 
-::: {.callout-important}
+::: callout-important
 This is the main reason I avoid over-claiming a clean causal effect.
 :::
 ::::
-:::
+::::::
 
 ## Results {.content-slide}
+
 ### Reopening and heterogeneity
 
-::: {.columns}
-:::: {.column width="50%"}
-![Reopening validation](../Output/Figures/final/figure_reopening_event_study.png){width=100%}
-::::
-:::: {.column width="50%"}
-![Country heterogeneity](../Output/Figures/final/figure_country_heterogeneity.png){width=100%}
-::::
+::::: columns
+::: {.column width="50%"}
+![Reopening validation](../Output/Figures/final/figure_reopening_event_study.png){width="100%"}
 :::
 
-::: {.columns}
-:::: {.column width="50%"}
+::: {.column width="50%"}
+![Country heterogeneity](../Output/Figures/final/figure_country_heterogeneity.png){width="100%"}
+:::
+:::::
+
+::::: columns
+::: {.column width="50%"}
 ### Reopening check
 
 - Positive reopening coefficient
 - Municipalities with larger past access losses recover more when access is restored
-::::
-:::: {.column width="50%"}
+:::
+
+::: {.column width="50%"}
 ### Heterogeneity
 
 - Colombia: positive and borderline significant
 - Venezuela: negative but statistically imprecise
-::::
 :::
+:::::
 
 ## Conclusion {.content-slide}
 
-::: {.callout-important}
+::: callout-tip
 ### Bottom line
 
 Border accessibility appears to matter, but the strongest evidence is supportive rather than definitive causal proof.
@@ -293,57 +309,65 @@ Border accessibility appears to matter, but the strongest evidence is supportive
 - Larger access losses are associated with weaker local nighttime-light activity in border municipalities.
 - The baseline effect is sensitive to tighter local time controls, so the causal claim should remain cautious.
 - The reopening pattern provides the clearest mechanism-consistent evidence that access recovery matters.
-- The results support a meaningful role for road-network accessibility, but not yet a fully clean causal estimate.
+
 
 ## Finish {.content-slide}
+
 ### Thank you
 
-Jean Pierre Oliveros  
-jean.oliveros@uni-oldenburg.de
+Jean Pierre Oliveros\
+jean.oliveros\@uni-oldenburg.de
 
-<div class="ntl-rotation" data-frames="assets/ntl_frames/VIIRS_2012_Q2_crop.png|assets/ntl_frames/VIIRS_2013_Q4_crop.png|assets/ntl_frames/VIIRS_2015_Q4_crop.png|assets/ntl_frames/VIIRS_2017_Q4_crop.png|assets/ntl_frames/VIIRS_2019_Q4_crop.png|assets/ntl_frames/VIIRS_2021_Q4_crop.png|assets/ntl_frames/VIIRS_2023_Q4_crop.png|assets/ntl_frames/VIIRS_2025_Q4_crop.png" data-labels="2012 Q2|2013 Q4|2015 Q4|2017 Q4|2019 Q4|2021 Q4|2023 Q4|2025 Q4">
-  <div class="ntl-label"></div>
-  <img alt="Rotating nighttime lights" />
-</div>
+:::: {.ntl-rotation data-frames="assets/ntl_frames/VIIRS_2012_Q3_crop.png|assets/ntl_frames/VIIRS_2013_Q1_crop.png|assets/ntl_frames/VIIRS_2014_Q4_crop.png|assets/ntl_frames/VIIRS_2015_Q2_crop.png|assets/ntl_frames/VIIRS_2016_Q3_crop.png|assets/ntl_frames/VIIRS_2017_Q1_crop.png|assets/ntl_frames/VIIRS_2018_Q4_crop.png|assets/ntl_frames/VIIRS_2019_Q2_crop.png|assets/ntl_frames/VIIRS_2020_Q3_crop.png|assets/ntl_frames/VIIRS_2021_Q1_crop.png|assets/ntl_frames/VIIRS_2022_Q4_crop.png|assets/ntl_frames/VIIRS_2023_Q2_crop.png|assets/ntl_frames/VIIRS_2024_Q3_crop.png|assets/ntl_frames/VIIRS_2025_Q4_crop.png"}
+<img alt="Rotating nighttime lights"/>
+::::
 
-If you want, I can also show the appendix diagnostics or discuss the measurement choices in detail.
 
 # Appendix {.content-slide}
 
 ## Appendix
+
 ### Buffer robustness {.appendix-figure}
 
-![Buffer robustness](../Output/Figures/final/figure_buffer_robustness.png){width=84%}
+![Buffer robustness](../Output/Figures/final/figure_buffer_robustness.png){width="84%"}
 
 ## Appendix
+
 ### Country event studies {.appendix-figure}
 
-![Country event studies](../Output/Figures/final/figure_country_event_studies.png){width=84%}
+![Country event studies](../Output/Figures/final/figure_country_event_studies.png){width="84%"}
 
 ## Appendix
+
 ### Summary table {.appendix-figure}
 
-| Item | Value |
-|---|---|
-| Municipalities | 192 |
-| Municipal-quarter observations | 4,032 |
-| Countries | 2 |
-| Border crossings | 5 |
-| Outcome frequency | Quarterly |
-| Main outcome | Log(1 + nighttime lights) |
+| Item                           | Value                     |
+|--------------------------------|---------------------------|
+| Municipalities                 | 192                       |
+| Municipal-quarter observations | 4,032                     |
+| Countries                      | 2                         |
+| Border crossings               | 5                         |
+| Outcome frequency              | Quarterly                 |
+| Main outcome                   | Log(1 + nighttime lights) |
 
 ## Appendix
+
 ### Headline estimates {.appendix-figure}
 
-| Metric | (1) | (2) | (3) | (4) |
-|---|---:|---:|---:|---:|
-| Treatment intensity × Post | -0.017** | -0.010 | -0.006 | -0.006 |
-|  | (0.008) | (0.007) | (0.010) | (0.011) |
-| Municipality FE | Yes | Yes | Yes | Yes |
-| Quarter FE | Yes | No | No | No |
-| Country × Quarter FE | No | Yes | Yes | No |
-| Crossing corridor × Quarter FE | No | No | Yes | No |
-| State/Department × Quarter FE | No | No | No | Yes |
-| Observations | 4,032 | 4,032 | 4,032 | 4,032 |
+| Metric                         |      \(M1\) |   \(M2\) |   \(M3\) |   \(M4\) |
+|--------------------------------|-----------:|--------:|--------:|--------:|
+| Treatment intensity × Post     | -0.017\*\* |  -0.010 |  -0.006 |  -0.006 |
+|                                |    (0.008) | (0.007) | (0.010) | (0.011) |
+| Municipality FE                |        Yes |     Yes |     Yes |     Yes |
+| Quarter FE                     |        Yes |      No |      No |      No |
+| Country × Quarter FE           |         No |     Yes |     Yes |      No |
+| Crossing corridor × Quarter FE |         No |      No |     Yes |      No |
+| State/Department × Quarter FE  |         No |      No |      No |     Yes |
+| Observations                   |      4,032 |   4,032 |   4,032 |   4,032 |
+| Within R²                      |      0.011 |   0.011 |   0.011 |   0.001 |
+| Adjusted within R²             |      0.011 |   0.004 |   0.001 |   0.000 |
+*M1 is TWFE, M2 is Country × Quarter FE, M3 is Crossing corridor × Quarter FE, M4 is State/Department × Quarter FE.*
 
-*Notes:* The dependent variable is log(1 + nighttime lights). Treatment intensity is the logarithmic change in road-network distance to the nearest operational international crossing between the pre-treatment and closure regimes. Post equals one from 2019Q1 onward. Standard errors in parentheses are clustered at the municipality level. $^{*}p<0.10$, $^{**}p<0.05$, $^{***}p<0.01$.
+$^{*}p<0.10$, $^{**}p<0.05$, $^{***}p<0.01$.
+<!-- | R²                             |      0.982 |   0.983 |   0.984 |   0.986 |
+| Adjusted R²                    |      0.981 |   0.982 |   0.983 |   0.984 | -->
