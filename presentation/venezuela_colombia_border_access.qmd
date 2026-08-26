@@ -112,7 +112,7 @@ Expected sign: more access loss, lower activity.
 
 ## Methodology {.content-slide}
 
-### Empirical pipeline
+### Empirical pipeline - Implementation of Behrens (2024)
 
 :::::::::::::::::: columns
 :::::::::::::::: {.column width="100%"}
@@ -133,7 +133,7 @@ Expected sign: more access loss, lower activity.
 :::
 
 ::: step-text
-<strong>Measure access</strong><br>Compute shortest-path (travel costs) travel times to operational crossings.
+<strong>Define crossing regimesr</strong><br>Identify which formal crossings are operational before and after the 2019 disruption.
 :::
 :::::
 
@@ -143,13 +143,25 @@ Expected sign: more access loss, lower activity.
 :::
 
 ::: step-text
-<strong>Construct exposure</strong><br>Convert the change in access into a municipality-quarter treatment intensity.
+<strong>Measure access</strong><br>Compute shortest-path road-network distances and define treatment intensity as 
+$D_i = \log(d_i^{post}) - \log(d_i^{pre})$
+
 :::
 :::::
 
 ::::: pipeline-step
 ::: step-number
 4
+:::
+
+::: step-text
+<strong>Construct exposure</strong><br>Interact $D_i$ with the municipality-quarter post indicator to build exposure intensity.
+:::
+:::::
+
+::::: pipeline-step
+::: step-number
+5
 :::
 
 ::: step-text
@@ -179,7 +191,7 @@ where:
 - $Y_{it}$ = log(1 + nighttime lights) in municipality $i$ at time $t$
 - $\alpha_i$ = municipality fixed effects, absorbing time-invariant local characteristics
 - $\gamma_t$ = quarter fixed effects, absorbing common shocks across all municipalities
-- $Exposure_{it}$ = treatment intensity, defined as the change in road-network access to the nearest operational crossing
+- $Exposure_{it}$ = its the treatment intensity interacted with the post period indicator.
 - $\beta$ = effect of a one-unit increase in exposure on local economic activity
 :::
 
@@ -203,22 +215,25 @@ If the estimated effect survives tighter local time controls, it is more likely 
 ## Data {.content-slide}
 
 :::::::: columns
-::::: {.column width="56%"}
-| Layer | Source | Role |
+::::: {.column width="60%"}
+| Data | Source | Role |
 |------------------------|------------------------|------------------------|
 | Municipalities | Administrative boundaries | Panel units |
 | Roads | OpenStreetMap motorcar network | Shortest-path access measures |
-| Crossings | Georeferenced border crossings | Access regime and closure dates |
-| Outcome | VIIRS nighttime lights | Quarterly economic activity |
-| Sample | 192 municipalities, 4,032 obs | Estimation sample |
+| Crossings | Georeferenced border crossings + institutional records | Access regime and closure dates |
+| Outcome | VIIRS nighttime lights | Quarterly economic activity proxy |
 
 ::: callout-note
-Quarterly coverage runs from 2012Q2 to 2025Q4.
+Baseline estimation window
+
+- 2017Q1 to 2018Q4: clean pre-period
+- 2019Q1: transition quarter, excluded
+- 2019Q2 to 2022Q2: clean closure period
 :::
 :::::
 
-:::: {.column width="44%"}
-![ ](../Output/Figures/final/figure_border_crossings.png){width="100%"}
+:::: {.column width="40%"}
+![Baseline sample: 192 municipalities · 4,032 municipality-quarter observations](../Output/Figures/final/figure_border_crossings.png){width="100%"}
 
 ::::
 ::::::::
@@ -260,7 +275,7 @@ The negative coefficient shrinks quickly once tighter local controls are added.
 
 - Event-study estimates show differential pre-trends.
 - The dynamic pattern weakens with more localized controls, but it does not disappear completely.
-- So the baseline TWFE estimate should be read cautiously.
+- Under the preferred state/department-by-quarter specification, the joint pre-treatment test gives an F-statistic of approximately 2.32 and a p-value of 0.027
 
 ::: callout-important
 This is the main reason I avoid over-claiming a clean causal effect.
@@ -308,7 +323,7 @@ Border accessibility appears to matter, but the strongest evidence is supportive
 
 - Larger access losses are associated with weaker local nighttime-light activity in border municipalities.
 - The baseline effect is sensitive to tighter local time controls, so the causal claim should remain cautious.
-- The reopening pattern provides the clearest mechanism-consistent evidence that access recovery matters.
+- The reopening pattern is consistent with the proposed accessibility mechanism, but also warrants caution.
 
 
 ## Finish {.content-slide}

@@ -1,0 +1,593 @@
+WHEN BORDERS BECOME DISTANT 20-minute presentation speaking script
+
+General delivery note
+
+Aim to finish the prepared presentation in about 18.5-19 minutes rather
+than filling every second of the 20-minute slot. Slow down on the
+treatment construction, main results, and event-study slides. The
+central story is not simply that a coefficient is negative; it is that
+GIS gives a much better measure of exposure, while the econometric
+diagnostics limit the strength of the causal interpretation.
+
+Do not apologize for the pre-trend results. Present them as an important
+result of testing the research design.
+
+============================================================ SLIDE 1 -
+TITLE Target: ~1 minute
+============================================================
+
+Good afternoon, and thank you for being here.
+
+This paper asks a simple geographical question with an economic
+consequence: what happens when an international border remains
+physically close, but becomes much more difficult to reach through an
+operational crossing?
+
+The key idea throughout the presentation is that border access is not
+the same thing as straight-line distance to a boundary. What matters for
+economic interaction is whether a municipality can reach a crossing that
+is actually operational, and how far it must travel through the road
+network to do so.
+
+I study this question along the Colombia-Venezuela border, focusing on
+the disruption of formal border connectivity beginning in February 2019.
+
+The title, “When Borders Become Distant,” refers precisely to this idea:
+the border does not move geographically, but policy can make it
+effectively much farther away.
+
+============================================================ SLIDE 2 -
+MOTIVATION Target: ~2 minutes
+============================================================
+
+The Colombia-Venezuela border is an especially useful setting because
+large parts of the frontier have historically functioned as integrated
+economic and social spaces.
+
+Cross-border connections matter for trade, employment, transport,
+services, household relationships, and commercial activity. This is
+particularly important around the Norte de Santander-Tachira corridor.
+
+A closure therefore does not affect every municipality in the same way.
+Imagine two municipalities that are both relatively close to the
+international boundary. One may still have direct access to an
+operational bridge. The other may suddenly need to travel several
+hundred additional kilometres to reach the next usable formal crossing.
+
+That gives us the first motivation for the paper: proximity to the
+border is not sufficient to measure exposure to a border-access shock.
+
+The second motivation is measurement. Comparable high-frequency local
+economic statistics are difficult to obtain across both countries, and
+this is especially problematic for Venezuela during its economic crisis.
+
+Nighttime lights are useful in this setting because they provide the
+same independently collected measure on both sides of the border.
+
+So the project combines two types of spatial information: road-network
+accessibility tells us where the shock was stronger, while VIIRS
+nighttime lights provide a common proxy for how local economic activity
+evolved.
+
+============================================================ SLIDE 3 -
+INTRODUCTION / RESEARCH QUESTION Target: ~1.5 minutes
+============================================================
+
+The central research question is:
+
+How were changes in road-network access to the Colombia-Venezuela border
+related to local economic activity?
+
+The paper makes three main empirical contributions.
+
+First, instead of assigning municipalities to a simple treated and
+untreated group, I construct a continuous treatment measure based on the
+change in road-network distance to the nearest operational international
+crossing.
+
+Second, I combine this measure with a municipality-quarter panel of
+VIIRS nighttime lights.
+
+Third, I evaluate the relationship under increasingly demanding spatial
+controls. I begin with a conventional two-way fixed-effects model and
+progressively absorb country-, crossing-corridor-, and state- or
+department-specific quarterly shocks.
+
+An important part of the project is that the interpretation evolved as
+these diagnostics became more demanding. The initial estimate looks
+consistent with the expected negative effect, but the localized
+specifications and event study show that exposure was also related to
+broader local economic dynamics.
+
+So the paper is not only about estimating a border-closure coefficient.
+It also evaluates how far this spatial design can support causal
+interpretation in this particular setting.
+
+============================================================ SLIDE 4 -
+CONCEPTUAL FRAMEWORK Target: ~2 minutes
+============================================================
+
+The mechanism has three pieces.
+
+First, a policy decision changes which formal international crossings
+are operational.
+
+Second, this changes effective transportation geography. Municipalities
+previously connected to a nearby crossing may have to take substantially
+longer routes.
+
+Third, if cross-border accessibility matters economically,
+municipalities experiencing larger accessibility losses should
+experience weaker local economic activity.
+
+This framework is closely related to the spatial-accessibility approach
+developed by Behrens in 2024.
+
+An important clarification is that this project is not a replication of
+Behrens. I implement the central spatial-accessibility logic in a
+different institutional and geographic setting: the Colombia-Venezuela
+frontier.
+
+The project therefore sits at the intersection of three literatures:
+borders and trade costs, transportation and market access, and remotely
+sensed measures of economic activity.
+
+The distinctive element here is their combination. A policy-driven
+change in the border regime is translated into a municipality-specific
+change in effective road accessibility and then linked to
+satellite-observed local outcomes.
+
+The expected relationship is straightforward: larger deteriorations in
+effective accessibility should be associated with weaker economic
+activity.
+
+============================================================ SLIDE 5 -
+METHODOLOGY: EMPIRICAL PIPELINE Target: ~2.5 minutes
+============================================================
+
+The empirical construction proceeds in five steps.
+
+First, I build a motorcar road network for Colombia and Venezuela using
+OpenStreetMap.
+
+Second, I define the relevant crossing regimes by identifying which
+formal crossings are operational before and after the 2019 disruption.
+
+Third, I calculate shortest-path road-network distances from
+municipalities to the operational crossing system.
+
+Treatment intensity is defined as:
+
+D_i = log(d_i post) - log(d_i pre).
+
+This is easier to understand with an example.
+
+Suppose a municipality was 50 kilometres by road from its nearest
+operational crossing before the disruption. After that crossing becomes
+unavailable, its nearest operational alternative is 200 kilometres away.
+
+Its treatment intensity is therefore log 200 minus log 50, which is log
+4, or approximately 1.39.
+
+Now consider another municipality whose distance changes only from 100
+to 120 kilometres. Its treatment intensity is only log 1.2, or about
+0.18.
+
+So both municipalities experience the same broad political event, but
+the first is much more strongly exposed because the closure causes a
+much larger proportional deterioration in accessibility.
+
+A municipality whose nearest operational crossing does not change would
+receive a treatment intensity of zero.
+
+Importantly, D_i is municipality-specific; it is not recalculated as a
+different treatment value every quarter in the baseline model.
+
+In the fourth step, I interact D_i with the post-period indicator.
+Before the disruption, Post equals zero, so the interaction is zero.
+During the clean closure period, Post equals one, so the municipality’s
+full treatment intensity enters the regression.
+
+Finally, I estimate fixed-effects models and dynamic event-study
+specifications.
+
+============================================================ SLIDE 6 -
+METHODOLOGY: BASELINE MODEL / IDENTIFICATION Target: ~2 minutes
+============================================================
+
+The dependent variable is quarterly municipality-level log one plus
+nighttime lights.
+
+Municipality fixed effects absorb time-invariant local characteristics,
+while the time controls absorb common or increasingly localized shocks.
+
+The coefficient of interest is the interaction between treatment
+intensity and the post period.
+
+Timing is important here.
+
+Although VIIRS is available for a much longer period, I do not simply
+use every available observation.
+
+I begin the baseline estimation in 2017 because 2015 and 2016 contained
+an earlier major border closure and a subsequent partial reopening.
+Including those years as if they represented the same stable pre-2019
+regime would contaminate the pre-treatment comparison.
+
+So 2017Q1 through 2018Q4 is the clean pre-period.
+
+The disruption occurred in February 2019, so I exclude 2019Q1 as a
+transition quarter rather than classifying the entire quarter as treated
+or untreated.
+
+The clean closure period then runs from 2019Q2 through 2022Q2.
+
+I stop there because formal connectivity begins changing again in
+September 2022. Once crossings begin reopening, the original closure
+treatment no longer represents the actual accessibility regime. Those
+later observations are therefore used separately for the reopening
+exercise.
+
+I then estimate a specification ladder: conventional TWFE,
+country-by-quarter effects, crossing-corridor-by-quarter effects, and
+finally state- or department-by-quarter effects.
+
+The purpose is to ask whether the relationship survives when
+progressively more localized time-varying shocks are absorbed.
+
+============================================================ SLIDE 7 -
+DATA Target: ~1.5 minutes
+============================================================
+
+The empirical analysis combines four main spatial data components.
+
+Administrative boundaries define the municipality-level panel.
+
+OpenStreetMap provides the motorcar road network used to calculate
+shortest-path accessibility.
+
+Formal international crossings are georeferenced and combined with
+institutional information on their operational status.
+
+Finally, quarterly VIIRS nighttime lights provide a geographically
+consistent proxy for local economic activity on both sides of the
+border.
+
+The estimation window shown here is deliberately narrower than the raw
+satellite-data coverage. It is determined by the institutional regimes
+rather than by satellite availability.
+
+As I mentioned, 2017Q1 to 2018Q4 forms the clean pre-period, 2019Q1 is
+excluded as a transition quarter, and 2019Q2 to 2022Q2 forms the clean
+closure period.
+
+The initial geographic analysis contains more municipalities, but the
+baseline estimation sample is restricted to municipalities that can be
+reliably connected to the road network under the required accessibility
+regimes.
+
+The final baseline sample contains 192 municipalities and 4,032
+municipality-quarter observations.
+
+============================================================ SLIDE 8 -
+RESULTS: MAIN ESTIMATES Target: ~2 minutes
+============================================================
+
+This figure summarizes what becomes the central empirical result.
+
+In the conventional two-way fixed-effects specification, the coefficient
+is negative, approximately minus 0.017, and statistically significant at
+conventional levels.
+
+So initially, municipalities experiencing larger increases in effective
+distance appear to experience weaker nighttime-light outcomes after the
+disruption.
+
+But as the fixed effects become more demanding, the coefficient
+attenuates.
+
+With country-by-quarter effects, it falls to approximately minus 0.010
+and is no longer statistically significant.
+
+With crossing-corridor-by-quarter effects, it becomes smaller again.
+
+And with state- or department-by-quarter fixed effects, the estimate is
+approximately minus 0.006 and statistically indistinguishable from zero.
+
+This attenuation is substantively important.
+
+It suggests that part of the negative TWFE relationship was associated
+with spatially heterogeneous economic dynamics that were themselves
+correlated with treatment exposure.
+
+For that reason, I do not interpret the first coefficient as the clean
+causal effect of the border disruption.
+
+The more defensible conclusion is that there is an initial negative
+relationship, but its magnitude and precision are highly sensitive to
+how localized time-varying shocks are controlled for.
+
+============================================================ SLIDE 9 -
+RESULTS: DYNAMIC EVIDENCE / PRE-TRENDS Target: ~2 minutes
+============================================================
+
+The event study is what makes that caution especially important.
+
+The omitted period is 2018Q4, and the coefficients show how the
+relationship between eventual treatment intensity and nighttime lights
+evolves around the 2019 disruption.
+
+If the parallel-trends assumption held cleanly, we would expect the
+pre-treatment coefficients to fluctuate around zero without a systematic
+relationship with subsequent exposure.
+
+That is not fully what we observe.
+
+Some pre-treatment coefficients are already different from zero.
+
+Under the preferred state- or department-by-quarter specification, the
+joint pre-treatment test gives an F-statistic of approximately 2.32 and
+a p-value of 0.027.
+
+This is weaker evidence of differential trends than in the simpler
+specifications, but the null of no differential pre-trends is still
+rejected at the five-percent level.
+
+This result changed how I interpret the empirical design.
+
+Rather than adding controls until the diagnostic happens to disappear, I
+treat the failed pre-trend test as information: municipalities that
+later received different levels of the accessibility shock were already
+following different economic trajectories.
+
+The event study therefore limits how strongly the average post-treatment
+coefficient can be interpreted causally.
+
+This is not a failure of the GIS treatment measure. It is a distinction
+between measuring treatment accurately and identifying its causal
+effect.
+
+============================================================ SLIDE 10 -
+RESULTS: REOPENING / COMPLEMENTARY EVIDENCE Target: ~1.5 minutes
+============================================================
+
+The later reopening provides a complementary exercise with the opposite
+direction of the accessibility shock.
+
+Beginning in September 2022, formal cargo connectivity was progressively
+restored through important crossings.
+
+The reopening estimates produce a pattern that is broadly consistent
+with the proposed accessibility mechanism: municipalities more exposed
+to the earlier deterioration in access show comparatively stronger
+outcomes when formal accessibility begins to improve.
+
+However, I interpret this cautiously.
+
+The reopening event study also shows pre-period movement, and the
+reopening coincided with other political and economic changes.
+
+So I do not treat this as a second clean natural experiment.
+
+Instead, I view it as complementary mechanism-consistent evidence: the
+direction is informative, but it does not overcome the identification
+concerns found in the main analysis.
+
+The country-specific evidence likewise shows heterogeneity across the
+two sides of the border, but the estimates become less precise under
+more demanding local controls. I therefore avoid interpreting them as
+clean opposite causal effects for Colombia and Venezuela.
+
+============================================================ SLIDE 11 -
+CONCLUSION Target: ~1.5-2 minutes
+============================================================
+
+I would summarize the project with three conclusions.
+
+First, border policy substantially changed effective economic geography.
+
+The road-network calculations show that changing the availability of a
+small number of formal crossings generated very large accessibility
+losses for some municipalities while barely affecting others.
+
+Second, these accessibility changes are related to local economic
+activity. The initial TWFE estimate is negative, and the reopening
+pattern is consistent with the proposed accessibility mechanism when
+access begins to recover.
+
+But third, the econometric diagnostics prevent a strong causal
+interpretation.
+
+The main coefficient attenuates under increasingly localized fixed
+effects, and differential pre-treatment dynamics remain.
+
+For me, this leads to the broader methodological lesson of the project:
+
+GIS can substantially improve the measurement of treatment exposure, but
+precise spatial measurement does not automatically solve identification.
+
+That distinction between treatment measurement and treatment
+identification is probably the most important conclusion of the paper.
+
+At the same time, in a setting where conventional local economic data
+are difficult to obtain, combining road networks, institutional crossing
+histories, and satellite observations makes spatial economic
+relationships visible that would otherwise be difficult to study.
+
+Thank you.
+
+============================================================ FINISH /
+TRANSITION TO QUESTIONS
+============================================================
+
+I have additional robustness exercises, buffer-sensitivity checks,
+country-specific results, the crossing-regime chronology, and the full
+regression tables in the appendix, and I am happy to discuss any of
+them.
+
+============================================================ Q&A
+PREPARATION - SHORT ANSWERS
+============================================================
+
+1.  WHY START IN 2017 IF VIIRS EXISTS FROM 2012?
+
+“VIIRS is available from 2012, but I begin the baseline estimation in
+2017 because 2015 and 2016 contain an earlier major border closure and
+partial reopening. Starting in 2017 gives me a cleaner and more stable
+pre-treatment regime for studying the 2019 disruption. The estimation
+window is therefore determined by the institutional design, not by
+satellite-data availability.”
+
+2.  WHY STOP AT 2022Q2?
+
+“I stop the main closure analysis at 2022Q2 because formal connectivity
+begins changing again in September 2022. Once crossings reopen, the
+original closure treatment no longer describes actual accessibility. I
+therefore treat 2022Q3 as a reopening transition and use the later
+observations in a separate reopening exercise.”
+
+3.  WHY EXCLUDE 2019Q1?
+
+“The disruption occurred on 23 February 2019. Classifying the whole
+quarter as either untreated or fully treated would be inaccurate, so I
+exclude it as a transition quarter.”
+
+4.  WHY USE LOG DISTANCE CHANGES?
+
+“The log difference measures a proportional accessibility shock. For
+example, 50 to 200 kilometres and 200 to 800 kilometres both represent a
+fourfold increase and therefore receive the same treatment intensity.
+This is preferable to treating a fixed kilometre increase as
+economically identical regardless of the municipality’s initial
+accessibility.”
+
+5.  IS TREATMENT TIME-VARYING?
+
+“In the baseline model, treatment intensity D_i is
+municipality-specific. It is calculated from the change between the
+pre-closure and closure crossing regimes. The time variation comes from
+interacting that municipality-specific intensity with the post
+indicator. The event-study version then interacts the same exposure
+measure with relative-time indicators.”
+
+6.  WHY NOT JUST USE DISTANCE TO THE BORDER?
+
+“Because the policy shock operated through specific crossings, not
+through the location of the international boundary. Two municipalities
+equally close to the border can experience completely different changes
+in effective access depending on the road network and which crossing
+they use.”
+
+7.  WHAT DOES GIS ADD?
+
+“GIS reconstructs effective access conditional on the road network and
+the operational crossing regime. It therefore allows the treatment to
+reflect the actual transportation geography generated by the policy
+change rather than a simple Euclidean border-distance measure.”
+
+8.  WHY ONLY 192 MUNICIPALITIES?
+
+“The baseline sample is restricted to municipalities that can be
+reliably connected to the road network and assigned the required pre-
+and post-regime accessibility measures. I prefer a consistent connected
+sample rather than imputing unreliable network distances.”
+
+9.  WHAT ABOUT INFORMAL CROSSINGS OR TROCHAS?
+
+“The treatment measures formal road-based international connectivity. I
+do not claim that all cross-border interaction stopped. Informal
+crossings remained important, which is one reason the treatment should
+be interpreted as a formal-accessibility shock rather than complete
+border isolation.”
+
+10. WHY NIGHTTIME LIGHTS?
+
+“They provide a geographically consistent quarterly proxy observed in
+the same way on both sides of the border. That is particularly useful
+when comparable municipality-level economic statistics are difficult to
+obtain, especially for Venezuela. I treat luminosity as a proxy for
+local activity, not as literal municipality GDP.”
+
+11. DOES THE SIGNIFICANT TWFE COEFFICIENT SHOW A CAUSAL EFFECT?
+
+“No. The TWFE estimate establishes an initial negative relationship, but
+it attenuates under more localized controls, and the event study rejects
+clean parallel pre-trends. Those diagnostics are why the final
+interpretation is deliberately more cautious.”
+
+12. DOES THE FAILED PRE-TREND TEST MEAN THE PROJECT FAILED?
+
+“No. It means the design does not support the strongest causal
+interpretation. The treatment measure still captures substantial
+heterogeneity in how border policy changed effective accessibility. The
+diagnostic tells us that treatment exposure was also correlated with
+pre-existing local economic trajectories, which is itself important for
+interpreting the design.”
+
+13. WHY USE STATE/DEPARTMENT-BY-QUARTER FIXED EFFECTS?
+
+“They absorb shocks common to municipalities within the same state or
+department in a given quarter. This is important because Colombia and
+Venezuela, and even regions within each country, experienced very
+different economic trajectories over the study period.”
+
+14. WHY DOES THE COEFFICIENT SHRINK WITH MORE FIXED EFFECTS?
+
+“That suggests part of the baseline negative association reflects
+regional time-varying shocks correlated with treatment exposure. The
+more localized models compare municipalities after absorbing those
+common regional-quarter dynamics.”
+
+15. WHAT SHOULD I SAY ABOUT THE REOPENING?
+
+“The reopening provides complementary mechanism-consistent evidence, not
+an independent clean causal estimate. The direction is consistent with
+improved accessibility, but its own dynamic pattern and the broader
+political changes around reopening require caution.”
+
+16. WHAT ABOUT THE HIGH OVERALL R-SQUARED AND LOW WITHIN R-SQUARED?
+
+“The high overall R-squared is largely driven by the fixed effects,
+which absorb substantial persistent and time-varying spatial
+heterogeneity. The within R-squared asks how much additional within-unit
+variation is explained after those fixed effects are removed, so it is
+naturally much smaller in a saturated fixed-effects model.”
+
+17. WHY IMPLEMENT BEHRENS RATHER THAN CALL THIS A REPLICATION?
+
+“The project takes the spatial-accessibility logic from Behrens - using
+changes in effective access to international crossings - but applies it
+to a different border, institutional history, unit of analysis, and
+empirical setting. It is therefore an implementation or adaptation of
+the approach rather than a replication of the original study.”
+
+18. WHAT IS THE MAIN TAKEAWAY IF ASKED FOR ONE SENTENCE?
+
+“Border policy substantially altered effective road-network
+accessibility along the Colombia-Venezuela frontier, and those changes
+are systematically related to local nighttime-light outcomes, but
+pre-existing spatial trends prevent interpreting that relationship as a
+clean causal effect.”
+
+============================================================ DELIVERY
+REMINDERS ============================================================
+
+-   Do not rush the treatment-intensity example. It is the easiest way
+    to make the methodology intuitive.
+-   Do not read citations aloud on the conceptual-framework slide.
+-   Use “associated with” or “related to” for the final results unless
+    explicitly describing the identifying hypothesis.
+-   Do not describe nighttime lights as GDP. Call them a proxy for local
+    economic activity.
+-   Do not say the reopening is the “strongest” or “clearest” causal
+    evidence. Call it complementary mechanism-consistent evidence.
+-   When discussing the insignificant preferred estimate, do not frame
+    it as the model failing. Explain what the attenuation tells us about
+    regional confounding.
+-   If challenged on pre-trends, agree with the econometric implication
+    and explain that this is why the final paper limits its causal
+    claims.
+-   If time is running short, compress the conceptual-framework
+    literature discussion and the reopening discussion. Do not cut the
+    main-results or dynamic-evidence explanation.
+-   Aim to reach the conclusion with at least 2 minutes remaining.
