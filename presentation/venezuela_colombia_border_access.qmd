@@ -133,7 +133,7 @@ Expected sign: more access loss, lower activity.
 :::
 
 ::: step-text
-<strong>Define crossing regimesr</strong><br>Identify which formal crossings are operational before and after the 2019 disruption.
+<strong>Define crossing regime</strong><br>Identify which formal crossings are operational before and after the 2019 disruption.
 :::
 :::::
 
