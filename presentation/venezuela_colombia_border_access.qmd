@@ -191,8 +191,9 @@ where:
 - $Y_{it}$ = log(1 + nighttime lights) in municipality $i$ at time $t$
 - $\alpha_i$ = municipality fixed effects, absorbing time-invariant local characteristics
 - $\gamma_t$ = quarter fixed effects, absorbing common shocks across all municipalities
-- $Exposure_{it}$ = its the treatment intensity interacted with the post period indicator.
+- $Exposure_{it}$ = its the treatment intensity interacted with the post period indicator
 - $\beta$ = effect of a one-unit increase in exposure on local economic activity
+- $\varepsilon_{it}$ = error term is clustered at the municipality level
 :::
 
 :::: {.column width="48%"}
