@@ -1,43 +1,42 @@
 \contentsline {section}{\numberline {1}Introduction}{1}{}%
-\contentsline {section}{\numberline {2}Motivation}{3}{}%
-\contentsline {section}{\numberline {3}Institutional Background}{4}{}%
-\contentsline {subsection}{\numberline {3.1}The Colombia--Venezuela border}{4}{}%
-\contentsline {subsection}{\numberline {3.2}Border restrictions and the 2019 disruption}{6}{}%
-\contentsline {subsection}{\numberline {3.3}Reopening and the restoration of formal connectivity}{7}{}%
-\contentsline {subsection}{\numberline {3.4}Relation to the existing literature}{8}{}%
-\contentsline {section}{\numberline {4}Conceptual framework}{9}{}%
-\contentsline {subsection}{\numberline {4.1}Border accessibility and local economic activity}{9}{}%
-\contentsline {subsection}{\numberline {4.2}Implementation of the Behrens framework}{9}{}%
-\contentsline {subsection}{\numberline {4.3}Empirical hypotheses}{10}{}%
-\contentsline {subsection}{\numberline {4.4}Identification considerations}{11}{}%
-\contentsline {section}{\numberline {5}Empirical methodology}{12}{}%
-\contentsline {subsection}{\numberline {5.1}Measuring changes in border accessibility}{12}{}%
-\contentsline {subsection}{\numberline {5.2}Baseline empirical specification}{13}{}%
-\contentsline {subsection}{\numberline {5.3}Spatially heterogeneous time shocks}{13}{}%
-\contentsline {subsection}{\numberline {5.4}Country-specific effects}{14}{}%
-\contentsline {subsection}{\numberline {5.5}Dynamic effects and pre-treatment trends}{14}{}%
-\contentsline {subsection}{\numberline {5.6}Reopening and complementary evidence}{15}{}%
-\contentsline {subsection}{\numberline {5.7}Identification and interpretation}{15}{}%
-\contentsline {section}{\numberline {6}Data}{16}{}%
-\contentsline {subsection}{\numberline {6.1}Administrative boundaries and study area}{16}{}%
-\contentsline {subsection}{\numberline {6.2}Road network and international crossings}{17}{}%
-\contentsline {subsection}{\numberline {6.3}Treatment intensity}{17}{}%
-\contentsline {subsection}{\numberline {6.4}Nighttime luminosity}{18}{}%
-\contentsline {subsection}{\numberline {6.5}Estimation sample}{18}{}%
-\contentsline {section}{\numberline {7}Results}{19}{}%
-\contentsline {subsection}{\numberline {7.1}Baseline relationship between border access and economic activity}{19}{}%
-\contentsline {subsection}{\numberline {7.2}Accounting for spatially heterogeneous shocks}{20}{}%
-\contentsline {subsection}{\numberline {7.3}Heterogeneity across the border}{21}{}%
-\contentsline {subsection}{\numberline {7.4}Dynamic effects and pre-treatment trends}{22}{}%
-\contentsline {section}{\numberline {8}Discussion and Limitations}{24}{}%
-\contentsline {section}{\numberline {9}Conclusion}{26}{}%
-\contentsline {section}{Appendix}{31}{}%
+\contentsline {section}{\numberline {2}Motivation}{2}{}%
+\contentsline {section}{\numberline {3}Institutional Background}{3}{}%
+\contentsline {subsection}{\numberline {3.1}The Colombia--Venezuela border}{3}{}%
+\contentsline {subsection}{\numberline {3.2}Border restrictions and the 2019 disruption}{3}{}%
+\contentsline {subsection}{\numberline {3.3}Reopening and the restoration of formal connectivity}{5}{}%
+\contentsline {subsection}{\numberline {3.4}Relation to the existing literature}{6}{}%
+\contentsline {section}{\numberline {4}Conceptual framework}{6}{}%
+\contentsline {subsection}{\numberline {4.1}Border accessibility and local economic activity}{6}{}%
+\contentsline {subsection}{\numberline {4.2}Implementation of the Behrens framework}{7}{}%
+\contentsline {subsection}{\numberline {4.3}Empirical hypotheses}{8}{}%
+\contentsline {section}{\numberline {5}Empirical methodology}{9}{}%
+\contentsline {subsection}{\numberline {5.1}Measuring changes in border accessibility}{9}{}%
+\contentsline {subsection}{\numberline {5.2}Baseline empirical specification}{9}{}%
+\contentsline {subsection}{\numberline {5.3}Spatially heterogeneous time shocks}{10}{}%
+\contentsline {subsection}{\numberline {5.4}Country-specific effects}{11}{}%
+\contentsline {subsection}{\numberline {5.5}Dynamic effects and pre-treatment trends}{11}{}%
+\contentsline {subsection}{\numberline {5.6}Reopening and complementary evidence}{12}{}%
+\contentsline {section}{\numberline {6}Data}{12}{}%
+\contentsline {subsection}{\numberline {6.1}Administrative boundaries and study area}{12}{}%
+\contentsline {subsection}{\numberline {6.2}Road network and international crossings}{13}{}%
+\contentsline {subsection}{\numberline {6.3}Treatment intensity}{13}{}%
+\contentsline {subsection}{\numberline {6.4}Nighttime luminosity}{14}{}%
+\contentsline {subsection}{\numberline {6.5}Estimation sample}{14}{}%
+\contentsline {section}{\numberline {7}Results}{15}{}%
+\contentsline {subsection}{\numberline {7.1}Baseline relationship between border access and economic activity}{15}{}%
+\contentsline {subsection}{\numberline {7.2}Accounting for spatially heterogeneous shocks}{16}{}%
+\contentsline {subsection}{\numberline {7.3}Heterogeneity across the border}{17}{}%
+\contentsline {subsection}{\numberline {7.4}Dynamic effects and pre-treatment trends}{17}{}%
+\contentsline {section}{\numberline {8}Discussion and Limitations}{19}{}%
+\contentsline {section}{\numberline {9}Conclusion}{19}{}%
+\contentsline {section}{Appendix}{23}{}%
 \setcounter {tocdepth}{-1}
-\contentsline {section}{\numberline {A}International crossing regimes}{31}{}%
-\contentsline {section}{\numberline {B}Additional identification diagnostics}{31}{}%
-\contentsline {subsection}{\numberline {B.1}Joint pre-treatment tests}{31}{}%
-\contentsline {section}{\numberline {C}Robustness to alternative samples and specifications}{31}{}%
-\contentsline {subsection}{\numberline {C.1}Alternative border buffers}{31}{}%
-\contentsline {subsection}{\numberline {C.2}Alternative treatment, outcome, and trend specifications}{31}{}%
-\contentsline {section}{\numberline {D}Country-specific evidence}{34}{}%
-\contentsline {section}{\numberline {E}Border reopening}{34}{}%
+\contentsline {section}{\numberline {A}International crossing regimes}{23}{}%
+\contentsline {section}{\numberline {B}Descriptive statistics}{25}{}%
+\contentsline {section}{\numberline {C}Additional identification diagnostics}{25}{}%
+\contentsline {subsection}{\numberline {C.1}Joint pre-treatment tests}{25}{}%
+\contentsline {section}{\numberline {D}Robustness to alternative samples and specifications}{25}{}%
+\contentsline {subsection}{\numberline {D.1}Alternative border buffers}{25}{}%
+\contentsline {subsection}{\numberline {D.2}Alternative treatment, outcome, and trend specifications}{25}{}%
+\contentsline {section}{\numberline {E}Country-specific evidence}{26}{}%
+\contentsline {section}{\numberline {F}Border reopening}{27}{}%
