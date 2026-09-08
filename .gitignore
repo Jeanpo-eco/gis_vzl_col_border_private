@@ -7,4 +7,5 @@
 *.docx
 *.tex
 *.html
+*.rar
 !presentation/progress-banner.html
