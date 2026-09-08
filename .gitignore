@@ -8,4 +8,5 @@
 *.tex
 *.html
 *.rar
+*.pdf
 !presentation/progress-banner.html
