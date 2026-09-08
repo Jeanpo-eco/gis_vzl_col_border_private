@@ -1,7 +1,4 @@
 # ==============================================================================
-# Script: 06_baseline_access.R
-#
-# Description:
 #   Calculates shortest motorcar road-network distances from each administrative
 #   unit in the analysis area to each of the five official border crossings.
 #
@@ -18,24 +15,14 @@
 #   No geodesic fallback and no invented travel times are used.
 # ==============================================================================
 
-library(sf)
-library(dplyr)
-library(tidyr)
-library(tibble)
-library(readr)
-library(cppRouting)
-library(here)
-library(fs)
-
 # ------------------------------------------------------------------------------
-# 1. Parameters
+# Parameters
 # ------------------------------------------------------------------------------
 
 target_crs <- 9377
 
-
 # ------------------------------------------------------------------------------
-# 2. Load spatial inputs
+# Load spatial inputs
 # ------------------------------------------------------------------------------
 
 analysis_area <- readRDS(
@@ -56,7 +43,7 @@ crossings <- readRDS(
 
 
 # ------------------------------------------------------------------------------
-# 3. Validate crossing dataset
+# Validate crossing dataset
 # ------------------------------------------------------------------------------
 
 if (nrow(crossings) != 5) {
@@ -78,7 +65,7 @@ if (anyDuplicated(crossings$crossing_id) > 0) {
 
 
 # ------------------------------------------------------------------------------
-# 4. Create municipality representative points
+# Create municipality representative points
 # ------------------------------------------------------------------------------
 
 municipality_points <- analysis_area %>%
@@ -93,7 +80,7 @@ if (anyDuplicated(municipality_points$municipality_id) > 0) {
 
 
 # ------------------------------------------------------------------------------
-# 5. Load final motorcar network
+# Load final motorcar network
 # ------------------------------------------------------------------------------
 
 network <- readRDS(
@@ -128,7 +115,7 @@ if (length(missing_network_cols) > 0) {
 
 
 # ------------------------------------------------------------------------------
-# 6. Prepare full motorcar edge table
+# Prepare full motorcar edge table
 # ------------------------------------------------------------------------------
 
 # d is the physical edge length in metres.
@@ -160,7 +147,7 @@ edges <- network %>%
 
 
 # ------------------------------------------------------------------------------
-# 7. Build spatial node table from FULL motorcar network
+# Build spatial node table from FULL motorcar network
 # ------------------------------------------------------------------------------
 
 nodes_from <- edges %>%
@@ -201,7 +188,7 @@ nodes_sf <- node_df %>%
 
 
 # ------------------------------------------------------------------------------
-# 8. Snap municipality points and crossings to FULL motorcar network
+# Snap municipality points and crossings to FULL motorcar network
 # ------------------------------------------------------------------------------
 
 municipality_idx <- st_nearest_feature(
@@ -244,7 +231,7 @@ if (any(is.na(crossing_node_ids))) {
 
 
 # ------------------------------------------------------------------------------
-# 9. Calculate snap distances
+# Calculate snap distances
 # ------------------------------------------------------------------------------
 
 municipality_snap_distance <- st_distance(
@@ -261,7 +248,7 @@ crossing_snap_distance <- st_distance(
 
 
 # ------------------------------------------------------------------------------
-# 10. Create municipality and crossing node maps
+# Create municipality and crossing node maps
 # ------------------------------------------------------------------------------
 
 municipality_node_map <- municipality_points %>%
@@ -285,7 +272,7 @@ crossing_node_map <- crossings %>%
 
 
 # ------------------------------------------------------------------------------
-# 11. Identify border-crossing network component
+# Identify border-crossing network component
 # ------------------------------------------------------------------------------
 
 n_crossing_components <- n_distinct(
@@ -309,7 +296,7 @@ message(
 
 
 # ------------------------------------------------------------------------------
-# 12. Determine which municipalities are routable to the crossings
+# Determine which municipalities are routable to the crossings
 # ------------------------------------------------------------------------------
 
 municipality_node_map <- municipality_node_map %>%
@@ -338,7 +325,7 @@ message(
 
 
 # ------------------------------------------------------------------------------
-# 13. Build cppRouting graph using crossing component only
+# Build cppRouting graph using crossing component only
 # ------------------------------------------------------------------------------
 
 routing_edges <- edges %>%
@@ -358,7 +345,7 @@ cpp_graph <- makegraph(
 
 
 # ------------------------------------------------------------------------------
-# 14. Calculate distances for routable municipalities only
+# Calculate distances for routable municipalities only
 # ------------------------------------------------------------------------------
 
 routable_municipality_ids <- municipality_node_map %>%
@@ -386,7 +373,7 @@ if (
 
 
 # ------------------------------------------------------------------------------
-# 15. Reconstruct complete municipality × crossing matrix
+# Reconstruct complete municipality × crossing matrix
 # ------------------------------------------------------------------------------
 
 dist_matrix <- matrix(
@@ -413,7 +400,7 @@ dist_matrix[
 
 
 # ------------------------------------------------------------------------------
-# 16. Convert distance matrix to long format
+# Convert distance matrix to long format
 # ------------------------------------------------------------------------------
 
 travel_distances_long <- as.data.frame(
@@ -445,7 +432,7 @@ travel_distances_long <- as.data.frame(
 
 
 # ------------------------------------------------------------------------------
-# 17. Create municipality-level network-quality table
+# Create municipality-level network-quality table
 # ------------------------------------------------------------------------------
 
 network_quality <- travel_distances_long %>%
@@ -476,100 +463,100 @@ network_quality <- travel_distances_long %>%
 
 
 # ------------------------------------------------------------------------------
-# 18. Diagnostics
+# Diagnostics / Can be skipped, next section is for saving outputs
 # ------------------------------------------------------------------------------
 
-municipality_count <- n_distinct(
-  travel_distances_long$municipality_id
-)
+# municipality_count <- n_distinct(
+#   travel_distances_long$municipality_id
+# )
 
-crossing_count <- n_distinct(
-  travel_distances_long$crossing_id
-)
+# crossing_count <- n_distinct(
+#   travel_distances_long$crossing_id
+# )
 
-pair_count <- nrow(
-  travel_distances_long
-)
+# pair_count <- nrow(
+#   travel_distances_long
+# )
 
-missing_pairs <- sum(
-  is.na(travel_distances_long$distance_m)
-)
+# missing_pairs <- sum(
+#   is.na(travel_distances_long$distance_m)
+# )
 
-unreachable_municipalities <- network_quality %>%
-  filter(
-    !network_reachable
-  )
+# unreachable_municipalities <- network_quality %>%
+#   filter(
+#     !network_reachable
+#   )
 
-message("Municipality count: ", municipality_count)
-message("Crossing count: ", crossing_count)
-message("Municipality-crossing pairs: ", pair_count)
-message("Disconnected municipality-crossing pairs: ", missing_pairs)
+# message("Municipality count: ", municipality_count)
+# message("Crossing count: ", crossing_count)
+# message("Municipality-crossing pairs: ", pair_count)
+# message("Disconnected municipality-crossing pairs: ", missing_pairs)
 
-message(
-  "Municipalities outside crossing network component: ",
-  nrow(unreachable_municipalities)
-)
+# message(
+#   "Municipalities outside crossing network component: ",
+#   nrow(unreachable_municipalities)
+# )
 
-message("Municipality snap-distance summary (m):")
+# message("Municipality snap-distance summary (m):")
 
-print(
-  summary(
-    network_quality$snap_distance_m
-  )
-)
+# print(
+#   summary(
+#     network_quality$snap_distance_m
+#   )
+# )
 
-message("Crossing snap-distance summary (m):")
+# message("Crossing snap-distance summary (m):")
 
-print(
-  summary(
-    crossing_node_map$snap_distance_m
-  )
-)
+# print(
+#   summary(
+#     crossing_node_map$snap_distance_m
+#   )
+# )
 
-message("Network-distance summary (km):")
+# message("Network-distance summary (km):")
 
-print(
-  summary(
-    travel_distances_long$distance_km
-  )
-)
+# print(
+#   summary(
+#     travel_distances_long$distance_km
+#   )
+# )
 
-message("Municipalities by network component:")
+# message("Municipalities by network component:")
 
-print(
-  network_quality %>%
-    count(
-      network_component,
-      sort = TRUE
-    )
-)
+# print(
+#   network_quality %>%
+#     count(
+#       network_component,
+#       sort = TRUE
+#     )
+# )
 
-if (nrow(unreachable_municipalities) > 0) {
+# if (nrow(unreachable_municipalities) > 0) {
 
-  message(
-    "Municipalities outside the border-crossing component:"
-  )
+#   message(
+#     "Municipalities outside the border-crossing component:"
+#   )
 
-  print(
-    unreachable_municipalities %>%
-      select(
-        municipality_id,
-        COUNTRY,
-        NAME_1,
-        NAME_2,
-        network_component,
-        snap_distance_m
-      ) %>%
-      arrange(
-        network_component,
-        desc(snap_distance_m)
-      )
-  )
-}
+#   print(
+#     unreachable_municipalities %>%
+#       select(
+#         municipality_id,
+#         COUNTRY,
+#         NAME_1,
+#         NAME_2,
+#         network_component,
+#         snap_distance_m
+#       ) %>%
+#       arrange(
+#         network_component,
+#         desc(snap_distance_m)
+#       )
+#   )
+# }
 
 
 # ------------------------------------------------------------------------------
-# 19. Save outputs
+# Save outputs
 # ------------------------------------------------------------------------------
 
 output_dir <- here(
@@ -627,9 +614,5 @@ write_csv(
     output_dir,
     "baseline_travel_distances.csv"
   )
-)
-
-message(
-  "Script 06 finished successfully: baseline motorcar network distances calculated."
 )
 

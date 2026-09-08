@@ -1,5 +1,12 @@
+# ==============================================================================
 # Script for delimiting the five official vehicular crossings between Venezuela and Colombia.
 # This script creates the spatial crossing dataset only; no historical status or treatment logic.
+# ==============================================================================
+
+# ==============================================================================
+# Setup
+# ==============================================================================
+
 
 fs::dir_create(here("Data/raw/border_crossings"))
 
@@ -28,6 +35,10 @@ crossings <- tribble(
  "Colombia", "Arauca",
  "Venezuela", "El Amparo"
 )
+
+# ==============================================================================
+# Look up 
+# ==============================================================================
 
 crossings <- crossings %>%
  mutate(
@@ -98,6 +109,10 @@ write_csv(
  )
 )
 
+# ==============================================================================
+# Create sf object for border crossings
+# ==============================================================================
+
 study_area <- st_read(
  here("Output/maps/boundries/study_area.gpkg"),
  quiet = TRUE
@@ -125,10 +140,8 @@ st_write(
  quiet = TRUE
 )
 
-message("Script 03 finished successfully: five vehicular border crossings saved.")
+# crossings_sf
 
-crossings_sf
-
-crossings_sf %>%
-  st_drop_geometry() %>%
-  select(crossing_id, crossing_name, latitude, longitude)
+# crossings_sf %>%
+#   st_drop_geometry() %>%
+#   select(crossing_id, crossing_name, latitude, longitude)

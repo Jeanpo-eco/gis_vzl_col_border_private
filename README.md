@@ -294,13 +294,4 @@ The project writes results to a structured set of output folders, including:
 - `00_master.R` is the entry point for environment setup and credentials.
 - `presentation` and `Docs` are intentionally omitted here because they are not required to run the core analysis or reproduce the results.
 
-## 9. Practical summary
 
-This project is a spatial panel study of border accessibility and economic activity. It combines:
-
-- GIS road-network analysis,
-- remote sensing outcomes,
-- municipality-level panel construction,
-- and causal/near-causal empirical estimation.
-
-The main objective is to quantify how network access to a border crossing affects local economic activity and whether the result is credible once stronger fixed effects and dynamic checks are considered.

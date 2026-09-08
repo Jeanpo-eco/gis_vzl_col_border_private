@@ -1,12 +1,10 @@
 # ==============================================================================
-# Script: 04_roads.R
-# Description:
 #   Downloads and prepares the Colombia-Venezuela road network from OSM,
 #   restricts it to the analysis area, and constructs a motorcar-weighted
 #   routing network using dodgr.
 # ==============================================================================
 # ------------------------------------------------------------------------------
-# 1. Output directories
+# Output directories
 # ------------------------------------------------------------------------------
 
 fs::dir_create(
@@ -20,7 +18,7 @@ fs::dir_create(
 )
 
 # ------------------------------------------------------------------------------
-# 2. Load OSM road data
+# Load OSM road data
 # ------------------------------------------------------------------------------
 
 ven_roads <- oe_read(
@@ -34,7 +32,7 @@ col_roads <- oe_read(
 )
 
 # ------------------------------------------------------------------------------
-# 3. Retain relevant road classes
+# Retain relevant road classes
 # ------------------------------------------------------------------------------
 
 road_types <- c(
@@ -69,7 +67,7 @@ roads <- bind_rows(
 rm(ven_roads, col_roads)
 
 # ------------------------------------------------------------------------------
-# 4. Restrict roads to analysis area
+# Restrict roads to analysis area
 # ------------------------------------------------------------------------------
 
 analysis_area <- readRDS(
@@ -97,7 +95,7 @@ roads <- roads %>%
   filter(!st_is_empty(.))
 
 # ------------------------------------------------------------------------------
-# 5. Keep required attributes and create stable road ID
+# Keep required attributes and create stable road ID
 # ------------------------------------------------------------------------------
 
 roads <- roads %>%
@@ -112,7 +110,7 @@ roads <- roads %>%
   )
 
 # ------------------------------------------------------------------------------
-# 6. Save clipped road layer
+# Save clipped road layer
 # ------------------------------------------------------------------------------
 
 saveRDS(
@@ -134,7 +132,7 @@ st_write(
 )
 
 # ------------------------------------------------------------------------------
-# 7. Construct motorcar routing network
+# Construct motorcar routing network
 # ------------------------------------------------------------------------------
 
 # The raw road layer retains all selected OSM road classes, including "track".
@@ -157,7 +155,7 @@ graph <- graph %>%
   dodgr::dodgr_components()
 
 # ------------------------------------------------------------------------------
-# 8. Save routing network
+# Save routing network
 # ------------------------------------------------------------------------------
 
 saveRDS(
@@ -166,8 +164,4 @@ saveRDS(
     "Output/network",
     "road_network.rds"
   )
-)
-
-message(
-  "Script 04 finished successfully: clipped OSM roads and motorcar routing network saved."
 )

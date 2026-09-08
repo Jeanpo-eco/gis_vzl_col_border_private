@@ -1,7 +1,4 @@
 # ==============================================================================
-# Script: 07_panel_construction.R
-#
-# Description:
 #   Builds the municipality-quarter estimation panel by combining:
 #
 #     1. Quarterly VIIRS nighttime lights
@@ -42,7 +39,7 @@
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
-# 1. Load data
+# Load data
 # ------------------------------------------------------------------------------
 
 nightlights <- readRDS(
@@ -83,7 +80,7 @@ metadata <- read_csv(
 
 
 # ------------------------------------------------------------------------------
-# 2. Standardize IDs
+# Standardize IDs
 # ------------------------------------------------------------------------------
 
 nightlights <- nightlights %>%
@@ -114,7 +111,7 @@ metadata <- metadata %>%
 
 
 # ------------------------------------------------------------------------------
-# 3. Validate static network-distance input
+# Validate static network-distance input
 # ------------------------------------------------------------------------------
 
 distance_duplicates <- travel_distances %>%
@@ -158,7 +155,7 @@ if (n_distinct(network_quality$municipality_id) != 235) {
 
 
 # ------------------------------------------------------------------------------
-# 4. Restrict nightlights to analysis-area municipalities
+# Restrict nightlights to analysis-area municipalities
 # ------------------------------------------------------------------------------
 
 analysis_municipalities <- network_quality %>%
@@ -184,7 +181,7 @@ message(
 
 
 # ------------------------------------------------------------------------------
-# 5. Create quarterly date index
+# Create quarterly date index
 # ------------------------------------------------------------------------------
 
 quarter_dates <- nightlights_analysis %>%
@@ -216,7 +213,7 @@ quarter_dates <- nightlights_analysis %>%
 
 
 # ------------------------------------------------------------------------------
-# 6. Historical crossing definitions
+# Historical crossing definitions
 # ------------------------------------------------------------------------------
 
 # Crossing IDs:
@@ -256,7 +253,7 @@ quarter_dates <- nightlights_analysis %>%
 
 
 # ------------------------------------------------------------------------------
-# 7. Construct crossing x quarter status matrix
+# Construct crossing x quarter status matrix
 # ------------------------------------------------------------------------------
 
 crossing_status_q <- tidyr::crossing(
@@ -439,7 +436,7 @@ crossing_status_q <- tidyr::crossing(
 
 
 # ------------------------------------------------------------------------------
-# 8. Validate crossing status matrix
+# Validate crossing status matrix
 # ------------------------------------------------------------------------------
 
 status_duplicates <- crossing_status_q %>%
@@ -460,7 +457,7 @@ if (nrow(status_duplicates) > 0) {
 
 
 # ------------------------------------------------------------------------------
-# 9. Expand static network distances across quarters
+# Expand static network distances across quarters
 # ------------------------------------------------------------------------------
 
 distance_q <- travel_distances %>%
@@ -503,7 +500,7 @@ distance_q <- travel_distances %>%
 
 
 # ------------------------------------------------------------------------------
-# 10. Calculate nearest operational crossing by municipality-quarter
+# Calculate nearest operational crossing by municipality-quarter
 # ------------------------------------------------------------------------------
 
 open_distance_q <- distance_q %>%
@@ -599,7 +596,7 @@ open_distance_q <- distance_q %>%
 
 
 # ------------------------------------------------------------------------------
-# 11. Construct pre-treatment network distance
+# Construct pre-treatment network distance
 # ------------------------------------------------------------------------------
 
 pre_distance <- open_distance_q %>%
@@ -637,7 +634,7 @@ pre_distance <- open_distance_q %>%
 
 
 # ------------------------------------------------------------------------------
-# 12. Construct closure-period network distance
+# Construct closure-period network distance
 # ------------------------------------------------------------------------------
 
 post_distance <- open_distance_q %>%
@@ -675,7 +672,7 @@ post_distance <- open_distance_q %>%
 
 
 # ------------------------------------------------------------------------------
-# 13. Construct municipality-level treatment intensity
+# Construct municipality-level treatment intensity
 # ------------------------------------------------------------------------------
 
 treatment_intensity <- pre_distance %>%
@@ -713,7 +710,7 @@ treatment_intensity <- pre_distance %>%
 
 
 # ------------------------------------------------------------------------------
-# 14. Define quarter-level treatment periods
+# Define quarter-level treatment periods
 # ------------------------------------------------------------------------------
 
 quarter_treatment <- quarter_dates %>%
@@ -787,7 +784,7 @@ quarter_treatment <- quarter_dates %>%
 
 
 # ------------------------------------------------------------------------------
-# 15. Assemble final municipality-quarter panel
+# Assemble final municipality-quarter panel
 # ------------------------------------------------------------------------------
 
 panel_df <- nightlights_analysis %>%
@@ -897,7 +894,7 @@ panel_df <- nightlights_analysis %>%
 
 
 # ------------------------------------------------------------------------------
-# 16. Validate final panel
+# Validate final panel
 # ------------------------------------------------------------------------------
 
 panel_duplicates <- panel_df %>%
@@ -918,7 +915,7 @@ if (nrow(panel_duplicates) > 0) {
 
 
 # ------------------------------------------------------------------------------
-# 17. Construct diagnostic samples
+# Construct diagnostic samples
 # ------------------------------------------------------------------------------
 
 main_time_df <- panel_df %>%
@@ -933,161 +930,161 @@ baseline_df <- panel_df %>%
 
 
 # ------------------------------------------------------------------------------
-# 18. Diagnostics
+# Diagnostics / Can be skipped, next section is for saving outputs
 # ------------------------------------------------------------------------------
 
-municipality_count <-
-  n_distinct(
-    panel_df$municipality_id
-  )
+# municipality_count <-
+#   n_distinct(
+#     panel_df$municipality_id
+#   )
 
-quarter_count <-
-  n_distinct(
-    panel_df$year_quarter
-  )
+# quarter_count <-
+#   n_distinct(
+#     panel_df$year_quarter
+#   )
 
 
-message(
-  "Analysis-area municipalities: ",
-  municipality_count
-)
+# message(
+#   "Analysis-area municipalities: ",
+#   municipality_count
+# )
 
-message(
-  "Quarter count: ",
-  quarter_count
-)
+# message(
+#   "Quarter count: ",
+#   quarter_count
+# )
 
-message(
-  "Total panel observations: ",
-  nrow(panel_df)
-)
+# message(
+#   "Total panel observations: ",
+#   nrow(panel_df)
+# )
 
-message(
-  "Main time-window observations: ",
-  nrow(main_time_df)
-)
+# message(
+#   "Main time-window observations: ",
+#   nrow(main_time_df)
+# )
 
-message(
-  "Main time-window municipalities: ",
-  n_distinct(
-    main_time_df$municipality_id
-  )
-)
+# message(
+#   "Main time-window municipalities: ",
+#   n_distinct(
+#     main_time_df$municipality_id
+#   )
+# )
 
-message(
-  "Baseline estimation observations: ",
-  nrow(baseline_df)
-)
+# message(
+#   "Baseline estimation observations: ",
+#   nrow(baseline_df)
+# )
 
-message(
-  "Baseline estimation municipalities: ",
-  n_distinct(
-    baseline_df$municipality_id
-  )
-)
+# message(
+#   "Baseline estimation municipalities: ",
+#   n_distinct(
+#     baseline_df$municipality_id
+#   )
+# )
 
-message(
-  "Missing nighttime-light observations: ",
-  sum(
-    is.na(
-      panel_df$mean_light
-    )
-  )
-)
+# message(
+#   "Missing nighttime-light observations: ",
+#   sum(
+#     is.na(
+#       panel_df$mean_light
+#     )
+#   )
+# )
 
-message(
-  "Municipalities with missing pre-treatment distance: ",
-  sum(
-    is.na(
-      treatment_intensity$d_pre_km
-    )
-  )
-)
+# message(
+#   "Municipalities with missing pre-treatment distance: ",
+#   sum(
+#     is.na(
+#       treatment_intensity$d_pre_km
+#     )
+#   )
+# )
 
-message(
-  "Municipalities with missing post-treatment distance: ",
-  sum(
-    is.na(
-      treatment_intensity$d_post_km
-    )
-  )
-)
+# message(
+#   "Municipalities with missing post-treatment distance: ",
+#   sum(
+#     is.na(
+#       treatment_intensity$d_post_km
+#     )
+#   )
+# )
 
-message(
-  "Municipalities with missing treatment intensity: ",
-  sum(
-    is.na(
-      treatment_intensity$treatment_intensity
-    )
-  )
-)
+# message(
+#   "Municipalities with missing treatment intensity: ",
+#   sum(
+#     is.na(
+#       treatment_intensity$treatment_intensity
+#     )
+#   )
+# )
 
-message(
-  "Treatment-intensity summary:"
-)
+# message(
+#   "Treatment-intensity summary:"
+# )
 
-print(
-  summary(
-    treatment_intensity$treatment_intensity
-  )
-)
+# print(
+#   summary(
+#     treatment_intensity$treatment_intensity
+#   )
+# )
 
-message(
-  "Absolute distance-change summary (km):"
-)
+# message(
+#   "Absolute distance-change summary (km):"
+# )
 
-print(
-  summary(
-    treatment_intensity$distance_change_km
-  )
-)
+# print(
+#   summary(
+#     treatment_intensity$distance_change_km
+#   )
+# )
 
-message(
-  "Pre-treatment nearest operational crossings:"
-)
+# message(
+#   "Pre-treatment nearest operational crossings:"
+# )
 
-print(
-  open_distance_q %>%
-    filter(
-      regime == "pre_2019_open"
-    ) %>%
-    count(
-      nearest_open_crossing_id,
-      nearest_open_crossing_name,
-      sort = TRUE
-    )
-)
+# print(
+#   open_distance_q %>%
+#     filter(
+#       regime == "pre_2019_open"
+#     ) %>%
+#     count(
+#       nearest_open_crossing_id,
+#       nearest_open_crossing_name,
+#       sort = TRUE
+#     )
+# )
 
-message(
-  "2019-2022 closure-regime nearest operational crossings:"
-)
+# message(
+#   "2019-2022 closure-regime nearest operational crossings:"
+# )
 
-print(
-  open_distance_q %>%
-    filter(
-      regime == "2019_2022_closure"
-    ) %>%
-    count(
-      nearest_open_crossing_id,
-      nearest_open_crossing_name,
-      sort = TRUE
-    )
-)
+# print(
+#   open_distance_q %>%
+#     filter(
+#       regime == "2019_2022_closure"
+#     ) %>%
+#     count(
+#       nearest_open_crossing_id,
+#       nearest_open_crossing_name,
+#       sort = TRUE
+#     )
+# )
 
-message(
-  "Network reachability:"
-)
+# message(
+#   "Network reachability:"
+# )
 
-print(
-  network_quality %>%
-    count(
-      network_reachable
-    )
-)
+# print(
+#   network_quality %>%
+#     count(
+#       network_reachable
+#     )
+# )
 
 
 # ------------------------------------------------------------------------------
-# 19. Output directory
+# Output directory
 # ------------------------------------------------------------------------------
 
 output_dir <- here(
@@ -1098,11 +1095,6 @@ fs::dir_create(
   output_dir,
   recurse = TRUE
 )
-
-
-# ------------------------------------------------------------------------------
-# 20. Save crossing-status panel
-# ------------------------------------------------------------------------------
 
 saveRDS(
   crossing_status_q,
@@ -1120,11 +1112,6 @@ write_csv(
   )
 )
 
-
-# ------------------------------------------------------------------------------
-# 21. Save quarterly accessible-distance panel
-# ------------------------------------------------------------------------------
-
 saveRDS(
   open_distance_q,
   file.path(
@@ -1140,11 +1127,6 @@ write_csv(
     "open_crossing_distance_quarterly.csv"
   )
 )
-
-
-# ------------------------------------------------------------------------------
-# 22. Save treatment-intensity table
-# ------------------------------------------------------------------------------
 
 saveRDS(
   treatment_intensity,
@@ -1162,11 +1144,6 @@ write_csv(
   )
 )
 
-
-# ------------------------------------------------------------------------------
-# 23. Save final estimation panel
-# ------------------------------------------------------------------------------
-
 saveRDS(
   panel_df,
   file.path(
@@ -1183,11 +1160,6 @@ write_csv(
   )
 )
 
-
-# ------------------------------------------------------------------------------
-# 24. Save clean baseline estimation sample
-# ------------------------------------------------------------------------------
-
 saveRDS(
   baseline_df,
   file.path(
@@ -1202,9 +1174,4 @@ write_csv(
     output_dir,
     "baseline_estimation_sample.csv"
   )
-)
-
-
-message(
-  "Script 07 finished successfully: quarterly treatment and estimation panel constructed."
 )

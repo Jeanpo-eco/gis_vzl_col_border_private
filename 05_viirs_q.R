@@ -1,11 +1,10 @@
 # ==============================================================================
-# Script: 05_viirs_q.R
-# Description: Downloads quarterly VIIRS nighttime lights via blackmarbler,
+# Downloads quarterly VIIRS nighttime lights via blackmarbler,
 #              crops/masks to the study area, and builds a municipality-quarter
 #              panel of mean lights.
 # ==============================================================================
 
-# 2. User parameters -----------------------------------------------------------
+# User parameters -----------------------------------------------------------
 # Adjust this range as needed for your empirical window.
 start_year <- 2012
 end_year <- 2025
@@ -15,7 +14,7 @@ viirs_product <- "VNP46A3"
 # skip quarters that contain no available data.
 min_available_month <- as.Date("2012-04-01")
 
-# 3. Inputs/outputs ------------------------------------------------------------
+# Inputs/outputs ------------------------------------------------------------
 study_area <- st_read(
   here("Output/maps/boundries/study_area.gpkg"),
   quiet = TRUE
@@ -36,7 +35,7 @@ study_area_bm <- study_area %>%
   st_transform(4326)
 
 
-# 5. Quarter index -------------------------------------------------------------
+# Quarter index -------------------------------------------------------------
 quarters_tbl <- expand.grid(
   year = seq(start_year, end_year),
   quarter = 1:4
@@ -49,7 +48,7 @@ quarters_tbl <- expand.grid(
   ) %>%
   arrange(year, quarter)
 
-# 6. Download -> quarterly crop ------------------------------------------------
+# Download -> quarterly crop ------------------------------------------------
 for (i in seq_len(nrow(quarters_tbl))) {
   year_i <- quarters_tbl$year[i]
   quarter_i <- quarters_tbl$quarter[i]
@@ -118,7 +117,7 @@ for (i in seq_len(nrow(quarters_tbl))) {
 
 message("Quarterly cropped VIIRS rasters saved to: ", output_dir)
 
-# 7. Build municipality-quarter panel ------------------------------------------
+# Build municipality-quarter panel ------------------------------------------
 quarterly_files <- fs::dir_ls(
   output_dir,
   regexp = "VIIRS_\\d{4}_Q[1-4]_crop\\.tif$"

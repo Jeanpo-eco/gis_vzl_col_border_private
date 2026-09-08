@@ -1,6 +1,6 @@
 # Code made by Jean Pierre Oliveros
 # Original date: 30.06.2026
-# Last update: 
+# Last update: 08.09.2026
 # Description:
   # Project for the GIS seminar project 2026 for the UOL in the program master Applied Economics and Data Science
 

@@ -1,12 +1,10 @@
 # ==============================================================================
-# Script: 10_figures_tables.R
-# Description:
 #   Produces only the publication-ready tables and figures used in the paper
 #   and appendix. All estimation is performed upstream in Scripts 08 and 09.
 # ============================================================================== 
 
 # ==============================================================================
-# 1. OUTPUT DIRECTORIES
+# Output directories
 # ==============================================================================
 
 table_dir <- here("Output/Tables/final")
@@ -16,7 +14,7 @@ fs::dir_create(table_dir, recurse = TRUE)
 fs::dir_create(figure_dir, recurse = TRUE)
 
 # ==============================================================================
-# 2. LOAD OBJECTS USED IN THE PAPER
+# Load objects used in the paper
 # ==============================================================================
 
 # Main models from Script 08 ---------------------------------------------------
@@ -41,7 +39,7 @@ m6_region_time <- readRDS(
   here("Output/Bases/regressions", "m6_region_quarter_fe.rds")
 )
 
-# Event-study models from Script 08 -------------------------------------------
+# Event-study models from Script 08
 
 e2_country_time <- readRDS(
   here("Output/Bases/regressions", "e2_country_quarter_event.rds")
@@ -63,7 +61,7 @@ e6_venezuela <- readRDS(
   here("Output/Bases/regressions", "e6_venezuela_event.rds")
 )
 
-# Robustness models from Script 09 --------------------------------------------
+# Robustness models from Script 09
 
 r0_reference <- readRDS(
   here("Output/Bases/robustness", "r0_reference_region_time.rds")
@@ -97,7 +95,7 @@ e_reopening <- readRDS(
   here("Output/Bases/robustness", "e_reopening.rds")
 )
 
-# Summary data ----------------------------------------------------------------
+# Summary data
 
 buffer_summary <- readr::read_csv(
   here("Output/Bases/robustness", "buffer_robustness.csv"),
@@ -112,7 +110,7 @@ baseline_df <- readRDS(
 )
 
 # ==============================================================================
-# 3. SMALL HELPERS
+# Functions
 # ==============================================================================
 
 

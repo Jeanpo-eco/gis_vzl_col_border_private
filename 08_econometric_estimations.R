@@ -1,7 +1,4 @@
 # ==============================================================================
-# Script: 08_econometric_estimations.R
-#
-# Description:
 #   Estimates Difference-in-Differences models using the spatial exposure
 #   measure constructed in Script 07.
 #
@@ -24,9 +21,6 @@
 #     3. Pre-treatment crossing corridor x quarter FE
 #     4. State/department x quarter FE
 #
-#   The purpose is NOT to force parallel trends, but to assess whether the
-#   apparent pre-trends reflect broader spatially heterogeneous trajectories.
-#
 #   Main clean estimation window:
 #
 #       Pre:   2017Q1 - 2018Q4
@@ -39,7 +33,7 @@
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
-# 1. Load data
+# Load data
 # ------------------------------------------------------------------------------
 
 panel_df <- readRDS(
@@ -65,7 +59,7 @@ open_distance_q <- readRDS(
 
 
 # ------------------------------------------------------------------------------
-# 2. Standardize variables
+# Standardize variables
 # ------------------------------------------------------------------------------
 
 panel_df <- panel_df %>%
@@ -107,7 +101,7 @@ if ("COUNTRY" %in% names(baseline_df) &&
 
 
 # ------------------------------------------------------------------------------
-# 3. Validate baseline sample
+# Validate baseline sample
 # ------------------------------------------------------------------------------
 
 if (nrow(baseline_df) == 0) {
@@ -156,7 +150,7 @@ if (length(missing_vars) > 0) {
 
 
 # ------------------------------------------------------------------------------
-# 4. Output directories
+# Output directories
 # ------------------------------------------------------------------------------
 
 output_dir <- here(
@@ -179,7 +173,7 @@ fs::dir_create(
 
 
 # ------------------------------------------------------------------------------
-# 5. Basic diagnostics
+# Basic diagnostics
 # ------------------------------------------------------------------------------
 
 message(
@@ -215,7 +209,7 @@ print(
 
 
 # ------------------------------------------------------------------------------
-# 6. Balanced-panel check
+# Balanced-panel check
 # ------------------------------------------------------------------------------
 
 expected_quarters <- n_distinct(
@@ -242,7 +236,7 @@ message(
 
 
 # ------------------------------------------------------------------------------
-# 7. Treatment distribution by country
+# Treatment distribution by country
 # ------------------------------------------------------------------------------
 
 exposure_by_country <- baseline_df %>%
@@ -314,25 +308,25 @@ exposure_by_country <- baseline_df %>%
     .groups = "drop"
   )
 
-message(
-  "Exposure distribution by country:"
-)
+# message(
+#   "Exposure distribution by country:"
+# )
 
 print(
   exposure_by_country
 )
 
-write_csv(
-  exposure_by_country,
-  file.path(
-    output_dir,
-    "exposure_by_country.csv"
-  )
-)
+# write_csv(
+#   exposure_by_country,
+#   file.path(
+#     output_dir,
+#     "exposure_by_country.csv"
+#   )
+# )
 
 
 # ------------------------------------------------------------------------------
-# 8. Treatment distribution plot
+# Treatment distribution plot
 # ------------------------------------------------------------------------------
 
 exposure_hist_df <- baseline_df %>%
@@ -362,20 +356,20 @@ p_exposure_distribution <- ggplot(
   ) +
   theme_minimal()
 
-# print(
-#   p_exposure_distribution
-# )
-
-ggsave(
-  filename = file.path(
-    figure_dir,
-    "treatment_distribution_by_country.png"
-  ),
-  plot = p_exposure_distribution,
-  width = 9,
-  height = 5.5,
-  dpi = 300
+print(
+  p_exposure_distribution
 )
+
+# ggsave(
+#   filename = file.path(
+#     figure_dir,
+#     "treatment_distribution_by_country.png"
+#   ),
+#   plot = p_exposure_distribution,
+#   width = 9,
+#   height = 5.5,
+#   dpi = 300
+# )
 
 
 # ==============================================================================
@@ -384,7 +378,7 @@ ggsave(
 
 
 # ------------------------------------------------------------------------------
-# 9. Identify each municipality's pre-2019 nearest crossing
+# Identify each municipality's pre-2019 nearest crossing
 # ------------------------------------------------------------------------------
 
 pre_crossing <- open_distance_q %>%
@@ -473,7 +467,7 @@ print(
 
 
 # ------------------------------------------------------------------------------
-# 10. Join corridor definition to model datasets
+# Join corridor definition to model datasets
 # ------------------------------------------------------------------------------
 
 baseline_df <- baseline_df %>%
@@ -498,7 +492,7 @@ panel_df <- panel_df %>%
 
 
 # ------------------------------------------------------------------------------
-# 11. Country trends
+# Country trends
 # ------------------------------------------------------------------------------
 
 trend_df <- baseline_df %>%
@@ -575,7 +569,7 @@ ggsave(
 
 
 # ------------------------------------------------------------------------------
-# 12. Original TWFE
+# Original TWFE
 # ------------------------------------------------------------------------------
 
 m1_original <- feols(
@@ -588,7 +582,7 @@ m1_original <- feols(
 
 
 # ------------------------------------------------------------------------------
-# 13. Country x quarter FE
+# Country x quarter FE
 # ------------------------------------------------------------------------------
 
 m2_country_time <- feols(
@@ -601,7 +595,7 @@ m2_country_time <- feols(
 
 
 # ------------------------------------------------------------------------------
-# 14. Country-specific treatment effects
+# Country-specific treatment effects
 # ------------------------------------------------------------------------------
 
 baseline_df <- baseline_df %>%
@@ -634,7 +628,7 @@ m3_country_effects <- feols(
 
 
 # ------------------------------------------------------------------------------
-# 15. Absolute distance robustness
+# Absolute distance robustness
 # ------------------------------------------------------------------------------
 
 baseline_df <- baseline_df %>%
@@ -666,7 +660,7 @@ m4_absolute <- feols(
 
 
 # ------------------------------------------------------------------------------
-# 16. Pre-crossing corridor x quarter FE
+# Pre-crossing corridor x quarter FE
 # ------------------------------------------------------------------------------
 
 # Controls flexibly for different time paths across municipalities whose
@@ -693,7 +687,7 @@ print(
 
 
 # ------------------------------------------------------------------------------
-# 17. State / department x quarter FE
+# State / department x quarter FE
 # ------------------------------------------------------------------------------
 
 # NAME_1 identifies Colombian departments and Venezuelan states.
@@ -726,7 +720,7 @@ print(
 
 
 # ------------------------------------------------------------------------------
-# 18. Construct event-study sample
+# Construct event-study sample
 # ------------------------------------------------------------------------------
 
 event_df <- panel_df %>%
@@ -776,7 +770,7 @@ event_df <- panel_df %>%
 
 
 # ------------------------------------------------------------------------------
-# 19. Original pooled event study
+# Original pooled event study
 # ------------------------------------------------------------------------------
 
 e1_original <- feols(
@@ -794,7 +788,7 @@ e1_original <- feols(
 
 
 # ------------------------------------------------------------------------------
-# 20. Country x quarter event study
+# Country x quarter event study
 # ------------------------------------------------------------------------------
 
 e2_country_time <- feols(
@@ -812,7 +806,7 @@ e2_country_time <- feols(
 
 
 # ------------------------------------------------------------------------------
-# 21. Pre-crossing corridor x quarter event study
+# Pre-crossing corridor x quarter event study
 # ------------------------------------------------------------------------------
 
 e3_corridor_time <- feols(
@@ -841,7 +835,7 @@ print(
 
 
 # ------------------------------------------------------------------------------
-# 22. State/department x quarter event study
+# State/department x quarter event study
 # ------------------------------------------------------------------------------
 
 e4_region_time <- feols(
@@ -874,7 +868,7 @@ print(
 
 
 # ------------------------------------------------------------------------------
-# 23. Colombia
+# Colombia
 # ------------------------------------------------------------------------------
 
 event_colombia <- event_df %>%
@@ -898,7 +892,7 @@ e5_colombia <- feols(
 
 
 # ------------------------------------------------------------------------------
-# 24. Venezuela
+# Venezuela
 # ------------------------------------------------------------------------------
 
 event_venezuela <- event_df %>%
@@ -927,7 +921,7 @@ e6_venezuela <- feols(
 
 
 # ------------------------------------------------------------------------------
-# 25. Joint pre-trend tests
+# Joint pre-trend tests
 # ------------------------------------------------------------------------------
 
 pretrend_country_time <- wald(
@@ -1012,7 +1006,7 @@ print(
 
 
 # ------------------------------------------------------------------------------
-# 26. Country x quarter FE plot
+# Country x quarter FE plot
 # ------------------------------------------------------------------------------
 
 png(
@@ -1040,7 +1034,7 @@ dev.off()
 
 
 # ------------------------------------------------------------------------------
-# 27. Crossing-corridor FE plot
+# Crossing-corridor FE plot
 # ------------------------------------------------------------------------------
 
 png(
@@ -1068,7 +1062,7 @@ dev.off()
 
 
 # ------------------------------------------------------------------------------
-# 28. State/department FE plot
+# State/department FE plot
 # ------------------------------------------------------------------------------
 
 png(
@@ -1096,7 +1090,7 @@ dev.off()
 
 
 # ------------------------------------------------------------------------------
-# 29. Colombia plot
+#  Colombia plot
 # ------------------------------------------------------------------------------
 
 png(
@@ -1124,7 +1118,7 @@ dev.off()
 
 
 # ------------------------------------------------------------------------------
-# 30. Venezuela plot
+#  Venezuela plot
 # ------------------------------------------------------------------------------
 
 png(
@@ -1157,7 +1151,7 @@ dev.off()
 
 
 # ------------------------------------------------------------------------------
-# 31. Save event-study coefficient tables
+# Save event-study coefficient tables
 # ------------------------------------------------------------------------------
 
 write_csv(
@@ -1222,7 +1216,7 @@ write_csv(
 
 
 # ------------------------------------------------------------------------------
-# 32. Main model list
+# Main model list
 # ------------------------------------------------------------------------------
 
 models <- list(
@@ -1256,7 +1250,7 @@ etable(
 
 
 # ------------------------------------------------------------------------------
-# 33. Export HTML regression table
+# Export HTML regression table
 # ------------------------------------------------------------------------------
 
 modelsummary(
@@ -1290,7 +1284,7 @@ modelsummary(
 
 
 # ------------------------------------------------------------------------------
-# 34. Export LaTeX regression table
+# Export LaTeX regression table
 # ------------------------------------------------------------------------------
 
 modelsummary(
@@ -1329,7 +1323,7 @@ modelsummary(
 
 
 # ------------------------------------------------------------------------------
-# 35. Baseline models
+# Baseline models
 # ------------------------------------------------------------------------------
 
 saveRDS(
@@ -1382,7 +1376,7 @@ saveRDS(
 
 
 # ------------------------------------------------------------------------------
-# 36. Event-study models
+# Event-study models
 # ------------------------------------------------------------------------------
 
 saveRDS(
@@ -1435,7 +1429,7 @@ saveRDS(
 
 
 # ------------------------------------------------------------------------------
-# 37. Save augmented regression sample
+# Save augmented regression sample
 # ------------------------------------------------------------------------------
 
 write_csv(
@@ -1444,9 +1438,4 @@ write_csv(
     output_dir,
     "baseline_regression_sample_final.csv"
   )
-)
-
-
-message(
-  "Script 08 finished successfully: baseline, spatial FE robustness, event studies, and pre-trend diagnostics completed."
 )

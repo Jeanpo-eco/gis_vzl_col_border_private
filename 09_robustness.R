@@ -1,7 +1,4 @@
 # ==============================================================================
-# Script: 09_robustness.R
-#
-# Description:
 #   Runs robustness checks for the Colombia-Venezuela border-access analysis.
 #
 #   Robustness dimensions:
@@ -14,14 +11,10 @@
 #     6. Strong spatial-time fixed effects
 #     7. Reopening-period dynamic check
 #
-#   Important:
-#   This script evaluates sensitivity of the substantive findings.
-#   It is not intended to search for statistical significance.
-#
 # ==============================================================================
 
 # ==============================================================================
-# 1. LOAD DATA
+# Load data
 # ==============================================================================
 
 panel_df <- readRDS(
@@ -62,7 +55,7 @@ analysis_area <- readRDS(
 
 
 # ==============================================================================
-# 2. STANDARDIZE VARIABLES
+# Standardize variables
 # ==============================================================================
 
 panel_df <- panel_df %>%
@@ -108,7 +101,7 @@ if (
 
 
 # ==============================================================================
-# 3. OUTPUT DIRECTORIES
+# Output directories
 # ==============================================================================
 
 output_dir <- here(
@@ -131,7 +124,7 @@ fs::dir_create(
 
 
 # ==============================================================================
-# 4. BASELINE VALIDATION
+# Baseline validation
 # ==============================================================================
 
 if (nrow(baseline_df) == 0) {
@@ -185,7 +178,7 @@ message(
 
 
 # ==============================================================================
-# 5. CONSTRUCT DISTANCE TO INTERNATIONAL BORDER
+# Construct distance to international border
 # ==============================================================================
 
 # Reconstruct the Colombia-Venezuela international border from country polygons.
@@ -303,7 +296,7 @@ print(
 
 
 # ==============================================================================
-# 6. MAIN REFERENCE MODEL
+# Main reference model
 # ==============================================================================
 
 # Preferred benchmark from Script 08:
@@ -329,7 +322,7 @@ print(
 
 
 # ==============================================================================
-# 7. BUFFER ROBUSTNESS
+# Buffer robustness
 # ==============================================================================
 
 buffer_values <- c(
@@ -509,7 +502,7 @@ print(
 
 
 # ==============================================================================
-# 8. ALTERNATIVE TREATMENT: ABSOLUTE DISTANCE
+# Alternative treatment: absolute distance
 # ==============================================================================
 
 baseline_df <- baseline_df %>%
@@ -548,7 +541,7 @@ print(
 
 
 # ==============================================================================
-# 9. ALTERNATIVE OUTCOME: NIGHTLIGHT LEVELS
+# Alternative outcome: nightlight levels
 # ==============================================================================
 
 # This is a robustness check only.
@@ -576,7 +569,7 @@ print(
 
 
 # ==============================================================================
-# 10. MUNICIPALITY-SPECIFIC LINEAR TRENDS
+# Municipality-specific linear trends
 # ==============================================================================
 
 # Construct sequential quarterly time index.
@@ -640,7 +633,7 @@ print(
 
 
 # ==============================================================================
-# 11. COUNTRY-SPECIFIC ROBUSTNESS
+# Country-specific robustness
 # ==============================================================================
 
 baseline_colombia <- baseline_df %>%
@@ -695,7 +688,7 @@ print(
 
 
 # ==============================================================================
-# 12. LESS SATURATED COUNTRY-TIME BENCHMARK
+# Less saturated country-time benchmark
 # ==============================================================================
 
 # Useful to show how sensitive the coefficient is to the degree of geographic
@@ -711,7 +704,7 @@ r6_country_time <- feols(
 
 
 # ==============================================================================
-# 13. SIMPLE TWFE BENCHMARK
+# Simple TWFE benchmark
 # ==============================================================================
 
 r7_simple_twfe <- feols(
@@ -724,24 +717,8 @@ r7_simple_twfe <- feols(
 
 
 # ==============================================================================
-# 14. REOPENING ROBUSTNESS / VALIDATION
+# Reopening robustness / validation
 # ==============================================================================
-
-# This is NOT treated as the main causal specification.
-#
-# It is a descriptive reverse-shock test:
-# municipalities whose cargo-access distance increased more after Feb 2019
-# should, in principle, gain more when crossings reopen.
-#
-# We examine:
-#
-#   Closure regime through 2022Q2
-#   2022Q3 transition excluded
-#   Reopened regime from 2022Q4 onward
-#
-# Note that C03 and C05 have additional Jan-2023 openings, so this should be
-# interpreted as a broad reopening diagnostic rather than an exact inverse shock.
-
 
 reopening_df <- panel_df %>%
 
@@ -816,7 +793,7 @@ print(
 
 
 # ==============================================================================
-# 15. REOPENING EVENT STUDY
+# Reopening event study
 # ==============================================================================
 
 # Event time centered on 2022Q3.
@@ -899,7 +876,7 @@ write_csv(
 
 
 # ==============================================================================
-# 16. MAIN ROBUSTNESS MODEL TABLE
+# Main robustness model table
 # ==============================================================================
 
 robustness_models <- list(
@@ -939,7 +916,7 @@ etable(
 
 
 # ==============================================================================
-# 17. EXPORT MAIN ROBUSTNESS TABLE
+# Export main robustness table
 # ==============================================================================
 
 modelsummary(
@@ -991,7 +968,7 @@ modelsummary(
 
 
 # ==============================================================================
-# 18. BUFFER MODEL TABLE
+# Buffer model table
 # ==============================================================================
 
 if (
@@ -1022,7 +999,7 @@ if (
 
 
 # ==============================================================================
-# 19. COEFFICIENT SUMMARY DATASET
+# Coefficient summary dataset
 # ==============================================================================
 
 extract_main_coefficient <- function(
@@ -1115,7 +1092,7 @@ write_csv(
 
 
 # ==============================================================================
-# 20. COEFFICIENT PLOT
+# Coefficient plot
 # ==============================================================================
 
 p_robustness <- ggplot(
@@ -1178,7 +1155,7 @@ ggsave(
 
 
 # ==============================================================================
-# 21. SAVE MODEL OBJECTS
+# Save model objects
 # ==============================================================================
 
 saveRDS(
@@ -1262,14 +1239,8 @@ saveRDS(
 )
 
 # ==============================================================================
-# SAVE ENRICHED BASELINE SAMPLE FOR FINAL TABLES
+# Save enriched baseline sample for final tables
 # ==============================================================================
-
-# This version contains the original baseline estimation sample plus
-# distance_to_border_km constructed in Script 09.
-#
-# It is saved separately so the original baseline_estimation_sample.rds
-# produced upstream remains unchanged.
 
 saveRDS(
   baseline_df,
@@ -1279,19 +1250,3 @@ saveRDS(
   )
 )
 
-message(
-  "Saved enriched baseline sample for final tables: ",
-  file.path(
-    output_dir,
-    "baseline_estimation_sample_robustness.rds"
-  )
-)
-
-
-# ==============================================================================
-# 22. FINAL SUMMARY
-# ==============================================================================
-
-message(
-  "Script 09 finished successfully."
-)

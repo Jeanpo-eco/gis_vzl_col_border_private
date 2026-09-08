@@ -120,7 +120,7 @@ border_buffer <-
 
     st_transform(3857) |>
 
-    st_buffer(100000) |>
+    st_buffer(100000) |> # 100k from the border
 
     st_transform(target_crs)
 
@@ -130,22 +130,22 @@ analysis_area <- study_area %>%
     )
 
 # Check
-plot(st_geometry(ven_country))
+# plot(st_geometry(ven_country))
 
-plot(
-    st_geometry(border),
-    add = TRUE,
-    col = "red",
-    lwd = 3
-) # The boundry seems nice
+# plot(
+#     st_geometry(border),
+#     add = TRUE,
+#     col = "red",
+#     lwd = 3
+# ) # The boundry seems nice
 
-plot(st_geometry(border_buffer))
+# plot(st_geometry(border_buffer))
 
-plot(
-    st_geometry(analysis_area),
-    add = TRUE,
-    col = "lightblue"
-)
+# plot(
+#     st_geometry(analysis_area),
+#     add = TRUE,
+#     col = "lightblue"
+# )
 
 # Save the relevant data ---------------------------------------------
 

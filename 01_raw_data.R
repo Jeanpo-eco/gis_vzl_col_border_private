@@ -2,6 +2,13 @@
   # Maps / Polygons of Venezuela and Colombia
   # VIIRS
 
+# Folders
+dir.create(here("Data"), showWarnings = FALSE, recursive = TRUE)
+dir.create(here("Data/raw"), showWarnings = FALSE, recursive = TRUE)
+dir.create(here("Data/maps/gadm"), showWarnings = FALSE, recursive = TRUE)
+dir.create(here("Data/raw/OSM"), showWarnings = FALSE, recursive = TRUE)
+
+
 # Municipalities boundires for Venezuela and Colombia -----------------
 
 ven <- geodata::gadm(
