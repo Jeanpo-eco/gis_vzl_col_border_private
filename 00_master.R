@@ -68,3 +68,17 @@ nasa_password <- keyring::key_get(service = "nasa_api", username = "my_earth_dat
 nasa_login <- blackmarbler::get_nasa_token(username = nasa_username, password = nasa_password)
 rm(nasa_username, nasa_password) # Remove from environment for security
 
+
+# In case of using the source
+  # However, its recommended to run the scripts manually, since there a comments and tests inside
+
+source("01_raw_data.R")
+source("02_process.R")
+source("03_border_cross.R")
+source("04_roads.R")
+source("05_viirs_q.R")
+source("06_baseline_access.R")
+source("07_panel_construction.R")
+source("08_econometric_estimations.R")
+source("09_robustness.R")
+source("10_figures_tables.R")
